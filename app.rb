@@ -18,3 +18,7 @@ end
 get '/login' do
     erb:access
 end
+
+get '/admin' do
+    erb:admin_panel
+end
