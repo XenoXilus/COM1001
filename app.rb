@@ -1,4 +1,6 @@
 require 'sinatra'
+require 'sqlite3'
+require_relative 'customer'
 
 get '/' do
 
