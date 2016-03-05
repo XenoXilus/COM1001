@@ -16,3 +16,7 @@ get '/about' do
 
   erb :about
 end
+
+get '/login' do
+    erb:access
+end
