@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="style/style.css" rel="stylesheet" type="text/css" />
+  <title>Account</title>
+</head>
+<body>
+<h1>Account Settings</h1>
+
+<nav>
+  <ul>
+    <li class="highlight"><a href="/">Home</a></li>
+    <li><a href="menu">Menu</a></li>
+    <li><a href="about">About us</a></li>
+  </ul>
+</nav>
+
+<form method="post" action="update_info">
+
+  <p>Twitter Account:
+    <input type="text" name="firstname" value="<%= @results[0] %>" disabled="disabled"/>
+  </p>
+
+  <p>Credit Card:
+    <input type="text" name="surname" value="<%= @results[1] %>"/>
+  </p>
+
+  <p>Address:
+    <input type="text" name="email_address" value="<%= @results[2] %>"/>
+  </p>
+
+  <p>Balance:
+    <input type="text" name="email_address" value="<%= @results[3] %>"/>
+  </p>
+
+  <input type="submit" value="Update Information" />
+</form>
+
+
+</body>
+</html>
