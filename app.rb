@@ -18,9 +18,9 @@ get '/about' do
 end
 
 get '/login' do
-    erb:access
+    erb :access
 end
 
 get '/admin' do
-    erb:admin_panel
+    erb :admin_panel
 end
