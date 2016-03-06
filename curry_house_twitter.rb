@@ -11,7 +11,6 @@ config = {
 
 client = Twitter::REST::Client.new(config)
 
-
 tweets = client.search('curry house')
 most_recent = tweets.take(15)
 most_recent.each do |tweet|
@@ -36,6 +35,12 @@ most_recent.each do |tweet|
 end
 
 def competition
-  client.update('RT & favorite to enter our prize draw to earn money off at the checkout! Only one lucky winner will be selected at random after 24 hours!')
-  #client.
+  client.update('RT & favorite to enter our prize draw to earn money off at the checkout! Only one lucky winner will be selected at random after XX hours!')
+  #get retweeters after XX hours - select one at random
+end
+
+def offers
+  rand_number = 1000 + Random.rand(8999)
+  discount = "CH#{rand_number}"
+  client.update("Use discount code : #{discount} for money off at the checkout!")
 end
