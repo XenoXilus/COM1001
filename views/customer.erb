@@ -1,0 +1,36 @@
+<%= erb :header %>
+
+<% if @updating && @all_ok %>
+    <p style="color:green;font-weight: bold;">The update was succesful.</p>
+    <a href="/customer">Go Back.</a>
+<%else%>
+<form method="post" action="update_info">
+  <br/>
+  <p>Twitter Account:
+    <input type="text" name="twitter_acc" value="<%= @results[0] %>" disabled="disabled"/>
+  </p>
+
+  <% if !@cc_no_ok && @updating %>
+    <p style="color:red">Invalid Credit Card number.</p>
+  <%end%>
+  <p>Credit Card:
+    <input type="text" name="cc" value="<%=h @cc_no %>"/>
+  </p>
+
+  <% if !@address_ok && @updating %>
+      <p style="color:red">Invalid address.</p>
+  <%end%>
+  <p>Address:
+    <input type="text" name="address" value="<%=h @address %>"/>
+  </p>
+
+  <p>Balance:
+    <input type="text" name="balance" value="<%= @results[3]  %>" disabled="disabled"/>
+  </p>
+
+  <input type="submit" value="Update Information" />
+</form>
+
+<%end%>
+
+<%= erb :footer %>
