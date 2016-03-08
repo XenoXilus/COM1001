@@ -38,5 +38,6 @@ post '/user_signup' do
 end
 
 get '/admin' do
+  @page_header = 'Dashboard'
   erb :admin_panel
 end
