@@ -2,6 +2,7 @@ require 'erb'
 require 'sinatra'
 require 'sqlite3'
 require_relative 'customer'
+require_relative 'SignUp'
 #require_relative 'curry_house_twitter'
 
 include ERB::Util

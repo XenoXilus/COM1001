@@ -1,8 +1,3 @@
-require 'erb'
-require 'sinatra'
-require 'sqlite3'
-
-include ERB::Util
 
 before do
   @db = SQLite3::Database.new('./Data.sqlite')
@@ -10,7 +5,7 @@ end
 
 VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-get '/' do
+get '/signup' do
   @submitted = false
   erb :signUpForm
 end
