@@ -40,8 +40,16 @@
             <li class="active"><a href="/">Home</a></li>
             <li><a href="/menu">Menu</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="/login">Sign in</a> </li>
+            <%if !session[:logged_in]%>
+              <li><a href="/login">Sign in</a> </li>
+            <%else%>
+              <%if session[:admin]%>
+                  <li><a href="/admin">Admin Panel</a></li>
+              <% else %>
+                  <li><a href="/customer">My Account</a></li>
+              <%end%>
+              <li><a href="/logout">Log out</a></li>
+            <%end%>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

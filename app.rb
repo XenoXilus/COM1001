@@ -3,11 +3,15 @@ require 'sinatra'
 require 'sqlite3'
 require_relative 'customer'
 require_relative 'SignUp'
+require_relative 'login_sessions'
 #require_relative 'curry_house_twitter'
 
 include ERB::Util
 
+enable :sessions
+
 get '/' do
+  puts session[:admin]
   erb :index
 end
 
@@ -21,10 +25,6 @@ end
 
 get '/instructions' do
   erb :instructions
-end
-
-get '/login' do
-  erb :access
 end
 
 post '/user_signup' do
