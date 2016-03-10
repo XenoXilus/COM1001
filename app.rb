@@ -12,6 +12,7 @@ enable :sessions
 
 get '/' do
   puts session[:admin]
+
   erb :index
 end
 
@@ -34,11 +35,11 @@ post '/user_signup' do
     @email = params[:inputEmail2].strip
     @password = params[:inputPassword].strip
 
-
     erb :index
 end
 
 get '/admin' do
   @page_header = 'Dashboard'
+
   erb :admin_panel
 end
