@@ -1,22 +1,23 @@
 <%= erb :header %>
 
-<table>
-  <tr>
-    <th>Item name</th>
-    <th>Price</th>
-  </tr>
-  <tr>
-    <td>item 1</td>
-    <td>price 1</td>
-  </tr>
-  <tr>
-    <td>item 2</td>
-    <td>price 2</td>
-  </tr>
-  <tr>
-    <td>item 3</td>
-    <td>price 3</td>
-  </tr>
-</table>
+<h1><% @sidesResults %></h1>
+<% unless @sidesResults.nil? || @sidesResults.length == 0 %>
+    <h1>Sides</h1>
+    <br />
+    <table border="1">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+      </tr>
+      <% @sidesResults.each do |item| %>
+          <tr>
+            <td><%=h item[0] %></td>
+            <td><%=h item[1] %></td>
+            <td><%=h item[2] %></td>
+          </tr>
+      <% end %>
+    </table>
+<% end %>
 
 <%= erb :footer %>
