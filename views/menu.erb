@@ -3,20 +3,20 @@
 <% unless @starterResults.nil? || @starterResults.length == 0 %>
     <h3>Starters</h3>
     <br />
-    <table border="1">
+    <table class="menu_table" border="1">
       <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
+        <th class="col_n">Name</th>
+        <th class="col_d">Description</th>
+        <th class="col_p">Price</th>
       </tr>
       <% @starterResults.each do |item| %>
           <tr>
-            <td><%=h item[0] %></td>
-            <td><%=h item[1] %></td>
+            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
-                <td><%=h item[2] %></td>
+                <td class="col_p"><%=h "£ #{item[2]}" %></td>
             <% else %>
-                <td><%=h item[2] %><%=h '0' %></td>
+                <td class="col_p"><%=h "£ #{item[2]}0" %></td>
             <% end %>
           </tr>
       <% end %>
@@ -27,20 +27,20 @@
 <% unless @mildResults.nil? || @mildResults.length == 0 %>
     <h3>Mild Dishes</h3>
     <br />
-    <table border="1">
+    <table class="menu_table" border="1">
       <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
+        <th class="col_n">Name</th>
+        <th class="col_d">Description</th>
+        <th class="col_p">Price</th>
       </tr>
       <% @mildResults.each do |item| %>
           <tr>
-            <td><%=h item[0] %></td>
-            <td><%=h item[1] %></td>
+            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
-                <td><%=h item[2] %></td>
+                <td class="col_p"><%=h "£ #{item[2]}" %></td>
             <% else %>
-                <td><%=h item[2] %><%=h '0' %></td>
+                <td class="col_p"><%=h "£ #{item[2]}0" %></td>
             <% end %>
           </tr>
       <% end %>
@@ -51,20 +51,44 @@
 <% unless @hotResults.nil? || @hotResults.length == 0 %>
     <h3>Hot Dishes</h3>
     <br />
-    <table border="1">
+    <table class="menu_table" border="1">
       <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
+        <th class="col_n">Name</th>
+        <th class="col_d">Description</th>
+        <th class="col_p">Price</th>
       </tr>
       <% @hotResults.each do |item| %>
           <tr>
-            <td><%=h item[0] %></td>
-            <td><%=h item[1] %></td>
+            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
-                <td><%=h item[2] %></td>
+                <td class="col_p"><%=h "£ #{item[2]}" %></td>
             <% else %>
-                <td><%=h item[2] %><%=h '0' %></td>
+                <td class="col_p"><%=h "£ #{item[2]}0" %></td>
+            <% end %>
+          </tr>
+      <% end %>
+    </table>
+<% end %>
+<br>
+
+<% unless @riceResults.nil? || @riceResults.length == 0 %>
+    <h3>Rice</h3>
+    <br />
+    <table class="menu_table" border="1">
+      <tr>
+        <th class="col_n">Name</th>
+        <th class="col_d">Description</th>
+        <th class="col_p">Price</th>
+      </tr>
+      <% @riceResults.each do |item| %>
+          <tr>
+            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_d"><%=h item[1] %></td>
+            <% if (item[2]/0.1)%1 != 0 %>
+                <td class="col_p"><%=h "£ #{item[2]}" %></td>
+            <% else %>
+                <td class="col_p"><%=h "£ #{item[2]}0" %></td>
             <% end %>
           </tr>
       <% end %>
@@ -75,20 +99,20 @@
 <% unless @sidesResults.nil? || @sidesResults.length == 0 %>
     <h3>Sides</h3>
     <br />
-    <table border="1">
+    <table class="menu_table" border="1">
       <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
+        <th class="col_n">Name</th>
+        <th class="col_d">Description</th>
+        <th class="col_p">Price</th>
       </tr>
       <% @sidesResults.each do |item| %>
           <tr>
-            <td><%=h item[0] %></td>
-            <td><%=h item[1] %></td>
+            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
-              <td><%=h item[2] %></td>
+              <td class="col_p"><%=h "£ #{item[2]}" %></td>
             <% else %>
-              <td><%=h item[2] %><%=h '0' %></td>
+              <td class="col_p"><%=h "£ #{item[2]}0" %></td>
             <% end %>
           </tr>
       <% end %>

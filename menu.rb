@@ -11,10 +11,11 @@ get '/menu' do
                FROM menu
                WHERE category = ? }
 
-  @sidesResults = @db.execute query, 'side'
   @starterResults = @db.execute query, 'starter'
   @mildResults = @db.execute query, 'mild'
   @hotResults = @db.execute query, 'hot'
+  @riceResults = @db.execute query, 'rice'
+  @sidesResults = @db.execute query, 'side'
 
   erb :menu
 end

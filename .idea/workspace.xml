@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4a22743a-dbe5-468a-905f-65ad92cbb635" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/main_style.css" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/starter-template.css" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/views/main_style.css" afterPath="$PROJECT_DIR$/public/css/main_style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/curry_house.sqlite" afterPath="$PROJECT_DIR$/curry_house.sqlite" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/starter-template.css" afterPath="$PROJECT_DIR$/public/css/starter-template.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/dashboard_header.erb" afterPath="$PROJECT_DIR$/views/dashboard_header.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/footer.erb" afterPath="$PROJECT_DIR$/views/footer.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/header.erb" afterPath="$PROJECT_DIR$/views/header.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/index.erb" afterPath="$PROJECT_DIR$/views/index.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/menu.rb" afterPath="$PROJECT_DIR$/menu.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/menu.erb" afterPath="$PROJECT_DIR$/views/menu.erb" />
     </list>
     <ignored path="COM1001.iws" />
@@ -25,7 +23,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/COM1001@app__1_.coverage" NAME="app (1) Coverage Results" MODIFIED="1457641580081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="COM1001" />
     <SUITE FILE_PATH="coverage/COM1001@menu.coverage" NAME="menu Coverage Results" MODIFIED="1457640005394" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="COM1001" />
-    <SUITE FILE_PATH="coverage/COM1001@app.coverage" NAME="app Coverage Results" MODIFIED="1457644766108" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="COM1001" />
+    <SUITE FILE_PATH="coverage/COM1001@app.coverage" NAME="app Coverage Results" MODIFIED="1457647142036" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="COM1001" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -49,56 +47,47 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="app.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="menu.erb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/menu.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.8461537">
-              <caret line="96" column="4" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="4" />
+            <state vertical-scroll-proportion="-9.153846">
+              <caret line="119" column="9" selection-start-line="119" selection-start-column="9" selection-end-line="119" selection-end-column="9" />
               <folding>
-                <element signature="e#23#601#0#ruby" expanded="false" />
-                <element signature="e#614#1186#0#ruby" expanded="false" />
-                <element signature="e#1199#1767#0#ruby" expanded="false" />
-                <element signature="e#1780#2345#0#ruby" expanded="false" />
+                <element signature="e#23#722#0#ruby" expanded="false" />
+                <element signature="e#735#1428#0#ruby" expanded="false" />
+                <element signature="e#1441#2130#0#ruby" expanded="false" />
+                <element signature="e#2143#2829#0#ruby" expanded="false" />
+                <element signature="e#2842#3528#0#ruby" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.erb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/index.erb">
+      <file leaf-file-name="menu.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/menu.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.65384614">
-              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="footer.erb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/footer.erb">
+      <file leaf-file-name="main_style.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/public/css/main_style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="29" selection-start-line="0" selection-start-column="29" selection-end-line="0" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main_style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/main_style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.769231">
-              <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="header.erb" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/views/header.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.62784094">
-              <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.6137184">
+              <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -138,15 +127,16 @@
         <option value="$PROJECT_DIR$/views/instructions.erb" />
         <option value="$PROJECT_DIR$/customer.rb" />
         <option value="$PROJECT_DIR$/SignUp.rb" />
-        <option value="$PROJECT_DIR$/menu.rb" />
         <option value="$PROJECT_DIR$/app.rb" />
-        <option value="$PROJECT_DIR$/views/menu.erb" />
         <option value="$PROJECT_DIR$/views/footer.erb" />
         <option value="$PROJECT_DIR$/views/index.erb" />
         <option value="$PROJECT_DIR$/views/dashboard_header.erb" />
         <option value="$PROJECT_DIR$/public/css/starter-template.css" />
-        <option value="$PROJECT_DIR$/views/main_style.css" />
         <option value="$PROJECT_DIR$/views/header.erb" />
+        <option value="$PROJECT_DIR$/views/main_style.css" />
+        <option value="$PROJECT_DIR$/menu.rb" />
+        <option value="$PROJECT_DIR$/views/menu.erb" />
+        <option value="$PROJECT_DIR$/public/css/main_style.css" />
       </list>
     </option>
   </component>
@@ -156,9 +146,10 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
-    <option name="width" value="1370" />
-    <option name="height" value="735" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -248,20 +239,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="COM1001" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -495,25 +472,31 @@
       <option name="project" value="LOCAL" />
       <updated>1457641644383</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixed and finished first iteration of menu viewing&#10;Added footer bar with twitter link&#10;added some basic css and created stylesheet (replaced template file)&#10;alligned some more indenting">
+      <created>1457644968898</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1457644968899</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17480916" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1732224" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32220367" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31743422" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -539,10 +522,13 @@
     <MESSAGE value="Added category and vegetarian fields to menu table, added more placeholder items and started on controller file" />
     <MESSAGE value="corrected sign up's db statement&#10;added to menu workings, though the array carried to erb is nil" />
     <MESSAGE value="improvements/corrections to menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="improvements/corrections to menu" />
+    <MESSAGE value="Fixed and finished first iteration of menu viewing&#10;Added footer bar with twitter link&#10;added some basic css and created stylesheet (replaced template file)&#10;alligned some more indenting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed and finished first iteration of menu viewing&#10;Added footer bar with twitter link&#10;added some basic css and created stylesheet (replaced template file)&#10;alligned some more indenting" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="3" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -575,10 +561,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#23#601#0#ruby" expanded="false" />
-            <element signature="e#614#1186#0#ruby" expanded="false" />
-            <element signature="e#1199#1767#0#ruby" expanded="false" />
-            <element signature="e#1780#2345#0#ruby" expanded="false" />
+            <element signature="e#23#722#0#ruby" expanded="false" />
+            <element signature="e#735#1428#0#ruby" expanded="false" />
+            <element signature="e#1441#2130#0#ruby" expanded="false" />
+            <element signature="e#2143#2829#0#ruby" expanded="false" />
+            <element signature="e#2842#3528#0#ruby" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -756,39 +743,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/menu.rb">
+    <entry file="file://$PROJECT_DIR$/views/dashboard_header.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35978836">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.77272725">
+          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.rb">
+    <entry file="file://$PROJECT_DIR$/views/header.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.76455027">
-          <caret line="17" column="3" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/menu.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.8461537">
-          <caret line="96" column="4" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="4" />
-          <folding>
-            <element signature="e#23#601#0#ruby" expanded="false" />
-            <element signature="e#614#1186#0#ruby" expanded="false" />
-            <element signature="e#1199#1767#0#ruby" expanded="false" />
-            <element signature="e#1780#2345#0#ruby" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/index.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.65384614">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.40550458">
+          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -801,34 +767,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/starter-template.css">
+    <entry file="file://$PROJECT_DIR$/views/index.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.576923">
-          <caret line="7" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.03119266">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/main_style.css">
+    <entry file="file://$PROJECT_DIR$/menu.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.769231">
-          <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/dashboard_header.erb">
+    <entry file="file://$PROJECT_DIR$/app.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.77272725">
-          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/header.erb">
+    <entry file="file://$PROJECT_DIR$/views/menu.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.62784094">
-          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
+        <state vertical-scroll-proportion="-9.153846">
+          <caret line="119" column="9" selection-start-line="119" selection-start-column="9" selection-end-line="119" selection-end-column="9" />
+          <folding>
+            <element signature="e#23#722#0#ruby" expanded="false" />
+            <element signature="e#735#1428#0#ruby" expanded="false" />
+            <element signature="e#1441#2130#0#ruby" expanded="false" />
+            <element signature="e#2143#2829#0#ruby" expanded="false" />
+            <element signature="e#2842#3528#0#ruby" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/main_style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6137184">
+          <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
           <folding />
         </state>
       </provider>
