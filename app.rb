@@ -4,6 +4,7 @@ require 'sqlite3'
 require_relative 'customer'
 require_relative 'SignUp'
 require_relative 'login_sessions'
+require_relative 'menu'
 #require_relative 'curry_house_twitter'
 
 include ERB::Util
