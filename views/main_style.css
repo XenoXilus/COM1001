@@ -1,0 +1,19 @@
+body {
+    padding-top: 50px;
+}
+
+.page_wrap {
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+footer {
+    padding: 30px 40px 0;
+}
+
+#twitter_icon {
+    width: 30px;
+    height: 30px;
+    float: right;
+}
