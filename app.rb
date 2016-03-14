@@ -18,7 +18,7 @@ enable :sessions
 get '/' do
   #testing for admin and customer sessions
   # session[:logged_in] = false
-  # session[:admin] = false
+  session[:admin] = true
 
   erb :index
 end
