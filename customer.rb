@@ -1,16 +1,12 @@
-require 'erb'
-include ERB::Util
-
 before do
-  #@db = SQLite3::Database.new './chinook.sqlite'
-  @db = SQLite3::Database.new './customer_info.sqlite'
+  @customer_info = SQLite3::Database.new './curry_house.sqlite'
   @twitter_acc = 'OpioPellos'
 end
 
 get '/customer' do
   @updating = false
-  query = 'SELECT * FROM Customer WHERE TwitterAcc = ?'
-  @results = @db.get_first_row(query,@twitter_acc)
+  query = 'SELECT * FROM customer WHERE twitterAcc = ?'
+  @results = @customer_info.get_first_row(query,@twitter_acc)
 
   @cc_no = @results[1]
   @address = @results[2]
@@ -21,8 +17,8 @@ end
 post '/update_info' do
   @updating = true
 
-  query = 'SELECT * FROM Customer WHERE TwitterAcc = ?'
-  @results = @db.get_first_row(query,@twitter_acc)
+  query = 'SELECT * FROM customer WHERE twitterAcc = ?'
+  @results = @customer_info.get_first_row(query,@twitter_acc)
 
   @cc_no =  params[:cc].strip
   @address = params[:address].strip
@@ -32,8 +28,9 @@ post '/update_info' do
   @all_ok = @cc_no_ok && @address_ok
 
   if @all_ok
-    query = 'UPDATE Customer SET CC=?, Address=? WHERE TwitterAcc = ?'
-    @db.execute(query, [@cc_no,@address,@twitter_acc])
+    query = 'UPDATE customer SET cc=?, address=? WHERE twitterAcc = ?'
+    @customer_info.execute(query, [@cc_no,@address,@twitter_acc])
   end
+
   erb :customer
 end

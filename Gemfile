@@ -4,4 +4,7 @@ gem 'sinatra'
 gem 'twitter'
 gem 'thin'
 gem 'sqlite3'
+gem 'erb'
+gem 'tilt/erb'
+gem 'rake'
 
