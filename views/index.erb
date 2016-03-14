@@ -1,24 +1,8 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Welcome</title>
-</head>
-<body>
-<h1>Welcome</h1>
-
-<p>
-    You logged into the member's area at
-    <%= session[:login_time].strftime("%d/%m/%Y at %I:%M%p") %>
-</p>
-
-<p><a href="/logout">Logout</a></p>
-
-</body>
-</html>
-=======
 <%= erb :header %>
-
+<!--<p>-->
+  <!--You logged into the member's area at-->
+  <!--&lt;!&ndash;%= session[:login_time].strftime("%d/%m/%Y at %I:%M%p") %>&ndash;&gt;-->
+<!--</p>-->
 <h1>Welcome to Curry House!</h1>
 
 <p class="lead">Your first stop for all your curry takeaway needs.<p>
@@ -27,4 +11,3 @@
 <p>If you need, feel free to visit our <a href="instructions">customer instructions</a> page for a no nonsense guide.</p>
 
 <%= erb :footer %>
->>>>>>> f8fd76fb9d5b12cffe443ee4f44112773dcf5183

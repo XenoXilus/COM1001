@@ -14,12 +14,12 @@ set :session_secret, 'super secret'
 
 
 
-get '/' do
-  redirect '/login' unless session[:logged_in]
-  @submitted = false
-
-  erb :index
-end
+# get '/login' do
+#   redirect '/login' unless session[:logged_in]
+#   @submitted = false
+#
+#   erb :index
+# end
 
 get '/login' do
   erb :login
@@ -31,11 +31,15 @@ post '/login' do
 
   @submitted = true
 
-  ####check
+  #####check
 
   email_address=params[:email_address].strip
 
   pswrd=params[:password].strip
+
+
+
+
 
   name=@db.execute('SELECT Firstname FROM Info WHERE Email_address = ? ',[email_address])
   @email_address_ok=!name[0][0].nil?

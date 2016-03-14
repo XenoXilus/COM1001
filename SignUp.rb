@@ -10,7 +10,7 @@ end
 
 VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-get '/' do
+get '/sign_up' do
   @submitted = false
 
   erb :signUpForm
