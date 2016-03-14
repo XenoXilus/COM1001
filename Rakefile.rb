@@ -1,6 +1,5 @@
-require "rake/testtask"
+require 'rake/testtask'
 
-# replace the below with the path to your app
 require_relative 'app.rb'
 
 desc 'Deletes all the records of a given .sqlite database'

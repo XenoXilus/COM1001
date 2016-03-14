@@ -1,5 +1,6 @@
 get '/login' do
   session[:logged_in] = false
+
   erb :access
 end
 
@@ -21,8 +22,8 @@ post '/login' do
     end
     redirect '/'
   end
-
   @error = "Password incorrect"
+
   erb :login
 end
 

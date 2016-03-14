@@ -9,5 +9,6 @@ get '/orders' do
   rescue Twitter::Error::TooManyRequests => err
     puts "TooManyRequests, try again in #{err.rate_limit.reset_in} seconds"
   end
+
   erb :orders
 end

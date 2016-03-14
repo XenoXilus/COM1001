@@ -3,7 +3,6 @@ before do
   @twitter_acc = 'OpioPellos'
 end
 
-#todo check change over of db still works
 get '/customer' do
   @updating = false
   query = 'SELECT * FROM customer WHERE twitterAcc = ?'
@@ -32,5 +31,6 @@ post '/update_info' do
     query = 'UPDATE customer SET cc=?, address=? WHERE twitterAcc = ?'
     @customer_info.execute(query, [@cc_no,@address,@twitter_acc])
   end
+
   erb :customer
 end

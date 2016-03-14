@@ -1,4 +1,4 @@
-COM1001 Software Engineering - this repository is for the development of an ordering system for "Curry House-Ish".
+COM1001 Software Engineering - this repository is for the development of an ordering system for "Curry House".
 
 User stories - https://docs.google.com/spreadsheets/d/1D0qo6evBcOPcRduUPkjupoTkHofobB8lRpwwTfVIw0A/edit
 
