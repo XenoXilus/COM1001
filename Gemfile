@@ -7,4 +7,6 @@ gem 'sqlite3'
 gem 'erb'
 gem 'tilt/erb'
 gem 'rake'
-
+gem 'cucumber'
+gem 'capybara'
+gem 'rspec'
