@@ -6,7 +6,7 @@ require 'tilt/erb'
 include ERB::Util
 
 before do
-  @db = SQLite3::Database.new('./Data.sqlite')
+  @db = SQLite3::Database.new('./curry_house.sqlite')
 end
 
 enable :sessions

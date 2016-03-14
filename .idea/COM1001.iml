@@ -53,7 +53,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="addressable (v2.4.0, ruby-2.1.7-p400) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="buftok (v0.2.0, ruby-2.1.7-p400) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.11.0.pre.2, ruby-2.1.7-p400) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.11.2, ruby-2.1.7-p400) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="daemons (v1.2.3, ruby-2.1.7-p400) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="domain_name (v0.5.20160216, ruby-2.1.7-p400) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="equalizer (v0.0.10, ruby-2.1.7-p400) [gem]" level="application" />
