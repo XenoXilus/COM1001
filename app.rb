@@ -1,15 +1,18 @@
 require 'erb'
 require 'sinatra'
 require 'sqlite3'
+require 'twitter'
 require_relative 'customer'
 require_relative 'SignUp'
 require_relative 'login_sessions'
 require_relative 'menu'
-#require_relative 'curry_house_twitter'
+require_relative 'curry_house_twitter'
+require_relative 'orders'
 
 include ERB::Util
 
 enable :sessions
+
 
 get '/' do
   puts session[:admin]
