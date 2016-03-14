@@ -1,5 +1,8 @@
 <%= erb :header %>
-<h1>Please Enter Your Personal Information</h1>
+
+<% if !(@submitted && @all_ok) %>
+    <h1>Please Enter Your Personal Information</h1>
+<%end%>
 
 <% if @submitted && @all_ok %>
     <p>Thanks <%=h @firstname %> for your registration.<br>Your data have been saved.</p>
@@ -33,7 +36,11 @@
       </p>
 
       <% if @submitted && !@email_address_ok %>
-          <p style="color:red">Please enter your email address</p>
+          <p style="color:red">Please enter your email address correctly</p>
+      <% end %>
+
+      <% if   @submitted && !@different_emails_ok %>
+         <p style="color:red"> This email already exists. <br> Please enter another Email address</p>
       <% end %>
 
       <p>Email address:
