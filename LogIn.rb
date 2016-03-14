@@ -41,9 +41,9 @@ post '/login' do
 
 
 
-  name=@db.execute('SELECT Firstname FROM Info WHERE Email_address = ? ',[email_address])
+  name=@db.execute('SELECT Firstname FROM customer WHERE email = ? ',[email_address])
   @email_address_ok=!name[0][0].nil?
-  surname = @db.execute('SELECT surname FROM Info WHERE Email_address = ? AND Password=?',[email_address,pswrd])
+  surname = @db.execute('SELECT surname FROM customer WHERE email = ? AND password=?',[email_address,pswrd])
 
   @password__ok = !surname[0].nil?
   puts @email_address_ok
@@ -56,6 +56,11 @@ post '/login' do
   if @everything_ok
     session[:logged_in] = true
     session[:login_time] = Time.now
+    if email_address.equal? 'admin@ch.com'
+      session[:admin] = true
+    else
+      session[:admin] = false
+    end
     redirect '/'
   end
   @error = "The Email address or the password is not correct"

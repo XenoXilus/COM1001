@@ -47,7 +47,7 @@ post '/form_handler' do
 
 
   if @submitted && @all_ok
-    @db.execute('INSERT firstName, surname, email, password INTO customer VALUES(?, ?, ?, ?)', [@firstName, @surname, @email, @password])
+    @db.execute('INSERT INTO customer(firstName, surname, email, password,twitterAcc) VALUES(?, ?, ?, ?,?)', [@firstName, @surname, @email, @password, 'test'])
   end
 
   erb :signUpForm
