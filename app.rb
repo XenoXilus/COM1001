@@ -4,7 +4,8 @@ require 'sqlite3'
 require 'twitter'
 require_relative 'customer'
 require_relative 'SignUp'
-require_relative 'login_sessions'
+require_relative 'LogIn'
+#require_relative 'login_sessions'
 require_relative 'menu'
 require_relative 'curry_house_twitter'
 require_relative 'orders'
@@ -15,12 +16,16 @@ enable :sessions
 
 
 get '/' do
-  puts session[:admin]
+  #testing for admin and customer sessions
+  session[:logged_in] = false
+  session[:admin] = false
 
   erb :index
 end
 
 get '/about' do
+
+
   erb :about
 end
 

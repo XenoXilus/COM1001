@@ -14,13 +14,14 @@ set :session_secret, 'super secret'
 
 
 
-get '/' do
-  redirect '/login' unless session[:logged_in]
-  @submitted = false
-  erb :index
-end
+# get '/login' do
+#   redirect '/login' unless session[:logged_in]
+#   @submitted = false
+#   erb :index
+# end
 
 get '/login' do
+
   erb :login
 end
 

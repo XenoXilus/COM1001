@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Login</title>
-</head>
-<body>
+<%= erb :header %>
 <h1>Login</h1>
 
 <% unless @error.nil? %>
@@ -38,5 +33,4 @@
     <p><input type="submit" value="Submit" /></p>
 </form>
 
-</body>
-</html>
+<%= erb :footer%>
