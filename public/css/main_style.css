@@ -12,6 +12,9 @@ h3 {
     text-decoration: underline;
     font-style: oblique;
 }
+form {
+    text-align: left;
+}
 .menu_table {
     border-collapse: collapse;
     border: none;
