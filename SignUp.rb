@@ -23,7 +23,7 @@ post '/form_handler' do
   @submitted = true
 
 
-  @firstName = params[:firstname].strip
+  @firstname = params[:firstname].strip
   @surname = params[:surname].strip
   @email = params[:email].strip
   @twitter=params[:twitter].strip
@@ -32,8 +32,8 @@ post '/form_handler' do
 
 
 
-  @firstName_ok =
-      !@firstName.nil? && @firstName != ""
+  @firstname_ok =
+      !@firstname.nil? && @firstname != ""
   @surname_ok = !
   @surname.nil? && @surname != ""
 
@@ -54,11 +54,11 @@ post '/form_handler' do
   @confirm_password_ok =
       @confirm_password==@password
 
-  @all_ok = @firstName_ok && @surname_ok && @email_ok&& @password_ok&& @confirm_password_ok &&@different_emails_ok&&@twitter_ok&&@different_twitter_ok
+  @all_ok = @firstname_ok && @surname_ok && @email_ok&& @password_ok&& @confirm_password_ok &&@different_emails_ok&&@twitter_ok&&@different_twitter_ok
 
 
   if @submitted && @all_ok
-    @db.execute('INSERT INTO customer(firstName, surname, email,twitterAcc, password) VALUES(?, ?, ?, ?,?)', [@firstName, @surname, @email,@twitter, @password, ])
+    @db.execute('INSERT INTO customer(firstname, surname, email,twitterAcc, password) VALUES(?, ?, ?, ?,?)', [@firstname, @surname, @email,@twitter, @password, ])
   end
 
   erb :signUpForm
