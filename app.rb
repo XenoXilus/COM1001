@@ -3,7 +3,7 @@ require 'sinatra'
 require 'sqlite3'
 require 'twitter'
 
-require_relative 'customer'
+require_relative 'account'
 require_relative 'SignUp'
 require_relative 'LogIn'
 require_relative 'menu'
