@@ -54,7 +54,7 @@ post '/login' do
   if @everything_ok
     session[:logged_in] = true
     session[:login_time] = Time.now
-
+    session[:email] = email_address
     admin_ok=email_address=='admin@ch.com'
 
     if admin_ok then
