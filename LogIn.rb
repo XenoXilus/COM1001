@@ -14,13 +14,6 @@ set :session_secret, 'super secret'
 
 
 
-# get '/login' do
-#   redirect '/login' unless session[:logged_in]
-#   @submitted = false
-#
-#   erb :index
-# end
-
 
 get '/login' do
   erb :login
@@ -42,8 +35,8 @@ post '/login' do
 
 
 
-  name=@db.execute('SELECT Firstname FROM customer WHERE email = ? ',[email_address])
-  @email_address_ok=!name[0][0].nil?
+  name=@db.execute('SELECT firstName FROM customer WHERE email = ? ',[email_address])
+  @email_address_ok=!name[0].nil?
   surname = @db.execute('SELECT surname FROM customer WHERE email = ? AND password=?',[email_address,pswrd])
 
   @password__ok = !surname[0].nil?
