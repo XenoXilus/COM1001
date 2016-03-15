@@ -5,6 +5,9 @@ before do
 end
 
 get '/orders' do
+  if !session[:admin]
+    redirect '/'
+  end
 
   begin
     search_for_orders

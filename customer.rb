@@ -9,6 +9,7 @@ before do
 end
 
 get '/customer' do
+
   @updating = false
 
   erb :customer
