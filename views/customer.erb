@@ -6,6 +6,20 @@
 <%else%>
     <form method="post" action="update_info">
       <br/>
+      <% if !@first_name_ok && @updating %>
+          <p style="color:red">Invalid value for first name.</p>
+      <%end%>
+      <p>First Name:
+        <input type="text" name="first_name" value="<%=h @first_name %>"/>
+      </p>
+
+      <% if !@surname_ok && @updating %>
+          <p style="color:red">Invalid value for surname.</p>
+      <%end%>
+      <p>Surname:
+        <input type="text" name="surname" value="<%=h @surname %>"/>
+      </p>
+
       <p>Twitter Account:
         <input type="text" name="twitter_acc" value="<%= @results[0] %>" disabled="disabled"/>
       </p>
