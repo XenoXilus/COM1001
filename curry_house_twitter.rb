@@ -14,11 +14,20 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 # end
 
 def init
+  #curryhouse02
+  # config = {
+  #     :consumer_key => 'NNtgfDPbs3e2RfYogLwozovGn',
+  #     :consumer_secret => 'rZAtPRt3IlTJ0gUjMALihOYbDCqytVhse58lGPgn863gq5oLss',
+  #     :access_token => '705790849393758208-DkouWibaCQ6xfnjygbm78Gfh9HxA1uB',
+  #     :access_token_secret => 'ZJGwvPMmkwV5f6YaVZrUVgztiGcV1iXupncKGmqhXKXWb'
+  # }
+
+  #curry_house02
   config = {
-      :consumer_key => 'NNtgfDPbs3e2RfYogLwozovGn',
-      :consumer_secret => 'rZAtPRt3IlTJ0gUjMALihOYbDCqytVhse58lGPgn863gq5oLss',
-      :access_token => '705790849393758208-DkouWibaCQ6xfnjygbm78Gfh9HxA1uB',
-      :access_token_secret => 'ZJGwvPMmkwV5f6YaVZrUVgztiGcV1iXupncKGmqhXKXWb'
+      :consumer_key => 'ES1nI4rGsK5TLzfjAgJAOrwyJ',
+      :consumer_secret => 'X0PRqKUjaRgqPBOox0QSmeQUO2j4gmIm6iLql5GAdgjpKgm32j',
+      :access_token => '709679775862951936-5TCWCmdABwZpWNmCOxGZ7nY0xQ9Zqlq',
+      :access_token_secret => 'C3BdvX5EfQw6l64sTNn8kUzdsh764fUQ1Ni7LBfanOFZz'
   }
 
   $client = Twitter::REST::Client.new(config)
@@ -30,9 +39,6 @@ def search_for_orders
   tweets = $client.mentions_timeline()
   most_recent = tweets.take(5)
 
-
-
-  #array_has_on_col(@caught_tweets,123,0)
   most_recent.each do |tweet|
     if !tweet.text.include? 'cancel'
       if tweet.text.include?('order') && (@caught_tweets.nil? || (!@caught_tweets.nil? && !array_has_on_col(@caught_tweets,tweet.id,0)))
@@ -57,8 +63,9 @@ def search_for_orders
         puts "order_status: #{order_status}"
         if !(order_status=='Canceled')
           @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
+          @caught_tweets[order_id-1][3] = 'Canceled'
           tweet_info = @db.execute('SELECT * FROM tweets WHERE order_id=?',[order_id])
-          tweet_status_change(tweet_info)
+          tweet_status_change(tweet_info[0])
         end
       end
     end
@@ -76,9 +83,11 @@ def tweet_status_change(tweet)
             'Thank for ordering from us!'
           when 'Canceled'
             'Your order has been successfully canceled!'
+          else
+            return
         end
-  puts msg
-  $client.update("@#{tweet[1]}: #{msg} Order ID:#{tweet[4]}.", :in_reply_to_status_id => tweet[0])
+  puts "Message to be tweeted: #{msg}"
+  #$client.update("@#{tweet[1]}: #{msg} Order ID:#{tweet[4]}.")#, :in_reply_to_status_id => tweet[0])
 end
 
 def array_has_on_col(arr,elem,c)

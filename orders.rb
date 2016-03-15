@@ -16,12 +16,7 @@ get '/orders' do
 end
 
 post '/change_status' do
-  puts params
-  puts params["status1"]
-  puts @caught_tweets.class
-  puts params[:change_to]
   for i in 0..@caught_tweets.size-1 do
-    puts params["status#{i}"]
     if params["status#{i}"]=="on"
       #update both db and array
       @db.execute('UPDATE tweets SET status = ? WHERE id = ?',[params[:change_to],@caught_tweets[i][0]])
