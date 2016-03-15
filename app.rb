@@ -2,7 +2,7 @@ require 'erb'
 require 'sinatra'
 require 'sqlite3'
 require 'twitter'
-require_relative 'customer'
+require_relative 'account'
 require_relative 'SignUp'
 require_relative 'LogIn'
 require_relative 'menu'
@@ -14,7 +14,6 @@ include ERB::Util
 enable :sessions
 
 get '/' do
-
   db = SQLite3::Database.new './curry_house.sqlite'
   @caught_tweets = db.execute('SELECT * FROM tweets')
   erb :index

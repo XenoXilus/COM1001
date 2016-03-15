@@ -1,18 +1,22 @@
 before do
   @customer_info = SQLite3::Database.new './curry_house.sqlite'
-  @results = @customer_info.get_first_row('SELECT * FROM customer WHERE twitterAcc = ?','test')#session[:@twitter_acc])
-  @twitter_acc = @results[0]
-  @cc_no = @results[1]
-  @address = @results[2]
-  @first_name = @results[5]
-  @surname = @results[6]
+  @results = @customer_info.get_first_row('SELECT * FROM customer WHERE email = ?',session[:email])#session[:@twitter_acc])
+  puts @results
+  if !@results.nil?
+    @twitter_acc = @results[0]
+    @cc_no = @results[1]
+    @address = @results[2]
+    @first_name = @results[5]
+    @surname = @results[6]
+  end
+
 end
 
-get '/customer' do
+get '/account' do
 
   @updating = false
 
-  erb :customer
+  erb :account
 end
 
 post '/update_info' do
@@ -35,5 +39,5 @@ post '/update_info' do
     @customer_info.execute(query, [@cc_no,@address,@first_name,@surname,@twitter_acc])
   end
 
-  erb :customer
+  erb :account
 end

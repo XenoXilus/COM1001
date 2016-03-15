@@ -38,11 +38,10 @@
             <li><a href="/login">Sign in</a> </li>
             <li><a href="/sign_up">Sign up</a> </li>
         <%else%>
+            <li><a href="/account">My Account</a></li>
             <%if session[:admin]%>
                 <li><a href="/orders">Orders</a></li>
                 <li><a href="/admin">Admin Panel</a></li>
-            <% else %>
-                <li><a href="/customer">My Account</a></li>
             <%end%>
             <li><a href="/logout">Log out</a></li>
         <%end%>
