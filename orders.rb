@@ -9,9 +9,12 @@ get '/orders' do
     redirect '/'
   end
 
+  @too_many_requests = false
   begin
     search_for_orders
   rescue Twitter::Error::TooManyRequests => err
+    @limit = err.rate_limit.reset_in
+    @too_many_requests = true
     puts "TooManyRequests, try again in #{err.rate_limit.reset_in} seconds"
   end
 

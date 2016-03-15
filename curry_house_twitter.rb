@@ -30,7 +30,6 @@ def search_for_orders
 
   tweets = $client.mentions_timeline()
   most_recent = tweets.take(10)
-
   most_recent.each do |tweet|
     if !tweet.text.include? 'cancel'
       if tweet.text.include?('order') && (@caught_tweets.nil? || (!@caught_tweets.nil? && !array_has_on_col(@caught_tweets,tweet.id,0)))
@@ -83,7 +82,7 @@ def tweet_status_change(tweet)
             return
         end
   puts "Message to be tweeted: #{msg}"
-  #$client.update("@#{tweet[1]}: #{msg} Order ID:#{tweet[4]}.")#, :in_reply_to_status_id => tweet[0])
+  $client.update("@#{tweet[1]}: #{msg} Order ID:#{tweet[4]}.")#, :in_reply_to_status_id => tweet[0])
 end
 
 def array_has_on_col(arr,elem,c)

@@ -50,3 +50,13 @@ get '/admin' do
 
   erb :admin_panel
 end
+
+not_found do
+
+  erb :error404
+end
+
+# error do
+#
+#   erb :gen_error
+# end

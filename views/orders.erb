@@ -1,6 +1,12 @@
 <%= erb :header %>
 
 <% unless @caught_tweets.nil? %>
+
+    <% if @too_many_requests %>
+        <br/>
+        <p style="color:red">Too Many Requests. Try again in <%= @limit %> seconds.</p>
+    <% end %>
+
     <h1>Orders</h1>
     <br />
     <form method="post" action="change_status">
