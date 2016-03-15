@@ -15,19 +15,11 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 def init
   #curryhouse02
-  # config = {
-  #     :consumer_key => 'NNtgfDPbs3e2RfYogLwozovGn',
-  #     :consumer_secret => 'rZAtPRt3IlTJ0gUjMALihOYbDCqytVhse58lGPgn863gq5oLss',
-  #     :access_token => '705790849393758208-DkouWibaCQ6xfnjygbm78Gfh9HxA1uB',
-  #     :access_token_secret => 'ZJGwvPMmkwV5f6YaVZrUVgztiGcV1iXupncKGmqhXKXWb'
-  # }
-
-  #curry_house02
   config = {
-      :consumer_key => 'ES1nI4rGsK5TLzfjAgJAOrwyJ',
-      :consumer_secret => 'X0PRqKUjaRgqPBOox0QSmeQUO2j4gmIm6iLql5GAdgjpKgm32j',
-      :access_token => '709679775862951936-5TCWCmdABwZpWNmCOxGZ7nY0xQ9Zqlq',
-      :access_token_secret => 'C3BdvX5EfQw6l64sTNn8kUzdsh764fUQ1Ni7LBfanOFZz'
+      :consumer_key => 'NNtgfDPbs3e2RfYogLwozovGn',
+      :consumer_secret => 'rZAtPRt3IlTJ0gUjMALihOYbDCqytVhse58lGPgn863gq5oLss',
+      :access_token => '705790849393758208-DkouWibaCQ6xfnjygbm78Gfh9HxA1uB',
+      :access_token_secret => 'ZJGwvPMmkwV5f6YaVZrUVgztiGcV1iXupncKGmqhXKXWb'
   }
 
   $client = Twitter::REST::Client.new(config)
@@ -37,7 +29,7 @@ def search_for_orders
 
 
   tweets = $client.mentions_timeline()
-  most_recent = tweets.take(5)
+  most_recent = tweets.take(10)
 
   most_recent.each do |tweet|
     if !tweet.text.include? 'cancel'
@@ -61,11 +53,15 @@ def search_for_orders
 
         puts "twitter_info: #{tweet_info}"
         puts "order_status: #{order_status}"
-        if !(order_status=='Canceled')
+        if !((order_status=='Canceled') || (order_status=='Delivering'))
           @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
           @caught_tweets[order_id-1][3] = 'Canceled'
           tweet_info = @db.execute('SELECT * FROM tweets WHERE order_id=?',[order_id])
           tweet_status_change(tweet_info[0])
+        elsif (order_status=='Delivering')
+          sender = @db.execute('SELECT sender FROM tweets WHERE order_id=?',[order_id])[0][0]
+          puts sender
+          $client.update("@#{sender}: Unfortunately we cannot process your cancellation request as you order is already staged for delivery")
         end
       end
     end
