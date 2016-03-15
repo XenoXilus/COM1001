@@ -47,9 +47,6 @@ post '/login' do
   surname = @db.execute('SELECT surname FROM customer WHERE email = ? AND password=?',[email_address,pswrd])
 
   @password__ok = !surname[0].nil?
-  puts @email_address_ok
-  puts @password__ok
-  puts pswrd
 
 
   @everything_ok = @password__ok && @email_address_ok
@@ -57,14 +54,18 @@ post '/login' do
   if @everything_ok
     session[:logged_in] = true
     session[:login_time] = Time.now
-    if email_address.equal? 'admin@ch.com'
-      session[:admin] = true
+
+    admin_ok=email_address=='admin@ch.com'
+
+    if admin_ok then
+            session[:admin] = true
+            puts session[:admin]
     else
       session[:admin] = false
     end
     redirect '/'
   end
-  @error = "The Email address or the password is not correct"
+  @error = 'The Email address or the password is not correct'
 
   erb :login
 end
