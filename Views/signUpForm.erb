@@ -35,7 +35,7 @@
                value="<%=h @surname if @submitted %>"/>
       </p>
 
-      <% if @submitted && !@email_address_ok %>
+      <% if @submitted && !@email_ok %>
           <p style="color:red">Please enter your email address correctly</p>
       <% end %>
 
@@ -44,9 +44,24 @@
       <% end %>
 
       <p>Email address:
-        <input type="text" name="email_address"
-               value="<%=h @email_address if @submitted %>"/>
+        <input type="text" name="email"
+               value="<%=h @email if @submitted %>"/>
       </p>
+
+
+      <% if   @submitted && !@different_twitter_ok %>
+          <p style="color:red"> This twitter already exists. <br> Please enter another twitter</p>
+      <% end %>
+
+      <% if @submitted && !@twitter_ok %>
+          <p style="color:red">Please enter your Twitter correctly</p>
+      <% end %>
+
+      <p>Twitter:
+        <input type="text" name="twitter"
+               value="<%=h @twitter if @submitted %>"/>
+      </p>
+
 
       <% if @submitted && !@password_ok %>
           <p style="color:red">Please enter a password(at least 6 characters)</p>
