@@ -1,6 +1,7 @@
 require 'capybara'
 require 'rspec'
 require 'capybara/cucumber'
+require 'sinatra'
 
 ## Uncomment to enable SimpleCov
 #require 'simplecov'
