@@ -1,0 +1,75 @@
+<%= erb :header %>
+
+<% if !(@submitted && @all_ok) %>
+    <h1>Please Enter Your Personal Information</h1>
+<%end%>
+
+<% if @submitted && @all_ok %>
+    <p>Thanks <%=h @firstname %> for your registration.<br>Your data have been saved.</p>
+
+
+<% else %>
+
+    <% if @submitted && !@all_ok %>
+        <p style="color:red">There were errors in your form
+          submission, please correct them below.</p>
+    <% end %>
+
+    <form method="post" action="form_handler">
+
+      <% if @submitted && !@firstname_ok %>
+          <p style="color:red">Please enter your first name</p>
+      <% end %>
+
+      <p>Firstname:
+        <input type="text" name="firstname"
+               value="<%=h @firstname if @submitted %>"/>
+      </p>
+
+      <% if @submitted && !@surname_ok %>
+          <p style="color:red">Please enter your surname</p>
+      <% end %>
+
+      <p>Surname:
+        <input type="text" name="surname"
+               value="<%=h @surname if @submitted %>"/>
+      </p>
+
+      <% if @submitted && !@email_address_ok %>
+          <p style="color:red">Please enter your email address correctly</p>
+      <% end %>
+
+      <% if   @submitted && !@different_emails_ok %>
+         <p style="color:red"> This email already exists. <br> Please enter another Email address</p>
+      <% end %>
+
+      <p>Email address:
+        <input type="text" name="email_address"
+               value="<%=h @email_address if @submitted %>"/>
+      </p>
+
+      <% if @submitted && !@password_ok %>
+          <p style="color:red">Please enter a password(at least 6 characters)</p>
+      <% end %>
+
+      <p>Create Password:
+        <input type="password" name="password"
+               value="<%=h @password if @submitted %>"/>
+      </p>
+
+      <% if @submitted && !@confirm_password_ok %>
+          <p style="color:red">The passwords are not the same</p>
+      <% end %>
+
+      <p>Confirm Password:
+        <input type="password" name="confirm_password"
+               value="<%=h @confirm_password if @submitted %>"/>
+      </p>
+
+      <input type="submit" value="Submit" />
+    </form>
+
+<% end %>
+
+<%= erb :footer %>
+

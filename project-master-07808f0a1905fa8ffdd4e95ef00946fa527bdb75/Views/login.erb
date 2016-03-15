@@ -1,0 +1,36 @@
+<%= erb :header %>
+<h1>Login</h1>
+
+<% unless @error.nil? %>
+    <p style="color:#ff10ba"><strong><%= @error %></strong></p>
+<% end %>
+
+
+<% if @submitted && !@everything_ok %>
+    <!--<p style="color:red">The Email address or the password is not correct.</p>-->
+<% end %>
+
+<p>Please log in by entering your Email and your Password.</p>
+
+
+<form action="/login" method="post">
+
+<% if @submitted && !@email_address_ok %>
+    <p style="color:red; font-size:85%">This Email address does not exists or it is not correct.Please enter a correct email address.</p>
+<% end %>
+
+    <p>Email address:     <input type="text" name="email_address"  value=" "/>    </p>
+
+
+  <% if @submitted && !@password_ok %>
+      <p style="color:red; font-size:85%">The password is not correct.<br> PLease try again</p>
+  <% end %>
+  <p>Password:     <input type="password" name = "password"/></p>
+
+
+
+
+    <p><input type="submit" value="Submit" /></p>
+</form>
+
+<%= erb :footer%>
