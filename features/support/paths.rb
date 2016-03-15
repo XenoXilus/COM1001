@@ -14,7 +14,7 @@ module NavigationHelpers
     when /the login \s?page/
       '/login'
 
-    when /the menu/
+    when /menu/
       '/menu'
 
     when /I logout/

@@ -19,11 +19,11 @@
     <p style="color:red; font-size:85%">This email address does not exist or it is not correct. Please enter a correct email address.</p>
 <% end %>
 
-    <p>Email address:     <input type="text" name="email_address"  value=" "/>    </p>
+    <p>Email address:     <input type="text" name="email_address"  value=" " id="email_address"/>    </p>
 
 
   <% if @submitted && !@password_ok %>
-      <p style="color:red; font-size:85%">The password is not correct.<br> PLease try again</p>
+      <p style="color:red; font-size:85%">The password is not correct.<br> Please try again.</p>
   <% end %>
   <p>Password:     <input type="password" name = "password"/></p>
 
