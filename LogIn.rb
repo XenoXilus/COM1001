@@ -12,9 +12,6 @@ end
 enable :sessions
 set :session_secret, 'super secret'
 
-
-
-
 get '/login' do
   erb :login
 end
@@ -25,39 +22,45 @@ post '/login' do
 
   @submitted = true
 
-  #####check
-
   email_address=params[:email_address].strip
-
   pswrd=params[:password].strip
 
-
-
-
+  @password_ok=true
 
   name=@db.execute('SELECT firstName FROM customer WHERE email = ? ',[email_address])
+  puts 1
+  puts name[0]
+  puts 2
+
   @email_address_ok=!name[0].nil?
-  surname = @db.execute('SELECT surname FROM customer WHERE email = ? AND password=?',[email_address,pswrd])
 
-  @password__ok = !surname[0].nil?
+  if @email_address_ok
+    surname = @db.execute('SELECT surname FROM customer WHERE email = ? AND password=?',[email_address,pswrd])
+    @password_ok = !surname[0].nil?
+  end
+ puts @email_address_ok
+  puts @password_ok
 
 
-  @everything_ok = @password__ok && @email_address_ok
+
+  @everything_ok = @password_ok && @email_address_ok
+
 
   if @everything_ok
     session[:logged_in] = true
     session[:login_time] = Time.now
     session[:email] = email_address
+
     admin_ok=email_address=='admin@ch.com'
 
     if admin_ok then
             session[:admin] = true
-            puts session[:admin]
     else
       session[:admin] = false
     end
     redirect '/'
   end
+
   @error = 'The Email address or the password is not correct'
 
   erb :login
@@ -65,7 +68,6 @@ end
 
 get '/logout' do
   session.clear
-
   erb :logout
 end
 
