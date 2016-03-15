@@ -26,6 +26,7 @@ post '/change_status' do
       #update both db and array
       @db.execute('UPDATE tweets SET status = ? WHERE id = ?',[params[:change_to],@caught_tweets[i][0]])
       @caught_tweets[i][3] = params[:change_to]
+      tweet_status_change(@caught_tweets[i])
     end
   end
 

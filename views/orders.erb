@@ -6,6 +6,7 @@
     <form method="post" action="change_status">
     <table class="menu_table" border="1">
       <tr>
+        <th>Order Id</th>
         <th>Tweet Id</th>
         <th>From</th>
         <th>Text</th>
@@ -14,6 +15,7 @@
       </tr>
       <% @caught_tweets.each_with_index do |tweet,i| %>
           <tr>
+            <td><%= h tweet[4]%></td>
             <td><%=h tweet[0]%></td>
             <td><%=h tweet[1]%></td>
             <td><%=h tweet[2]%></td>
@@ -29,6 +31,7 @@
       <option value="Preparing">Preparing</option>
       <option value="Delivering">Delivering</option>
       <option value="Completed">Completed</option>
+      <option value="Canceled">Canceled</option>
     </select>
     <br/>
     <input type="submit" value="Change Status!" />
