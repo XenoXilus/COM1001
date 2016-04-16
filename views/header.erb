@@ -43,6 +43,8 @@
             <%if session[:admin]%>
                 <li><a href="/orders">Orders</a></li>
                 <li><a href="/admin">Admin Panel</a></li>
+            <%else%>
+                <li><a href="/customer_orders">My Orders</a></li>
             <%end%>
             <li><a href="/logout">Log out</a></li>
         <%end%>

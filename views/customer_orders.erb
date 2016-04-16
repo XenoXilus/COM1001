@@ -1,0 +1,32 @@
+<%= erb :header %>
+
+<% unless @caught_tweets.nil? %>
+
+    <h1>My Orders</h1>
+    <br />
+
+    <form method="post" action="cancel_orders">
+    <table class="menu_table" border="1">
+    <tr>
+      <th>Order Id</th>
+      <th>Text</th>
+      <th>Status</th>
+      <th>Select to cancel</th>
+    </tr>
+    <% @caught_tweets.each_with_index do |tweet,i| %>
+
+        <%if tweet[1]==session[:twitter_acc]%>
+          <tr>
+            <td><%= h tweet[4]%></td>
+            <td><%=h tweet[2]%></td>
+            <td><%=h tweet[3]%></td>
+            <td><input type="checkbox" name="status<%=i%>"></td>
+          </tr>
+        <%end%>
+    <% end %>
+    </table>
+    <input type="submit" value="Cancel Orders!" />
+    </form>
+<% end %>
+
+<%= erb :footer %>

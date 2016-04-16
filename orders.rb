@@ -33,3 +33,17 @@ post '/change_status' do
 
   erb :orders
 end
+
+get '/customer_orders' do
+  erb :customer_orders
+end
+
+post '/cancel_orders' do
+  for i in 0..@caught_tweets.size-1 do
+    if params["status#{i}"]=="on"
+      @db.execute('UPDATE tweets SET status = ? WHERE id = ?',['Canceled',@caught_tweets[i][0]])
+      @caught_tweets[i][3] = 'Canceled'
+    end
+  end
+  erb :customer_orders
+end

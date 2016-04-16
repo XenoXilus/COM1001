@@ -26,22 +26,28 @@ def init
 end
 
 def search_for_orders
-
-
   tweets = $client.mentions_timeline()
   most_recent = tweets.take(10)
   most_recent.each do |tweet|
     if !tweet.text.include? 'cancel'
       if tweet.text.include?('order') && (@caught_tweets.nil? || (!@caught_tweets.nil? && !array_has_on_col(@caught_tweets,tweet.id,0)))
-        #puts "Order: #{tweet.text}"
-        $client.favorite(tweet.id)
-        order_id = @db.execute 'SELECT max(order_id) FROM tweets'
-        tweet_arr = [tweet.id,tweet.attrs[:user][:screen_name],tweet.text,'Ordered',order_id[0][0]+1]
-        #puts "max order_id : #{order_id}"
-        #puts "next order_id : #{order_id[0][0]+1}"
-        @db.execute('INSERT INTO tweets(id,sender,text,status,order_id) VALUES (?,?,?,?,?)',tweet_arr)
-        @caught_tweets.push(tweet_arr)
-        $client.update("Hi @#{tweet.attrs[:user][:screen_name]}! Your order with ID:#{order_id[0][0]} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
+        #new order processing
+
+        twitter_username = tweet.attrs[:user][:screen_name]
+        account_registered = @db.get_first_value('SELECT COUNT(*) FROM customer WHERE twitterAcc=?',twitter_username)[0]==1 ? true : false
+
+        if account_registered
+          order_id = @db.execute 'SELECT max(order_id) FROM tweets'
+          tweet_arr = [tweet.id,tweet.attrs[:user][:screen_name],tweet.text,'Ordered',order_id[0][0]+1]
+          @db.execute('INSERT INTO tweets(id,sender,text,status,order_id) VALUES (?,?,?,?,?)',tweet_arr)
+          @caught_tweets.push(tweet_arr)
+
+          $client.favorite(tweet.id)
+          $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id[0][0]} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
+        else
+          $client.update("Hi @#{twitter_username}! You must be registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
+        end
+
       end
     elsif tweet.text.include?('cancel') && !tweet.attrs[:user][:screen_name].equal?('curryhouse02')
       #puts "tweet msg: #{tweet.text}"
@@ -61,7 +67,6 @@ def search_for_orders
           tweet_status_change(tweet_info[0])
         elsif (order_status=='Delivering')
           sender = @db.execute('SELECT sender FROM tweets WHERE order_id=?',[order_id])[0][0]
-          #puts sender
           $client.update("@#{sender}: Unfortunately we cannot process your cancellation request as you order is already staged for delivery")
         end
       end

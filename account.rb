@@ -1,7 +1,7 @@
 before do
   @customer_info = SQLite3::Database.new './curry_house.sqlite'
   @results = @customer_info.get_first_row('SELECT * FROM customer WHERE email = ?',session[:email])#session[:@twitter_acc])
-  puts "results = #{@results}"
+  #puts "results = #{@results}"
   if !@results.nil?
     @twitter_acc = @results[0]
     @cc_no = @results[1]
