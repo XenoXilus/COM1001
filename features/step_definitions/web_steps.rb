@@ -13,6 +13,19 @@ Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
+Given /^(?:|I )am logged in as (.+)$/ do |access|
+  #visit path_to('the login page')
+  visit '/login'
+  if access.include?'admin'
+    fill_in('email_address', :with => 'admin@ch.com')
+    fill_in('password', :with => '123456')
+  elsif access.include?'customer'
+    fill_in('email_address', :with => 'aca15am@gmail.com')
+    fill_in('password', :with => '123456')
+  end
+  click_button('submit')
+end
+
 When /^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end

@@ -27,11 +27,10 @@ post '/update_info' do
   @first_name = params[:first_name].strip
   @surname = params[:surname].strip
 
-  @cc_no_ok = !@cc_no.nil? && @cc_no.length==16 && @cc_no.to_i.to_s == @cc_no
-  @address_ok = !@address.nil? && @address != ''
+  @cc_no_ok = (@cc_no.nil? || @cc_no=="") || (@cc_no.length==16 && @cc_no.to_i.to_s == @cc_no)
   @first_name_ok = !@first_name.nil? && @first_name != ''
   @surname_ok = !@surname.nil? && @surname != ''
-  @all_ok = @cc_no_ok && @address_ok && @first_name_ok && @surname_ok
+  @all_ok = @cc_no_ok && @first_name_ok && @surname_ok
 
   if @all_ok
     query = 'UPDATE customer SET cc=?, address=?, firstName=?, surname=? WHERE twitterAcc = ?'
