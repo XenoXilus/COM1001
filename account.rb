@@ -35,7 +35,7 @@ post '/update_info' do
 
   if @all_ok
     query = 'UPDATE customer SET cc=?, address=?, firstName=?, surname=? WHERE twitterAcc = ?'
-    puts [@cc_no,@address,@twitter_acc,@first_name,@surname]
+    #puts [@cc_no,@address,@twitter_acc,@first_name,@surname]
     @customer_info.execute(query, [@cc_no,@address,@first_name,@surname,@twitter_acc])
   end
 

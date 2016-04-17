@@ -88,7 +88,7 @@ def tweet_status_change(tweet)
           else
             return
         end
-  puts "Message to be tweeted: #{msg}"
+  #puts "Message to be tweeted: #{msg}"
   $client.update("@#{tweet[1]}: #{msg} Order ID:#{tweet[4]}.")#, :in_reply_to_status_id => tweet[0])
 end
 
