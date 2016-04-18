@@ -1,6 +1,27 @@
 require 'uri'
 require 'cgi'
 require_relative '../support/paths'
+require_relative '../../app'
+
+def findValue value
+  @customer_info = SQLite3::Database.new './curry_house.sqlite'
+  email = 'aca15am@gmail.com'
+  if value.include? 'myname'
+    new_value = @customer_info.execute('SELECT firstName FROM customer WHERE email = ?', email)[0][0]
+  elsif value.include? 'mysurname'
+    new_value = @customer_info.execute('SELECT surname FROM customer WHERE email = ?',email)[0][0]
+  elsif value.include? 'mytwitter'
+    new_value = @customer_info.execute('SELECT twitterAcc FROM customer WHERE email = ?',email)[0][0]
+  elsif value.include? 'mycc'
+    new_value = @customer_info.execute('SELECT cc FROM customer WHERE email = ?',email)[0][0]
+  elsif value.include? 'myaddress'
+    new_value = @customer_info.execute('SELECT address FROM customer WHERE email = ?',email)[0][0]
+  elsif value.include? 'mybalance'
+    new_value = @customer_info.execute('SELECT balance FROM customer WHERE email = ?',email)[0][0]
+  end
+
+  return new_value
+end
 
 module WithinHelpers
   def with_scope(locator)
@@ -111,6 +132,9 @@ Then /^(?:|I )should see JSON:$/ do |expected_json|
 end
 
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
+  if text.include? '?my'
+    text = findValue(text)
+  end
   with_scope(selector) do
     if page.respond_to? :should
       page.should have_content(text)
@@ -122,6 +146,9 @@ end
 
 Then /^(?:|I )should see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, selector|
   regexp = Regexp.new(regexp)
+  if regexp.include? '?my'
+    regexp = findValue(regexp)
+  end
   with_scope(selector) do
     if page.respond_to? :should
       page.should have_xpath('//*', :text => regexp)
@@ -154,7 +181,17 @@ end
 
 Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should contain "([^\"]*)"$/ do |field, selector, value|
   with_scope(selector) do
-    field = find_field(field)
+    field = find_field(field,{:disabled => :all})
+
+    if value.include? '?my'
+      value = findValue(value)
+    end
+
+    # if field.disabled?
+    #   puts "value = #{value}"
+    #   puts field.disabled?
+    # end
+
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
     if field_value.respond_to? :should
       field_value.should =~ /#{value}/

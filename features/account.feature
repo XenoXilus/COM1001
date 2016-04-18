@@ -13,30 +13,27 @@ Feature: Account information modification
   Scenario: View the account information
     Given I am logged in as "customer"
     When I go to the account page
-    Then I should see "First Name"
-    Then I should see "Surname"
-    Then I should see "Twitter Account"
-    Then I should see "Credit Card"
-    Then I should see "Address"
-    Then I should see "Balance"
+    Then the "first_name" field should contain "?myname"
+    Then the "surname" field should contain "?mysurname"
+    Then the "twitter_acc" field should contain "?mytwitter"
+    Then the "cc" field should contain "?mycc"
+    Then the "address" field should contain "?myaddress"
+    Then the "balance" field should contain "?mybalance"
 
   Scenario: Successfully modify information
     Given I am logged in as "customer"
     When I go to the account page
-    When I fill in "first_name" with "New Name"
-    When I fill in "surname" with "New Surname"
+    When I fill in "first_name" with "New name"
+    When I fill in "surname" with "New surname"
     When I fill in "cc" with "1234567812345678"
     When I fill in "address" with "New address"
     When I press "Update Information" within "form"
     Then I should see "The update was succesful."
-#    When I go to the account page
-#
-#    Then I should see "1234567812345678" within "#cc"
-#
-#    Then I should see "New name"
-#    Then I should see "New surname"
-#
-#    Then I should see "New address"
+    When I follow "Go Back."
+    Then the "first_name" field should contain "New name"
+    Then the "surname" field should contain "New surname"
+    Then the "cc" field should contain "1234567812345678"
+    Then the "address" field should contain "New address"
 
   Scenario: Remove credit card and address
     Given I am logged in as "customer"
@@ -46,8 +43,8 @@ Feature: Account information modification
     When I press "Update Information" within "form"
     Then I should see "The update was succesful."
     When I go to the account page
-    Then I should see "" within "#cc"
-    Then I should see "" within "#address"
+    Then the "cc" field should contain ""
+    Then the "address" field should contain ""
 
   Scenario: Enter invalid credit card(not 16 digits)
     Given I am logged in as "customer"
