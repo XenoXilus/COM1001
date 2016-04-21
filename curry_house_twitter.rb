@@ -23,14 +23,19 @@ def init
   }
 
   $client = Twitter::REST::Client.new(config)
+
+
+  @db = SQLite3::Database.new './curry_house.sqlite'
+  @caught_tweets = @db.execute('SELECT * FROM tweets')
 end
 
 def search_for_orders
   tweets = $client.mentions_timeline()
   most_recent = tweets.take(10)
+
   most_recent.each do |tweet|
     if !tweet.text.include? 'cancel'
-      if tweet.text.include?('order') && (@caught_tweets.nil? || (!@caught_tweets.nil? && !array_has_on_col(@caught_tweets,tweet.id,0)))
+      if tweet.text.include?('order') && (@caught_tweets.nil? || (!@caught_tweets.nil? && !array_has_id(@caught_tweets,tweet.id)))
         #new order processing
 
         twitter_username = tweet.attrs[:user][:screen_name]
@@ -38,12 +43,14 @@ def search_for_orders
 
         if account_registered
           order_id = @db.execute 'SELECT max(order_id) FROM tweets'
-          tweet_arr = [tweet.id,tweet.attrs[:user][:screen_name],tweet.text,'Ordered',order_id[0][0]+1]
+          order_id = order_id[0][0] + 1
+          tweet_arr = [tweet.id,tweet.attrs[:user][:screen_name],tweet.text,'Ordered',order_id]
+          puts "orders id = #{tweet_arr[4]}"
           @db.execute('INSERT INTO tweets(id,sender,text,status,order_id) VALUES (?,?,?,?,?)',tweet_arr)
           @caught_tweets.push(tweet_arr)
 
           $client.favorite(tweet.id)
-          $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id[0][0]} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
+          $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
         else
           $client.update("Hi @#{twitter_username}! You must be registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
         end
@@ -55,16 +62,16 @@ def search_for_orders
       #puts "Order id: #{order_id}"
 
       if order_id!=0 #if valid cancel message
-        tweet_info = @db.execute('SELECT * FROM tweets WHERE order_id=?',[order_id])
-        order_status = tweet_info[0][3]
+        tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
+        order_status = tweet_info[3]
 
         #puts "twitter_info: #{tweet_info}"
         #puts "order_status: #{order_status}"
         if !((order_status=='Canceled') || (order_status=='Delivering'))
           @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
           @caught_tweets[order_id-1][3] = 'Canceled'
-          tweet_info = @db.execute('SELECT * FROM tweets WHERE order_id=?',[order_id])
-          tweet_status_change(tweet_info[0])
+          tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
+          tweet_status_change(tweet_info)
         elsif (order_status=='Delivering')
           sender = @db.execute('SELECT sender FROM tweets WHERE order_id=?',[order_id])[0][0]
           $client.update("@#{sender}: Unfortunately we cannot process your cancellation request as you order is already staged for delivery")
@@ -73,6 +80,11 @@ def search_for_orders
     end
   end
 end
+
+# def proccess_order
+#
+# end
+
 
 def tweet_status_change(tweet)
 
@@ -88,13 +100,12 @@ def tweet_status_change(tweet)
           else
             return
         end
-  #puts "Message to be tweeted: #{msg}"
   $client.update("@#{tweet[1]}: #{msg} Order ID:#{tweet[4]}.")#, :in_reply_to_status_id => tweet[0])
 end
 
-def array_has_on_col(arr,elem,c)
+def array_has_id(arr,elem)
   arr.each do |r|
-    if r[c] == elem
+    if r[0] == elem
       return true
     end
   end
