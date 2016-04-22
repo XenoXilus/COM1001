@@ -36,7 +36,17 @@ task :run do
   Sinatra::Application.run!
 end
 
-task :run_tests do
+task :delete_tweets do
+  init
 
+  tweets = $client.user_timeline('curryhouse02').take(20)
+  while !tweets.nil?
+    tweets.each do |tweet|
+      if !tweet.nil?
+       $client.destroy_status(tweet.id)
+      end
+    end
+    tweets = $client.user_timeline('curryhouse02').take(20)
+  end
 end
 
