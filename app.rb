@@ -9,6 +9,7 @@ require_relative 'LogIn'
 require_relative 'menu'
 require_relative 'curry_house_twitter'
 require_relative 'orders'
+require_relative 'admin'
 
 include ERB::Util
 
@@ -37,16 +38,6 @@ post '/user_signup' do
     @password = params[:inputPassword].strip
 
     erb :index
-end
-
-
-get '/admin' do
-  if !session[:admin]
-    redirect '/'
-  end
-  @page_header = 'Dashboard'
-
-  erb :admin_panel
 end
 
 not_found do

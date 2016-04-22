@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem 'sinatra'
-gem 'twitter'
+gem 'twitter', '1.7.1'
 gem 'thin'
 gem 'sqlite3'
 gem 'rake'
