@@ -4,6 +4,7 @@ Feature: Sign up validation
     Given I am on the sign_up page
     When I fill in "firstname" with ""
     When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
     When I fill in "password" with "123456"
@@ -16,6 +17,7 @@ Feature: Sign up validation
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
     When I fill in "surname" with ""
+    When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
     When I fill in "password" with "123456"
@@ -23,11 +25,24 @@ Feature: Sign up validation
     When I press "Submit" within "form"
     Then I should see "Please enter your surname"
 
+  Scenario:Empty Address
+    Given I am on the sign_up page
+    When I fill in "firstname" with "firstname"
+    When I fill in "surname" with "surname"
+    When I fill in "address" with ""
+    When I fill in "email" with "email@email.com"
+    When I fill in "twitter" with "twitter"
+    When I fill in "password" with "123456"
+    When I fill in "confirm_password" with "123456"
+    When I press "Submit" within "form"
+    Then I should see "Please enter your Address"
+
 
   Scenario:Incorrect Email address
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
     When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
     When I fill in "email" with "wrong_email"
     When I fill in "twitter" with "twitter"
     When I fill in "password" with "123456"
@@ -39,6 +54,7 @@ Feature: Sign up validation
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
     When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
     When I fill in "email" with "customer@gmail.com"
     When I fill in "twitter" with "twitter"
     When I fill in "password" with "123456"
@@ -52,6 +68,7 @@ Feature: Sign up validation
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
     When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "unreal_twitter"
     When I fill in "password" with "123456"
@@ -63,6 +80,7 @@ Feature: Sign up validation
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
     When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "atwitter"
     When I fill in "password" with "123456"
@@ -76,6 +94,7 @@ Feature: Sign up validation
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
     When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
     When I fill in "password" with "12345"
@@ -87,6 +106,7 @@ Feature: Sign up validation
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
     When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
     When I fill in "password" with "123456"
@@ -99,6 +119,7 @@ Feature: Sign up validation
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
     When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
     When I fill in "password" with "12345"
