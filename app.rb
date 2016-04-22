@@ -49,12 +49,10 @@ get '/admin' do
   erb :admin_panel
 end
 
-not_found do
-
-  erb :error404
+get '/admin_menu' do
+	erb :admin_menu
 end
 
-# error do
-#
-#   erb :gen_error
-# end
+not_found do
+  erb :error404
+end
