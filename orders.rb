@@ -11,7 +11,14 @@ get '/orders' do
 
   @too_many_requests = false
   begin
-    search_for_orders
+    new_orders = search_timeline
+    new_orders.each do |tweet|
+      if tweet.text.include?('order')
+        process_order tweet
+      elsif tweet.text.include?('cancel')
+        process_cancellation tweet
+      end
+    end
   rescue Twitter::Error::TooManyRequests => err
     @limit = err.rate_limit.reset_in
     @too_many_requests = true
