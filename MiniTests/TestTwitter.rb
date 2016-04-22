@@ -18,7 +18,6 @@ class TestTwitter < Minitest::Test
 
   end
 
-
   def test_search_for_successful_order
     set_up
 

@@ -13,8 +13,8 @@ before do
 end
 
 get '/account' do
-
   @updating = false
+  @updating_balance = false
 
   erb :account
 end
@@ -36,6 +36,20 @@ post '/update_info' do
     query = 'UPDATE customer SET cc=?, address=?, firstName=?, surname=? WHERE twitterAcc = ?'
     #puts [@cc_no,@address,@twitter_acc,@first_name,@surname]
     @customer_info.execute(query, [@cc_no,@address,@first_name,@surname,@twitter_acc])
+  end
+
+  erb :account
+end
+
+post '/update_balance' do
+  @updating_balance = true
+  @has_cc = @cc_no!='' && !@cc_no.nil?
+
+  if @has_cc
+    old_balance = @customer_info.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?', session[:twitter_acc])
+    @added_funds = params[:amount].to_i
+    new_balance = old_balance.to_i+ @added_funds
+    @customer_info.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?',[new_balance,session[:twitter_acc]])
   end
 
   erb :account
