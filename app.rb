@@ -39,7 +39,6 @@ post '/user_signup' do
     erb :index
 end
 
-
 get '/admin' do
   if !session[:admin]
     redirect '/'
@@ -51,6 +50,13 @@ end
 
 get '/admin_menu' do
 	erb :admin_menu
+end
+
+get '/sheffMenu' do
+	erb :sheffMenuEdit
+end
+get '/birmMenu' do
+	erb :birmMenuEdit
 end
 
 not_found do

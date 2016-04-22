@@ -7,7 +7,7 @@ before do
 end
 
 get '/menu' do
-  query = %{SELECT itemName, description, unitPrice
+  query = %{SELECT itemName, description, unitPrice, vegetarian, glutenFree
                FROM menu
                WHERE category = ? }
 
