@@ -35,6 +35,24 @@
                value="<%=h @surname if @submitted %>"/>
       </p>
 
+
+      <p>City:
+        <input type="radio" name="city" checked
+               value="<Sheffield"/>   Sheffield
+        <input type="radio" name="city"
+               value="Birmingham"/>    Birmingham
+      </p>
+
+      <% if @submitted && !@address_ok %>
+          <p style="color:red">Please enter your Address</p>
+      <% end %>
+
+      <p>Address:
+        <input type="text" name="address"
+               value="<%=h @address if @submitted %>"/>
+      </p>
+
+
       <% if @submitted && !@email_ok %>
           <p style="color:red">Please enter your email address correctly</p>
       <% end %>
