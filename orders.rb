@@ -29,12 +29,12 @@ get '/orders' do
 end
 
 post '/change_status' do
-  for i in 0..@caught_tweets.size-1 do
+  for i in 1..@caught_tweets.size do
     if params["status#{i}"]=="on"
       #update both db and array
-      @db.execute('UPDATE tweets SET status = ? WHERE id = ?',[params[:change_to],@caught_tweets[i][0]])
-      @caught_tweets[i][3] = params[:change_to]
-      tweet_status_change(@caught_tweets[i])
+      @db.execute('UPDATE tweets SET status = ? WHERE id = ?',[params[:change_to],@caught_tweets[i-1][0]])
+      @caught_tweets[i-1][3] = params[:change_to]
+      tweet_status_change(@caught_tweets[i-1])
     end
   end
 
@@ -42,14 +42,18 @@ post '/change_status' do
 end
 
 get '/customer_orders' do
+  if session[:admin]
+    redirect '/'
+  end
+
   erb :customer_orders
 end
 
 post '/cancel_orders' do
-  for i in 0..@caught_tweets.size-1 do
+  for i in 1..@caught_tweets.size do
     if params["status#{i}"]=="on"
-      @db.execute('UPDATE tweets SET status = ? WHERE id = ?',['Canceled',@caught_tweets[i][0]])
-      @caught_tweets[i][3] = 'Canceled'
+      @db.execute('UPDATE tweets SET status = ? WHERE id = ?',['Canceled',@caught_tweets[i-1][0]])
+      @caught_tweets[i-1][3] = 'Canceled'
     end
   end
   erb :customer_orders

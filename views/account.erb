@@ -4,7 +4,7 @@
     <p style="color:green;font-weight: bold;">The update was succesful.</p>
     <a href="/account">Go Back.</a>
 <%elsif @updating_balance && @has_cc%>
-    <p style="color:green;font-weight: bold;">Succesfully added <%= @added_funds%> CurryPounds.</p>
+    <p style="color:green;font-weight: bold;">Successfully added <%= @added_funds%> CurryPounds.</p>
     <a href="/account">Go Back.</a>
 <%else%>
     <form method="post" action="update_info">

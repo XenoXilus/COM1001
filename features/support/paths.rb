@@ -20,6 +20,10 @@ module NavigationHelpers
       '/menu'
     when /I logout/
       '/logout'
+    when /customer orders/
+      '/customer_orders'
+    when /orders/
+      '/orders'
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
