@@ -1,10 +1,44 @@
 <%= erb :header %>
 
+<%= def create_menu_table(title, resArr) %>
+    <% unless resArr.nil? || resArr.length == 0 %>
+        <h3><%= title %></h3>
+        <br />
+        <table class="menu_table" border="1">
+          <tr>
+            <th class="col_#">Item No.</th>
+            <th class="col_n">Name</th>
+            <th class="col_d">Description</th>
+            <th class="col_p">Price</th>
+          </tr>
+          <% resArr.each do |item| %>
+              <tr>
+                <td class="col_num"><%=h item[5] %></td>
+                <td class="col_n"><%=h item[0] %>
+                  <% if item[3]==0 %><span class="V">[V]</span><% end %>
+                  <% if item[4]==0 %><span class="GF">[GF]</span><% end %>
+                </td>
+                <td class="col_d"><%=h item[1] %></td>
+                <% if (item[2]/0.1)%1 != 0 %>
+                    <td class="col_p"><%=h "£ #{item[2]}" %></td>
+                <% else %>
+                    <td class="col_p"><%=h "£ #{item[2]}0" %></td>
+                <% end %>
+              </tr>
+          <% end %>
+        </table>
+    <% end %>
+    <br>
+<% end %>
+
+<%= createMenuTable("Starters", @starterResults) %>
+
 <% unless @starterResults.nil? || @starterResults.length == 0 %>
     <h3>Starters</h3>
     <br />
     <table class="menu_table" border="1">
       <tr>
+        <th class="col_#">Item No.</th>
         <th class="col_n">Name</th>
         <th class="col_d">Description</th>
         <th class="col_p">Price</th>

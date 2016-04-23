@@ -31,10 +31,10 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class=<%= "active" if active_page?("index") %>><a href="/">Home</a></li>
-        <li class=<%= "active" if active_page?("menu") %>><a href="/menu">Menu</a></li>
-        <li class=<%= "active" if active_page?("instructions") %>><a href="/instructions">How to Order</a></li>
-        <li class=<%= "active" if active_page?("about") %>><a href="/about">About</a></li>
+        <li ><!--class=<%= #"active" if active_page?("index") %>--><a href="/">Home</a></li>
+        <li ><!--class=<%= #"active" if active_page?("menu") %>--><a href="/menu">Menu</a></li>
+        <li ><!--class=<%= #"active" if active_page?("instructions") %>--><a href="/instructions">How to Order</a></li>
+        <li ><!--class=<%= #"active" if active_page?("about") %>--><a href="/about">About</a></li>
         <%if !session[:logged_in]%>
             <li><a href="/login">Sign in</a> </li>
             <li><a href="/sign_up">Sign up</a> </li>
