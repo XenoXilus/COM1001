@@ -12,6 +12,9 @@ h3 {
     text-decoration: underline;
     font-style: oblique;
 }
+ul {
+    text-decoration: none;
+}
 form {
     text-align: left;
 }
@@ -50,4 +53,13 @@ footer {
     width: 30px;
     height: 30px;
     float: right;
+}
+.centred {
+    margin: 0 auto;
+}
+.GF {
+    color: darkgoldenrod;
+}
+.V {
+    color: #3e8f3e;
 }

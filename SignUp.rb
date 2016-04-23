@@ -35,6 +35,8 @@ post '/form_handler' do
   @firstname = params[:firstname].strip
   @surname = params[:surname].strip
   @email = params[:email].strip
+   @city = params[:city].strip
+  @address = params[:address].strip
   @twitter=params[:twitter].strip
   @password = params[:password].strip
   @confirm_password = params[:confirm_password].strip
@@ -43,12 +45,11 @@ post '/form_handler' do
 
   @firstname_ok =!@firstname.nil? && @firstname != ""
   @surname_ok = !@surname.nil? && @surname != ""
-
+  @address_ok = !@address.nil? && @address != ""
   @email_ok = !@email.nil? && @email =~ VALID_EMAIL_REGEX
 
   @check_emails=@db.execute('SELECT * FROM customer WHERE email = ?LIMIT 1 ',[@email])
   @different_emails_ok=@check_emails[0].nil? || @check_emails[0]==""
-
 
   exists_ok=true
 
@@ -67,11 +68,11 @@ post '/form_handler' do
   @password_ok = !@password.nil? && @password !="" && @password.length>=6
   @confirm_password_ok =  @confirm_password==@password
 
-  @all_ok = @firstname_ok && @surname_ok && @email_ok&& @password_ok&& @confirm_password_ok &&@different_emails_ok&&@twitter_ok&&@different_twitter_ok
+  @all_ok = @firstname_ok && @surname_ok &&@address_ok && @email_ok&& @password_ok&& @confirm_password_ok &&@different_emails_ok&&@twitter_ok&&@different_twitter_ok
 
 
   if @submitted && @all_ok
-    @db.execute('INSERT INTO customer(firstname, surname, email,twitterAcc, password) VALUES(?, ?, ?, ?,?)', [@firstname, @surname, @email,@twitter, @password, ])
+    @db.execute('INSERT INTO customer(firstname, surname, email,twitterAcc, password, city,address) VALUES(?, ?, ?, ?,?,?,?)', [@firstname, @surname, @email,@twitter, @password,@city, @address ])
   end
 
   erb :signUpForm

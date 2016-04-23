@@ -12,6 +12,8 @@ module NavigationHelpers
       '/'
     when /the login\s?page/
       '/login'
+    when /the sign_up\s?page/
+      '/sign_up'
     when /the account\s?page/
       '/account'
     when /menu/

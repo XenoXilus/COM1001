@@ -40,12 +40,13 @@ post '/user_signup' do
     erb :index
 end
 
-not_found do
-
-  erb :error404
+get '/sheffMenu' do
+	erb :sheffMenuEdit
+end
+get '/birmMenu' do
+	erb :birmMenuEdit
 end
 
-# error do
-#
-#   erb :gen_error
-# end
+not_found do
+  erb :error404
+end

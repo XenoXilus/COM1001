@@ -11,7 +11,10 @@
       </tr>
       <% @starterResults.each do |item| %>
           <tr>
-            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_n"><%=h item[0] %>
+              <% if item[3]==0 %><span class="V">[V]</span><% end %>
+              <% if item[4]==0 %><span class="GF">[GF]</span><% end %>
+            </td>
             <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
                 <td class="col_p"><%=h "£ #{item[2]}" %></td>
@@ -35,7 +38,10 @@
       </tr>
       <% @mildResults.each do |item| %>
           <tr>
-            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_n"><%=h item[0] %>
+              <% if item[3]==0 %><span class="V">[V]</span><% end %>
+              <% if item[4]==0 %><span class="GF">[GF]</span><% end %>
+            </td>
             <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
                 <td class="col_p"><%=h "£ #{item[2]}" %></td>
@@ -59,7 +65,10 @@
       </tr>
       <% @hotResults.each do |item| %>
           <tr>
-            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_n"><%=h item[0] %>
+              <% if item[3]==0 %><span class="V">[V]</span><% end %>
+              <% if item[4]==0 %><span class="GF">[GF]</span><% end %>
+            </td>
             <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
                 <td class="col_p"><%=h "£ #{item[2]}" %></td>
@@ -83,7 +92,10 @@
       </tr>
       <% @riceResults.each do |item| %>
           <tr>
-            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_n"><%=h item[0] %>
+              <% if item[3]==0 %><span class="V">[V]</span><% end %>
+              <% if item[4]==0 %><span class="GF">[GF]</span><% end %>
+            </td>
             <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
                 <td class="col_p"><%=h "£ #{item[2]}" %></td>
@@ -107,7 +119,10 @@
       </tr>
       <% @sidesResults.each do |item| %>
           <tr>
-            <td class="col_n"><%=h item[0] %></td>
+            <td class="col_n"><%=h item[0] %>
+              <% if item[3]==0 %><span class="V">[V]</span><% end %>
+              <% if item[4]==0 %><span class="GF">[GF]</span><% end %>
+            </td>
             <td class="col_d"><%=h item[1] %></td>
             <% if (item[2]/0.1)%1 != 0 %>
               <td class="col_p"><%=h "£ #{item[2]}" %></td>

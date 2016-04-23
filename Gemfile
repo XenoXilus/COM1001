@@ -7,5 +7,8 @@ gem 'sqlite3'
 gem 'rake'
 gem 'cucumber'
 gem 'capybara'
+<<<<<<< HEAD
 gem 'rspec'
 gem 'erb'
+=======
+gem 'rspec'

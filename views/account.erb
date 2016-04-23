@@ -3,6 +3,9 @@
 <% if @updating && @all_ok %>
     <p style="color:green;font-weight: bold;">The update was succesful.</p>
     <a href="/account">Go Back.</a>
+<%elsif @updating_balance && @has_cc%>
+    <p style="color:green;font-weight: bold;">Succesfully added <%= @added_funds%> CurryPounds.</p>
+    <a href="/account">Go Back.</a>
 <%else%>
     <form method="post" action="update_info">
       <br/>
@@ -42,8 +45,24 @@
       </p>
 
       <input type="submit" value="Update Information" />
+
     </form>
 
+    <br/>
+    <% if @updating_balance && !@has_cc %>
+        <p style="color:red">Sorry. We can't process your request if we don't have your Credit Card information.</p>
+    <%end%>
+    <form method="post" action="update_balance">
+      <label for="amount">Select the CurryPound amount you want to add :</label>
+      <select name="amount">
+        <option value="5">5 CP</option>
+        <option value="10">10 CP</option>
+        <option value="25">25 CP</option>
+        <option value="50">50 CP</option>
+        <option value="100">100 CP</option>
+      </select>
+      <input type="submit" value="Add to Balance" />
+    </form>
 <%end%>
 
 <%= erb :footer %>
