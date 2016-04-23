@@ -1,0 +1,178 @@
+<%= erb :dashboard_header %>
+
+<div class="row">
+    <div>
+
+    <!-- Nav tabs -->
+    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#viewMenu" aria-controls="viewMenu" role="tab" data-toggle="tab">View Menu</a></li>
+        <li role="presentation"><a href="#addItem" aria-controls="addItem" role="tab" data-toggle="tab">Add Item</a></li>
+        <li role="presentation"><a href="#removeItem" aria-controls="removeItem" role="tab" data-toggle="tab">Remove Item</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="viewMenu">
+            <% unless @starterResults.nil? || @starterResults.length == 0 %>
+                <h2>Starters</h2>
+                <br />
+                <table class="table table-striped">
+                    <tr>
+                        <th class="col_n">id</th>
+                        <th class="col_n">Name</th>
+                        <th class="col_d">Description</th>
+                        <th class="col_p">Price</th>
+                    </tr>
+                    <% @starterResults.each do |item| %>
+                        <tr>
+                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_n"><%=h item[1] %></td>
+                            <td class="col_d"><%=h item[2] %></td>
+                            <% if (item[3]/0.1)%1 != 0 %>
+                                <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                            <% else %>
+                                <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                            <% end %>
+                        </tr>
+                    <% end %>
+                </table>
+            <% end %>
+
+            <% unless @mildResults.nil? || @mildResults.length == 0 %>
+                <h2>Mild Plates</h2>
+                <br />
+                <table class="table table-striped">
+                    <tr>
+                        <th class="col_n">id</th>
+                        <th class="col_n">Name</th>
+                        <th class="col_d">Description</th>
+                        <th class="col_p">Price</th>
+                    </tr>
+                    <% @mildResults.each do |item| %>
+                        <tr>
+                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_n"><%=h item[1] %></td>
+                            <td class="col_d"><%=h item[2] %></td>
+                            <% if (item[3]/0.1)%1 != 0 %>
+                                <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                            <% else %>
+                                <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                            <% end %>
+                        </tr>
+                    <% end %>
+                </table>
+            <% end %>
+
+            <% unless @hotResults.nil? || @hotResults.length == 0 %>
+                <h2>Hot Plates</h2>
+                <br />
+                <table class="table table-striped">
+                    <tr>
+                        <th class="col_n">id</th>
+                        <th class="col_n">Name</th>
+                        <th class="col_d">Description</th>
+                        <th class="col_p">Price</th>
+                    </tr>
+                    <% @hotResults.each do |item| %>
+                        <tr>
+                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_n"><%=h item[1] %></td>
+                            <td class="col_d"><%=h item[2] %></td>
+                            <% if (item[3]/0.1)%1 != 0 %>
+                                <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                            <% else %>
+                                <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                            <% end %>
+                        </tr>
+                    <% end %>
+                </table>
+            <% end %>
+
+            <% unless @riceResults.nil? || @riceResults.length == 0 %>
+                <h2>Rice Dishes</h2>
+                <br />
+                <table class="table table-striped">
+                    <tr>
+                        <th class="col_n">id</th>
+                        <th class="col_n">Name</th>
+                        <th class="col_d">Description</th>
+                        <th class="col_p">Price</th>
+                    </tr>
+                    <% @riceResults.each do |item| %>
+                        <tr>
+                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_n"><%=h item[1] %></td>
+                            <td class="col_d"><%=h item[2] %></td>
+                            <% if (item[3]/0.1)%1 != 0 %>
+                                <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                            <% else %>
+                                <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                            <% end %>
+                        </tr>
+                    <% end %>
+                </table>
+            <% end %>
+
+            <% unless @sidesResults.nil? || @sidesResults.length == 0 %>
+                <h2>Side Dishes</h2>
+                <br />
+                <table class="table table-striped">
+                    <tr>
+                        <th class="col_n">id</th>
+                        <th class="col_n">Name</th>
+                        <th class="col_d">Description</th>
+                        <th class="col_p">Price</th>
+                    </tr>
+                    <% @sidesResults.each do |item| %>
+                        <tr>
+                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_n"><%=h item[1] %></td>
+                            <td class="col_d"><%=h item[2] %></td>
+                            <% if (item[3]/0.1)%1 != 0 %>
+                                <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                            <% else %>
+                                <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                            <% end %>
+                        </tr>
+                    <% end %>
+                </table>
+            <% end %>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="addItem" style="padding: 10px 0;">
+            <form class="form-inline">
+                <div class="form-group">
+                    <select class="form-control">
+                        <option>Select a type of dish</option>
+                        <option>Starter</option>
+                        <option>Hot</option>
+                        <option>Mild</option>
+                        <option>Rice</option>
+                        <option>Side</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="dishName">Dish Name</label>
+                    <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Dish Name">
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">c£</div>
+                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Confirm Submission
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default">Sign in</button>
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="eemoveItem">sdfadsfadsf</div>
+    </div>
+
+  </div>
+</div>
+
+<%= erb :dashboard_footer %>

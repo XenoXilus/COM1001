@@ -1,5 +1,17 @@
 Feature: Sign up validation
 
+  Scenario:Correct form entry
+    Given I am on the sign_up page
+    When I fill in "firstname" with "firstname"
+    When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
+    When I fill in "email" with "email@email.com"
+    When I fill in "twitter" with "twitter"
+    When I fill in "password" with "123456"
+    When I fill in "confirm_password" with "123456"
+    When I press "Submit" within "form"
+    Then I should see "Your data have been saved."
+
   Scenario:Empty Firstname
     Given I am on the sign_up page
     When I fill in "firstname" with ""
@@ -89,7 +101,6 @@ Feature: Sign up validation
     Then I should see "This twitter already exists."
     Then I should see "Please enter another twitter"
 
-
   Scenario:Small password
     Given I am on the sign_up page
     When I fill in "firstname" with "firstname"
@@ -128,3 +139,15 @@ Feature: Sign up validation
     Then I should see "Please enter a password(at least 6 characters)"
     Then I should see "The passwords are not the same"
 
+  Scenario:Small and Different passwords (different order)
+    Given I am on the sign_up page
+    When I fill in "firstname" with "firstname"
+    When I fill in "surname" with "surname"
+    When I fill in "address" with "address"
+    When I fill in "email" with "email@email.com"
+    When I fill in "twitter" with "twitter"
+    When I fill in "password" with "123"
+    When I fill in "confirm_password" with "12345"
+    When I press "Submit" within "form"
+    Then I should see "Please enter a password(at least 6 characters)"
+    Then I should see "The passwords are not the same"
