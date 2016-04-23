@@ -50,3 +50,7 @@ end
 not_found do
   erb :error404
 end
+
+def active_page?(path='')
+  request.path_info == '/' + path
+end
