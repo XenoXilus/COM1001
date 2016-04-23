@@ -27,7 +27,7 @@ Feature: Account information modification
     When I fill in "surname" with "New surname"
     When I fill in "cc" with "1234567812345678"
     When I fill in "address" with "New address"
-    When I press "Update Information" within "form"
+    When I press "Update Information"
     Then I should see "The update was succesful."
     When I follow "Go Back."
     Then the "first_name" field should contain "New name"
@@ -40,7 +40,7 @@ Feature: Account information modification
     When I go to the account page
     When I fill in "cc" with ""
     When I fill in "address" with ""
-    When I press "Update Information" within "form"
+    When I press "Update Information"
     Then I should see "The update was succesful."
     When I go to the account page
     Then the "cc" field should contain ""
@@ -50,7 +50,7 @@ Feature: Account information modification
     Given I am logged in as "customer"
     When I go to the account page
     When I fill in "cc" with "123"
-    When I press "Update Information" within "form"
+    When I press "Update Information"
     Then I should see "Invalid Credit Card number."
 
   Scenario: Enter invalid first name and surname
@@ -58,6 +58,26 @@ Feature: Account information modification
     When I go to the account page
     When I fill in "first_name" with ""
     When I fill in "surname" with ""
-    When I press "Update Information" within "form"
+    When I press "Update Information"
     Then I should see "Invalid value for first name."
     Then I should see "Invalid value for surname."
+
+    Scenario: Successfully adding to the balance
+      Given I am logged in as "customer"
+      When I go to the account page
+      When I fill in "cc" with "1234567812345678"
+      When I press "Update Information"
+      And I follow "Go Back"
+      When I select "5 CP" from "amount"
+      And I press "Add to Balance"
+      Then I should see "Successfully added 5 CurryPounds."
+
+    Scenario: Successfully adding to the balance
+      Given I am logged in as "customer"
+      When I go to the account page
+      When I fill in "cc" with ""
+      When I press "Update Information"
+      And I follow "Go Back"
+      When I select "5 CP" from "amount"
+      And I press "Add to Balance"
+      Then I should see "Sorry. We can't process your request if we don't have your Credit Card information."
