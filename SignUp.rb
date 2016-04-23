@@ -24,6 +24,9 @@ search = Twitter::REST::Client.new(config)
 
 
 get '/sign_up' do
+  if session[:logged_in]
+    redirect '/'
+  end
   @submitted = false
   erb :signUpForm
 end

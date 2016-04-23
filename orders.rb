@@ -42,7 +42,7 @@ post '/change_status' do
 end
 
 get '/customer_orders' do
-  if session[:admin]
+  if !session[:logged_in] ||session[:admin]
     redirect '/'
   end
 

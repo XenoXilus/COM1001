@@ -13,6 +13,10 @@ enable :sessions
 set :session_secret, 'super secret'
 
 get '/login' do
+  if session[:logged_in]
+    redirect '/'
+  end
+
   erb :login
 end
 
@@ -68,6 +72,9 @@ post '/login' do
 end
 
 get '/logout' do
+  if !session[:logged_in]
+    redirect '/'
+  end
   session.clear
   erb :logout
 end

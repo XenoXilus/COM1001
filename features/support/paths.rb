@@ -16,14 +16,20 @@ module NavigationHelpers
       '/sign_up'
     when /the account\s?page/
       '/account'
+    when /the instructions\s?page/
+      '/instructions'
+    when /about/
+      '/about'
     when /menu/
       '/menu'
-    when /I logout/
-      '/logout'
     when /customer orders/
       '/customer_orders'
     when /orders/
       '/orders'
+    when /the admin\s?panel/
+      '/admin'
+    when /logout/
+      '/logout'
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

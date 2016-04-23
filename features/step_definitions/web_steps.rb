@@ -37,7 +37,6 @@ Given /^(?:|I )am on (.+)$/ do |page_name|
 end
 
 Given /^(?:|I )am logged in as (.+)$/ do |access|
-  #visit path_to('the login page')
   visit '/login'
   if access.include?'admin'
     fill_in('email_address', :with => 'admin@ch.com')
@@ -47,6 +46,10 @@ Given /^(?:|I )am logged in as (.+)$/ do |access|
     fill_in('password', :with => '123456')
   end
   click_button('submit')
+end
+
+Given /^(?:|I )am not logged in$/ do
+  visit '/logout'
 end
 
 When /^(?:|I )go to (.+)$/ do |page_name|

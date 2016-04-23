@@ -13,6 +13,9 @@ before do
 end
 
 get '/account' do
+  if !session[:logged_in]
+    redirect '/'
+  end
   @updating = false
   @updating_balance = false
 
