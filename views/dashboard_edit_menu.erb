@@ -15,7 +15,6 @@
         <div role="tabpanel" class="tab-pane active" id="viewMenu">
             <% unless @starterResults.nil? || @starterResults.length == 0 %>
                 <h2>Starters</h2>
-                <br />
                 <table class="table table-striped">
                     <tr>
                         <th class="col_n">id</th>
@@ -40,7 +39,6 @@
 
             <% unless @mildResults.nil? || @mildResults.length == 0 %>
                 <h2>Mild Plates</h2>
-                <br />
                 <table class="table table-striped">
                     <tr>
                         <th class="col_n">id</th>
@@ -65,7 +63,6 @@
 
             <% unless @hotResults.nil? || @hotResults.length == 0 %>
                 <h2>Hot Plates</h2>
-                <br />
                 <table class="table table-striped">
                     <tr>
                         <th class="col_n">id</th>
@@ -90,7 +87,6 @@
 
             <% unless @riceResults.nil? || @riceResults.length == 0 %>
                 <h2>Rice Dishes</h2>
-                <br />
                 <table class="table table-striped">
                     <tr>
                         <th class="col_n">id</th>
@@ -115,7 +111,6 @@
 
             <% unless @sidesResults.nil? || @sidesResults.length == 0 %>
                 <h2>Side Dishes</h2>
-                <br />
                 <table class="table table-striped">
                     <tr>
                         <th class="col_n">id</th>
@@ -166,10 +161,97 @@
                         <input type="checkbox"> Confirm Submission
                     </label>
                 </div>
-                <button type="submit" class="btn btn-default">Sign in</button>
+                <button type="submit" class="btn btn-default">Submit Dish</button>
             </form>
         </div>
-        <div role="tabpanel" class="tab-pane" id="eemoveItem">sdfadsfadsf</div>
+        <div role="tabpanel" class="tab-pane" id="removeItem">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="viewMenu">
+                    <% unless @starterResults.nil? || @starterResults.length == 0 %>
+                        <table class="table table-striped">
+                            <tr>
+                                <th class="col_n">id</th>
+                                <th class="col_n">Name</th>
+                                <th class="col_p">Price</th>
+                                <th class="col_">Delete</th>
+                            </tr>
+                            <% @starterResults.each do |item| %>
+                                <tr>
+                                    <td class="col_n"><%=h item[0] %></td>
+                                    <td class="col_n"><%=h item[1] %></td>
+                                    <% if (item[3]/0.1)%1 != 0 %>
+                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                                    <% else %>
+                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                                    <% end %>
+                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
+                                </tr>
+                            <% end %>
+                    <% end %>
+
+                    <% unless @mildResults.nil? || @mildResults.length == 0 %>
+                            <% @mildResults.each do |item| %>
+                                <tr>
+                                    <td class="col_n"><%=h item[0] %></td>
+                                    <td class="col_n"><%=h item[1] %></td>
+                                    <% if (item[3]/0.1)%1 != 0 %>
+                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                                    <% else %>
+                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                                    <% end %>
+                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
+                                </tr>
+                            <% end %>
+                    <% end %>
+
+                    <% unless @hotResults.nil? || @hotResults.length == 0 %>
+                            <% @hotResults.each do |item| %>
+                                <tr>
+                                    <td class="col_n"><%=h item[0] %></td>
+                                    <td class="col_n"><%=h item[1] %></td>
+                                    <% if (item[3]/0.1)%1 != 0 %>
+                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                                    <% else %>
+                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                                    <% end %>
+                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
+                                </tr>
+                            <% end %>
+                    <% end %>
+
+                    <% unless @riceResults.nil? || @riceResults.length == 0 %>
+                            <% @riceResults.each do |item| %>
+                                <tr>
+                                    <td class="col_n"><%=h item[0] %></td>
+                                    <td class="col_n"><%=h item[1] %></td>
+                                    <% if (item[3]/0.1)%1 != 0 %>
+                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                                    <% else %>
+                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                                    <% end %>
+                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
+                                </tr>
+                            <% end %>
+                    <% end %>
+
+                    <% unless @sidesResults.nil? || @sidesResults.length == 0 %>
+                            <% @sidesResults.each do |item| %>
+                                <tr>
+                                    <td class="col_n"><%=h item[0] %></td>
+                                    <td class="col_n"><%=h item[1] %></td>
+                                    <% if (item[3]/0.1)%1 != 0 %>
+                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                                    <% else %>
+                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                                    <% end %>
+                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
+                                </tr>
+                            <% end %>
+                        </table>
+                    <% end %>
+
+
+        </div>
     </div>
 
   </div>
