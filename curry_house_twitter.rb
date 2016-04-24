@@ -37,16 +37,40 @@ end
 def process_order tweet
   twitter_username = tweet.attrs[:user][:screen_name]
   account_registered = @db.get_first_value('SELECT COUNT(*) FROM customer WHERE twitterAcc=?',twitter_username)[0]==1 ? true : false
+  order_text = tweet.text.partition('order')[2]
+  valid_format =  (/[A-Za-z]/ =~ order_text).nil?
 
-  if account_registered
+  if account_registered && valid_format
+    items = order_text.gsub(/^\s+|\s+$/,'').split(/\s+/) #strip leading & trailing spaces and split into items
+    sum = 0
+    items.each do |item|
+      max_id = @db.get_first_value 'SELECT max(id) FROM menu'
+      cost = @db.get_first_value('SELECT unitPrice FROM menu WHERE id = ?',item)
+      if !cost.nil?
+        sum += cost
+      end
+    end
+    puts "sum = #{sum}"
+    sum=sum.round(2)
+    new_balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',twitter_username)-sum
+
+
     order_id = @db.execute 'SELECT max(order_id) FROM tweets'
     order_id = order_id[0][0] + 1
-    tweet_arr = [tweet.id,tweet.attrs[:user][:screen_name],tweet.text,'Ordered',order_id]
-    @db.execute('INSERT INTO tweets(id,sender,text,status,order_id) VALUES (?,?,?,?,?)',tweet_arr)
+    tweet_arr = [tweet.id,twitter_username,order_text,'Ordered',order_id,sum]
+
+    if new_balance<0
+      tweet_arr[3] = 'Unpaid'
+      tweet_status_change(tweet_arr)
+    else
+      @db.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?', [new_balance,twitter_username])
+      $client.favorite(tweet.id)
+      $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
+    end
+
+    @db.execute('INSERT INTO tweets(id,sender,text,status,order_id,sum) VALUES (?,?,?,?,?,?)',tweet_arr)
     @caught_tweets.push(tweet_arr)
 
-    $client.favorite(tweet.id)
-    $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
   else
     $client.update("Hi @#{twitter_username}! You must be registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
   end
@@ -59,8 +83,6 @@ def process_cancellation tweet
     tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
     order_status = tweet_info[3]
 
-    #puts "twitter_info: #{tweet_info}"
-    #puts "order_status: #{order_status}"
     if !((order_status=='Canceled') || (order_status=='Delivering'))
       @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
       @caught_tweets[order_id-1][3] = 'Canceled'
@@ -74,9 +96,8 @@ def process_cancellation tweet
 end
 
 
-def tweet_status_change(tweet)
-
-  msg = case tweet[3]
+def tweet_status_change(tweet_entry)
+  msg = case tweet_entry[3]
           when 'Preparing'
             'Your order is now being prepared!'
           when 'Delivering'
@@ -85,10 +106,12 @@ def tweet_status_change(tweet)
             'Thank for ordering from us!'
           when 'Canceled'
             'Your order has been successfully canceled!'
+          when 'Unpaid'
+            "We can't process your request since you don't have enough CurryPounds in your balance."
           else
             return
         end
-  $client.update("@#{tweet[1]}: #{msg} Order ID:#{tweet[4]}.")#, :in_reply_to_status_id => tweet[0])
+  $client.update("@#{tweet_entry[1]}: #{msg} Order ID:#{tweet_entry[4]}.", :in_reply_to_status_id => tweet_entry[0])
 end
 
 def tweet_is_caught(id)

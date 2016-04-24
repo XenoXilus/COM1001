@@ -16,6 +16,7 @@
         <th>Tweet Id</th>
         <th>From</th>
         <th>Text</th>
+        <th>Sum</th>
         <th>Status</th>
         <th>Select to change</th>
       </tr>
@@ -25,6 +26,7 @@
             <td><%=h tweet[0]%></td>
             <td><a target="_blank" href="https://twitter.com/<%=h tweet[1]%>"><%=h tweet[1]%></a></td>
             <td><%=h tweet[2]%></td>
+            <td><%=h tweet[5] %></td>
             <td><%=h tweet[3]%></td>
             <td><input type="checkbox" name="status<%=i+1%>"></td>
           </tr>

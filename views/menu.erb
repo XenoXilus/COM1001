@@ -1,6 +1,6 @@
 <%= erb :header %>
 
-<%= def create_menu_table(title, resArr) %>
+<% def create_menu_table(title, resArr) %>
     <% unless resArr.nil? || resArr.length == 0 %>
         <h3><%= title %></h3>
         <br />
@@ -31,7 +31,7 @@
     <br>
 <% end %>
 
-<%= createMenuTable("Starters", @starterResults) %>
+<% create_menu_table("Starters", @starterResults) %>
 
 <% unless @starterResults.nil? || @starterResults.length == 0 %>
     <h3>Starters</h3>
