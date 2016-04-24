@@ -21,12 +21,14 @@ end
 #search for tweets in the timeline that include 'order' or 'cancel' command
 def search_timeline
   tweets = $client.mentions_timeline()
-  most_recent = tweets.take(10)
+  most_recent = tweets.take(20)
   new_orders = []
   most_recent.each do |tweet|
-    valid_order = tweet.text.include?('order') && (@caught_tweets.nil? || (!@caught_tweets.nil? && !tweet_is_caught(tweet.id)))
+    #regex= contains any alphabet character or contains only spaces
+    valid_format =  tweet.text.include?('order') && (/([a-zA-z]+)|(\A\s*\z)/ =~ tweet.text.partition('order')[2]).nil?
+    unprocessed = (@caught_tweets.nil? || (!@caught_tweets.nil? && !tweet_is_caught(tweet.id)))
     valid_cancellation = tweet.text.include?('cancel')&& !tweet.attrs[:user][:screen_name].equal?('curryhouse02')
-    if valid_order || valid_cancellation
+    if (valid_format && unprocessed) || valid_cancellation
       new_orders.push tweet
     end
   end
@@ -38,9 +40,8 @@ def process_order tweet
   twitter_username = tweet.attrs[:user][:screen_name]
   account_registered = @db.get_first_value('SELECT COUNT(*) FROM customer WHERE twitterAcc=?',twitter_username)[0]==1 ? true : false
   order_text = tweet.text.partition('order')[2]
-  valid_format =  (/[A-Za-z]/ =~ order_text).nil?
 
-  if account_registered && valid_format
+  if account_registered
     items = order_text.gsub(/^\s+|\s+$/,'').split(/\s+/) #strip leading & trailing spaces and split into items
     sum = 0
     items.each do |item|
@@ -50,10 +51,8 @@ def process_order tweet
         sum += cost
       end
     end
-    puts "sum = #{sum}"
     sum=sum.round(2)
     new_balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',twitter_username)-sum
-
 
     order_id = @db.execute 'SELECT max(order_id) FROM tweets'
     order_id = order_id[0][0] + 1
@@ -77,6 +76,9 @@ def process_order tweet
 end
 
 def process_cancellation tweet
+  #todo prevent completed orders from canceling
+  #todo add refunds
+
   order_id = tweet.text.partition('cancel')[2].to_i
   max_order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')
   if order_id!=0 && (order_id<=max_order_id) #if valid cancel message
@@ -111,7 +113,7 @@ def tweet_status_change(tweet_entry)
           else
             return
         end
-  $client.update("@#{tweet_entry[1]}: #{msg} Order ID:#{tweet_entry[4]}.", :in_reply_to_status_id => tweet_entry[0])
+  $client.update("@#{tweet_entry[1]}: #{msg} Order ID:#{tweet_entry[4]}.")#, :in_reply_to_status_id => tweet_entry[0])
 end
 
 def tweet_is_caught(id)

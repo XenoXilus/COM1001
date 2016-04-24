@@ -140,8 +140,8 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   if text.include? '?my'
     text = findValue(text)
   end
-  if text.equal? 'item x' && !@order_text.nil?
-    text = @order_text
+  if text.eql?('the order') && !$order_text.nil?
+    text = $order_text
   end
   with_scope(selector) do
     if page.respond_to? :should
@@ -277,8 +277,16 @@ def twitter_db_set_up
 end
 
 When /a customer orders "([^\"]*)"/ do |order_text|
-  $order_text = "item #{Random.rand(10000)}" #try to have unique item numbers to avoid duplicate tweets
   twitter_db_set_up
+  $order_text = order_text
+  @customer.update("@curryhouse02 order #{order_text}")
+end
+
+When /a customer makes an order/ do
+  twitter_db_set_up
+
+  max_id = @db.get_first_value('SELECT max(id) FROM menu')
+  $order_text = "#{Random.rand(max_id)} #{Random.rand(max_id)} #{Random.rand(max_id)}"
   @customer.update("@curryhouse02 order #{$order_text}")
 end
 
@@ -304,7 +312,7 @@ When /a customer cancels "([^\"]*)"/ do |text|
 end
 
 Then /^(?:|I )I should see "([^\"]*)" in the "([^\"]*)" column$/ do |text,row|
-  if row.include? 'item'
+  if !(row =~ /\D/).nil?
     if !$order_text.nil?
       row = $order_text
     end
