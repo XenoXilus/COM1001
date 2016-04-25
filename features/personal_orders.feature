@@ -1,15 +1,10 @@
 Feature: Tracking orders as an admin
-
-  Scenario: Trying to access the page as an admin
-    Given I am logged in as "admin"
-    When I go to customer orders
-    Then I should be on the home page
-
   Scenario: Accessing the page as a customer and viewing the table
     Given I am logged in as "customer"
     When I go to customer orders
     Then I should see "Order Id" within ".menu_table"
     Then I should see "Text" within ".menu_table"
+    Then I should see "Cost" within ".menu_table"
     Then I should see "Status" within ".menu_table"
     Then I should see "Select to cancel" within ".menu_table"
 

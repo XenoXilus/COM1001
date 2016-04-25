@@ -11,9 +11,9 @@ task :wipedb, [:database] do |t,args|
   end
 end
 
-desc 'Display the contents of a table in a given database'
-task :displaydb, [:database,:table] do|t,args|
-  db = SQLite3::Database.new("./#{args[:database]}.sqlite")
+desc 'Display the contents of a table in the database'
+task :displaydb, [:table] do|t,args|
+  db = SQLite3::Database.new('./curry_house.sqlite')
   results = db.execute("SELECT * FROM #{args[:table]}")
 
   table_info = db.execute("PRAGMA table_info(#{args[:table]})")
@@ -50,3 +50,11 @@ task :delete_tweets do
   end
 end
 
+# task :add_row, [:row,:table] do  |t,args|
+#   db = SQLite3::Database.new('./curry_house.sqlite')
+#   results = db.execute("SELECT * FROM #{args[:table]}")
+#   table_info = db.execute("PRAGMA table_info(#{args[:table]})")
+#
+#   db.execute('')
+#   puts args[:row]
+# end

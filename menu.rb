@@ -11,11 +11,11 @@ end
 
 get '/menu' do
 	if session[:birmingham]
-    query = %{SELECT itemName, description, unitPrice, vegetarian, glutenFree
+    query = %{SELECT itemName, description, unitPrice, vegetarian, glutenFree, itemNum
               FROM menu
               WHERE category = ? AND atBirm = 1 }
 	else
-		query = %{SELECT itemName, description, unitPrice, vegetarian, glutenFree
+		query = %{SELECT itemName, description, unitPrice, vegetarian, glutenFree, itemNum
               FROM menu
               WHERE category = ? AND atSheff = 1 }
   end
@@ -25,7 +25,6 @@ get '/menu' do
   @hotResults = @db.execute query, 'hot'
   @riceResults = @db.execute query, 'rice'
   @sidesResults = @db.execute query, 'side'
-  #todo create means of easily identifying (V) or (GF) asside from item name
 
   erb :menu
 end

@@ -1,10 +1,5 @@
 Feature: Tracking orders as an admin
 
-  Scenario: Trying to access the page as a customer
-    Given I am logged in as "customer"
-    When I go to orders
-    Then I should be on the home page
-
   Scenario: Accessing the page as admin and viewing the table
     Given I am logged in as "admin"
     When I go to orders
@@ -12,21 +7,22 @@ Feature: Tracking orders as an admin
     Then I should see "Tweet Id" within ".menu_table"
     Then I should see "From" within ".menu_table"
     Then I should see "Text" within ".menu_table"
+    Then I should see "Sum" within ".menu_table"
     Then I should see "Status" within ".menu_table"
     Then I should see "Select to change" within ".menu_table"
 
   Scenario: Displaying new orders
     Given I am logged in as "admin"
     When I go to orders
-    When a customer orders "item x"
+    When a customer makes an order
     When I go to orders
-    Then I should see "item x"
+    Then I should see "the order"
 
   Scenario: Displaying canceled orders from customers
     Given I am logged in as "admin"
-    When a customer cancels "item x"
+    When a customer cancels "the order"
     When I go to orders
-    Then I should see "Canceled" in the "item x" column
+    Then I should see "Canceled" in the "order" column
 
   Scenario: Changing an order status
     Given I am logged in as "admin"

@@ -35,8 +35,3 @@ Feature: Site navigation
     When I fill in "password" with "654321"
     When I press "submit" within "form"
     Then I should see "Welcome to Curry House!"
-
-  Scenario: Viewing the menu
-    Given I am on the home page
-    When I go to menu
-    Then I should see "Starters"

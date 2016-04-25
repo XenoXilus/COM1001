@@ -21,12 +21,14 @@ end
 #search for tweets in the timeline that include 'order' or 'cancel' command
 def search_timeline
   tweets = $client.mentions_timeline()
-  most_recent = tweets.take(10)
+  most_recent = tweets.take(20)
   new_orders = []
   most_recent.each do |tweet|
-    valid_order = tweet.text.include?('order') && (@caught_tweets.nil? || (!@caught_tweets.nil? && !tweet_is_caught(tweet.id)))
+    #regex= contains any alphabet character or contains only spaces
+    valid_format =  tweet.text.include?('order') && (/([a-zA-z]+)|(\A\s*\z)/ =~ tweet.text.partition('order')[2]).nil?
+    unprocessed = (@caught_tweets.nil? || (!@caught_tweets.nil? && !tweet_is_caught(tweet.id)))
     valid_cancellation = tweet.text.include?('cancel')&& !tweet.attrs[:user][:screen_name].equal?('curryhouse02')
-    if valid_order || valid_cancellation
+    if (valid_format && unprocessed) || valid_cancellation
       new_orders.push tweet
     end
   end
@@ -37,30 +39,52 @@ end
 def process_order tweet
   twitter_username = tweet.attrs[:user][:screen_name]
   account_registered = @db.get_first_value('SELECT COUNT(*) FROM customer WHERE twitterAcc=?',twitter_username)[0]==1 ? true : false
+  order_text = tweet.text.partition('order')[2]
 
   if account_registered
+    items = order_text.gsub(/^\s+|\s+$/,'').split(/\s+/) #strip leading & trailing spaces and split into items
+    sum = 0
+    items.each do |item|
+      max_id = @db.get_first_value 'SELECT max(id) FROM menu'
+      cost = @db.get_first_value('SELECT unitPrice FROM menu WHERE id = ?',item)
+      if !cost.nil?
+        sum += cost
+      end
+    end
+    sum=sum.round(2)
+    new_balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',twitter_username)-sum
+
     order_id = @db.execute 'SELECT max(order_id) FROM tweets'
     order_id = order_id[0][0] + 1
-    tweet_arr = [tweet.id,tweet.attrs[:user][:screen_name],tweet.text,'Ordered',order_id]
-    @db.execute('INSERT INTO tweets(id,sender,text,status,order_id) VALUES (?,?,?,?,?)',tweet_arr)
+    tweet_arr = [tweet.id,twitter_username,order_text,'Ordered',order_id,sum]
+
+    if new_balance<0
+      tweet_arr[3] = 'Unpaid'
+      tweet_status_change(tweet_arr)
+    else
+      @db.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?', [new_balance,twitter_username])
+      $client.favorite(tweet.id)
+      $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
+    end
+
+    @db.execute('INSERT INTO tweets(id,sender,text,status,order_id,sum) VALUES (?,?,?,?,?,?)',tweet_arr)
     @caught_tweets.push(tweet_arr)
 
-    $client.favorite(tweet.id)
-    $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
   else
     $client.update("Hi @#{twitter_username}! You must be registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
   end
 end
 
 def process_cancellation tweet
+  #todo prevent completed orders from canceling
+  #todo add refunds
+
   order_id = tweet.text.partition('cancel')[2].to_i
   max_order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')
   if order_id!=0 && (order_id<=max_order_id) #if valid cancel message
     tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
     order_status = tweet_info[3]
 
-    #puts "twitter_info: #{tweet_info}"
-    #puts "order_status: #{order_status}"
     if !((order_status=='Canceled') || (order_status=='Delivering'))
       @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
       @caught_tweets[order_id-1][3] = 'Canceled'
@@ -74,9 +98,8 @@ def process_cancellation tweet
 end
 
 
-def tweet_status_change(tweet)
-
-  msg = case tweet[3]
+def tweet_status_change(tweet_entry)
+  msg = case tweet_entry[3]
           when 'Preparing'
             'Your order is now being prepared!'
           when 'Delivering'
@@ -85,10 +108,12 @@ def tweet_status_change(tweet)
             'Thank for ordering from us!'
           when 'Canceled'
             'Your order has been successfully canceled!'
+          when 'Unpaid'
+            "We can't process your request since you don't have enough CurryPounds in your balance."
           else
             return
         end
-  $client.update("@#{tweet[1]}: #{msg} Order ID:#{tweet[4]}.")#, :in_reply_to_status_id => tweet[0])
+  $client.update("@#{tweet_entry[1]}: #{msg} Order ID:#{tweet_entry[4]}.")#, :in_reply_to_status_id => tweet_entry[0])
 end
 
 def tweet_is_caught(id)

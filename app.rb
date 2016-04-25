@@ -16,9 +16,6 @@ include ERB::Util
 enable :sessions
 
 get '/' do
-
-  db = SQLite3::Database.new './curry_house.sqlite'
-  @caught_tweets = db.execute('SELECT * FROM tweets')
   erb :index
 end
 
