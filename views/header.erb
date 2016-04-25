@@ -41,10 +41,10 @@
         <%else%>
             <li><a href="/account">My Account</a></li>
             <%if session[:admin]%>
-                <li class=<%= "active" if active_page?("orders") %> ><a href="/orders">Orders</a></li>
+                <li class=<%= "active" if active_page?("orders") %>><a href="/orders">Orders</a></li>
                 <li><a href="/admin">Admin Panel</a></li>
             <%else%>
-                <li><a href="/customer_orders">My Orders</a></li>
+                <li class=<%= "active" if active_page?("customer_orders") %>><a href="/customer_orders">My Orders</a></li>
             <%end%>
             <li><a href="/logout">Log out</a></li>
         <%end%>
