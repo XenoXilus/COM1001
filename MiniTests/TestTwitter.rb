@@ -58,6 +58,7 @@ class TestTwitter < Minitest::Test
   def test_process_order
     set_up
 
+    $db.execute('UPDATE customer SET address = "adr" WHERE twitterAcc =?',$customer_username)
     valid_orders = ["@#{$ch_username} order 1","@#{$ch_username} order 1 2 3"]
     items = [[1],[1,2,3]]
 
@@ -121,7 +122,19 @@ class TestTwitter < Minitest::Test
     process_order tweet
     assert_equal 0,$db.get_first_value('SELECT COUNT(*) FROM tweets WHERE id = ?',tweet.id)
 
-    expected_reply = 'Hi @UnRegisteredUser! You must be registered in our website to process you order.'
+    expected_reply = 'Hi @UnRegisteredUser! You must have an address registered in our website to process you order.'
+    actual_reply = $customer.user_timeline("#{$ch_username}").take(1)[0]
+    assert_equal expected_reply,actual_reply.text
+
+    $customer.destroy_status(tweet.id)
+    $client.destroy_status(actual_reply.id)
+
+    #no address
+    $db.execute('UPDATE customer SET address = "" WHERE twitterAcc =?',$customer_username)
+    tweet = new_tweet("@#{$ch_username} order 123")
+    process_order tweet
+    assert_equal 0,$db.get_first_value('SELECT COUNT(*) FROM tweets WHERE id = ?',tweet.id)
+    expected_reply = "Hi @#{$customer_username}! You must have an address registered in our website to process you order."
     actual_reply = $customer.user_timeline("#{$ch_username}").take(1)[0]
     assert_equal expected_reply,actual_reply.text
 

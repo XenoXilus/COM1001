@@ -38,7 +38,7 @@ end
 #Saves the order information to the database and tweets back to the customer.
 def process_order tweet
   twitter_username = tweet.attrs[:user][:screen_name]
-  account_registered = @db.get_first_value('SELECT COUNT(*) FROM customer WHERE twitterAcc=?',twitter_username)[0]==1 ? true : false
+  account_registered = !@db.get_first_value('SELECT address FROM customer WHERE twitterAcc=?',twitter_username)[0].nil? ? true : false
   order_text = tweet.text.partition('order')[2]
 
   if account_registered
@@ -71,7 +71,7 @@ def process_order tweet
     @caught_tweets.push(tweet_arr)
 
   else
-    $client.update("Hi @#{twitter_username}! You must be registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
+    $client.update("Hi @#{twitter_username}! You must have an address registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
   end
 end
 
