@@ -76,19 +76,23 @@ def process_order tweet
 end
 
 def process_cancellation tweet
-  #todo prevent completed orders from canceling
-  #todo add refunds
-
   order_id = tweet.text.partition('cancel')[2].to_i
   max_order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')
   if order_id!=0 && (order_id<=max_order_id) #if valid cancel message
     tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
     order_status = tweet_info[3]
 
-    if !((order_status=='Canceled') || (order_status=='Delivering'))
+    if !((order_status=='Canceled') || (order_status=='Delivering') || (order_status=='Completed'))
       @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
       @caught_tweets[order_id-1][3] = 'Canceled'
       tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
+
+      twitter_acc = @caught_tweets[order_id-1][1]
+      balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',twitter_acc)
+      new_balance = balance + @caught_tweets[order_id-1][5]
+
+      puts "new balance = #{new_balance}"
+      @db.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?',[new_balance,twitter_acc])
       tweet_status_change(tweet_info)
     elsif (order_status=='Delivering')
       sender = @db.execute('SELECT sender FROM tweets WHERE order_id=?',[order_id])[0][0]
