@@ -28,3 +28,6 @@ get '/admin_edit_menu' do
     #todo create means of easily identifying (V) or (GF) asside from item name
     erb :dashboard_edit_menu
 end
+get '/testing' do
+	erb :narrow
+end
