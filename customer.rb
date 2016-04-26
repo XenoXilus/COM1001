@@ -6,19 +6,35 @@ get '/customer_info' do
   if !session[:admin]
     redirect '/'
   end
-
+  @submitted=false
   erb :customer_info
 end
 
 post '/search_customer' do
+  @submitted=true
   @customer_twitter = params[:twitter_acc].strip
-  puts "twitter = #{@customer_twitter}"
   session[:current_customer] = @customer_twitter
-  @name = @db.get_first_value('SELECT firstName FROM customer WHERE twitterAcc = ?',@customer_twitter)
-  @customer_found = true #tbc
+
+
+
+  @name = @db.get_first_value('SELECT firstname FROM customer WHERE twitterAcc = ?',@customer_twitter)
+  @customer_found =!@name.nil?
+  if @customer_found
+
+    @surname=@db.get_first_value('SELECT surname FROM customer WHERE twitterAcc = ?',@customer_twitter)
+    @address=@db.get_first_value('SELECT address FROM customer WHERE twitterAcc = ?',@customer_twitter)
+    @email=@db.get_first_value('SELECT email FROM customer WHERE twitterAcc = ?',@customer_twitter)
+    @city=@db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',@customer_twitter)
+
+
+  end
+
 
   erb :customer_info
+
 end
+
+
 
 post '/blacklist_customer' do
   #@twitter_acc = params[:twitteracc].strip

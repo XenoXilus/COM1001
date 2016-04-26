@@ -4,12 +4,46 @@
 
 <form method="post" action="search_customer">
 
-  <p>Enter the twitter Account of the customer:
+  <% if !@customer_found && @submitted %>
+     <p style="color:red; font-size:85%"> There is no customer with the twitter '<%=@customer_twitter%>'  </p>
+  <%end%>
+
+  <p>Find customer with the Twitter:
     <input type="text" name="twitter_acc" value="<%= h session[:current_customer]%>"/>
     <input type="submit" value="Search" />
   </p>
 
-  <p>Name: <%= @name %></p>
+  <br>
+
+  <% if @customer_found && @submitted %>
+
+     <table>
+
+      <tr>
+        <th style="border: 2px solid black; border-collapse:collapse;">Name</th>
+        <th style="border: 2px solid black; border-collapse:collapse;">Surname</th>
+        <th style="border: 2px solid black; border-collapse:collapse;">Address</th>
+        <th style="border: 2px solid black; border-collapse:collapse;">City</th>
+        <th style="border: 2px solid black; border-collapse:collapse;">Email</th>
+        <th style="border: 2px solid black; border-collapse:collapse;">Twitter</th>
+      </tr>
+      <tr>
+        <td style="border: 2px solid black; border-collapse:collapse;"> <%=@name%></td>
+        <td style="border: 2px solid black; border-collapse:collapse;"><%=@surname%></td>
+        <td style="border: 2px solid black; border-collapse:collapse;"><%=@address%></td>
+        <td style="border: 2px solid black; border-collapse:collapse;"><%=@city%></td>
+        <td style="border: 2px solid black; border-collapse:collapse;"><%=@email%></>
+        <td style="border: 2px solid black; border-collapse:collapse;"><%=@customer_twitter%></td>
+      </tr>
+
+</table>
+<br>
+<br>
+
+  <%end%>
+
+
+
 
 
   <% if @customer_found %>
