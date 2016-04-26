@@ -1,0 +1,22 @@
+<%= erb :dashboard_header %>
+
+<h1>Customer Info</h1>
+
+<form method="post" action="search_customer">
+
+  <p>Enter the twitter Account of the customer:
+    <input type="text" name="twitter_acc" value="<%= h session[:current_customer]%>"/>
+    <input type="submit" value="Search" />
+  </p>
+
+  <p>Name: <%= @name %></p>
+
+
+  <% if @customer_found %>
+        <input formaction="blacklist_customer" formmethod="post" type="submit" value="Blacklist" />
+  <% end %>
+
+
+</form>
+
+<%= erb :dashboard_footer %>

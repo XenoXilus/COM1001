@@ -1,13 +1,7 @@
 before do
   @customer_info = SQLite3::Database.new './curry_house.sqlite'
-  @results = @customer_info.get_first_row('SELECT * FROM customer WHERE twitterAcc = ?',session[:twitter_acc])
 
-  @twitter_acc = @results[0]
-  @cc_no = @results[1]
-  @address = @results[2]
-  @first_name = @results[5]
-  @surname = @results[6]
-  @atSheffield = @customer_info.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?', @twitter_acc).downcase.eql? 'sheffield'
+
 end
 
 get '/account' do
@@ -15,6 +9,15 @@ get '/account' do
     redirect '/'
   end
 
+  @results = @customer_info.get_first_row('SELECT * FROM customer WHERE twitterAcc = ?',session[:twitter_acc])
+  if !@results.nil?
+    @twitter_acc = @results[0]
+    @cc_no = @results[1]
+    @address = @results[2]
+    @first_name = @results[5]
+    @surname = @results[6]
+    @atSheffield = @customer_info.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?', @twitter_acc).downcase.eql? 'sheffield'
+  end
 
   @updating = false
   @updating_balance = false
@@ -38,7 +41,7 @@ post '/update_info' do
 
   if @all_ok
     query = 'UPDATE customer SET cc=?, address=?, firstName=?, surname=?, city=? WHERE twitterAcc = ?'
-    @customer_info.execute(query, [@cc_no,@address,@first_name,@surname,@city,@twitter_acc])
+    @customer_info.execute(query, [@cc_no,@address,@first_name,@surname,@city,session[:twitter_acc]])
   end
 
   erb :account

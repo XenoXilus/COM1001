@@ -2,6 +2,7 @@ require 'sqlite3'
 require 'sinatra'
 require 'erb'
 require_relative 'Stats'
+require_relative 'customer'
 
 
 before do
