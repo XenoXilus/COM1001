@@ -37,10 +37,7 @@ get '/stats' do
   end
 
   @nreg_users = @db.get_first_value('SELECT COUNT(*) FROM customer')
-  # @norders = @db.get_first_value('SELECT FROM stats')
-  # @norders = @db.get_first_value('SELECT FROM stats')
-  #statistics = Stats.new
-  @popular_item = Stats.get_popular_item
+  @total_norders = @db.get_first_value('SELECT COUNT(*) FROM tweets')
 
   erb :stats
 end

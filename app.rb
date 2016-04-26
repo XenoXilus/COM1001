@@ -16,6 +16,9 @@ include ERB::Util
 enable :sessions
 
 get '/' do
+  if !session[:logged_in]
+    Stats.increment 'total_visits'
+  end
   erb :index
 end
 

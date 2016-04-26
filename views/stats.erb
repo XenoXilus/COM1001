@@ -2,13 +2,26 @@
 
 <h1>Statistics</h1>
 
-<br/>
+<h2>General</h2>
 <p>Total number of registered customers: <%= @nreg_users%></p>
-<p>Total number of orders: </p>
-<p>Visits today: </p>
-<p>Average daily visits: </p>
-<p>Most popular item id: <%=@popular_item%></p>
-<p>Average order costs: </p>
+<p>Total number of orders: <%= @total_norders %></p>
+<p>Average order cost: <%= Stats.get_avg_cost.round(2) %></p>
+<p>Most popular item id: <%=Stats.get_popular_item %></p>
+
+<h2>Today in Curry House:</h2>
+<p>Orders made: <%= Stats.get 'orders' %></p>
+<p>Order cancellations: <%= Stats.get 'cancellations' %></p>
+<p>Visits: <%= Stats.get 'total_visits' %></p>
+<p>Logins: <%= Stats.get 'logins' %></p>
+<p>Registrations: <%= Stats.get 'registrations' %></p>
+
+<h2>Daily averages:</h2>
+<p>Orders made: <%= Stats.get_avg 'orders' %></p>
+<p>Order cancellations: <%= Stats.get_avg 'cancellations' %></p>
+<p>Visits: <%= Stats.get_avg 'total_visits' %></p>
+<p>Logins: <%= Stats.get_avg 'logins' %></p>
+<p>Registrations: <%= Stats.get_avg 'registrations' %></p>
+
 <!-- todo add more -->
 
 <%= erb :dashboard_footer %>

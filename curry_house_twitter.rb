@@ -67,6 +67,7 @@ def process_order tweet
       $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
     end
 
+    Stats.increment 'orders'
     @db.execute('INSERT INTO tweets(id,sender,text,status,order_id,sum) VALUES (?,?,?,?,?,?)',tweet_arr)
     @caught_tweets.push(tweet_arr)
 
@@ -77,12 +78,14 @@ end
 
 def process_cancellation tweet
   order_id = tweet.text.partition('cancel')[2].to_i
+  min_order_id = @db.get_first_value('SELECT min(order_id) FROM tweets')
   max_order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')
-  if order_id!=0 && (order_id<=max_order_id) #if valid cancel message
+  if (order_id!=0) && (order_id<=max_order_id) && (order_id>=min_order_id) #if valid cancel message
     tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
     order_status = tweet_info[3]
 
     if !((order_status=='Canceled') || (order_status=='Delivering') || (order_status=='Completed'))
+      Stats.increment 'cancellations'
       @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
       @caught_tweets[order_id-1][3] = 'Canceled'
       tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])

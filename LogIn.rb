@@ -52,6 +52,7 @@ post '/login' do
 
   if @everything_ok
     session[:logged_in] = true
+    Stats.increment 'logins'
     session[:login_time] = Time.now
     session[:email] = email_address
     session[:twitter_acc] = @db.get_first_value('SELECT twitterAcc FROM customer WHERE email = ?',email_address)
@@ -59,7 +60,7 @@ post '/login' do
     admin_ok=email_address=='admin@ch.com'
 
     if admin_ok then
-            session[:admin] = true
+      session[:admin] = true
     else
       session[:admin] = false
     end
