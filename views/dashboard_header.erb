@@ -47,8 +47,8 @@
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         <li class=<%= "active" if active_page?("admin") %>><a href="/admin">Dashboard</a></li>
-        <li><a href="/orders">Current Orders</a></li>
-        <li><a href="/stats">Statistics</a></li>
+        <li class=<%= "active" if active_page?("orders") %>><a href="/orders">Current Orders</a></li>
+        <li class=<%= "active" if active_page?("stats") %>><a href="/stats">Statistics</a></li>
         <li><a href="#">Customer Info</a></li>
         <li><a href="#">Twitter</a></li>
         <li class=<%= "active" if active_page?("admin_edit_menu") %>><a href="/admin_edit_menu">Menus</a></li>

@@ -15,9 +15,18 @@ include ERB::Util
 
 enable :sessions
 
+#todo force user to select a city
+# get '/' do
+#   if !(session[:sheffield] || session[:birmingham])
+#
+#   else
+#     redirect '/index'
+#   end
+# end
+
 get '/' do
   if !session[:logged_in]
-    Stats.increment 'total_visits'
+    Stats.increment 'total_visits' #todo to-be-changed
   end
   erb :index
 end
