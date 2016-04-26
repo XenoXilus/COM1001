@@ -9,8 +9,6 @@ class Stats
       @db.execute("INSERT INTO daily_stats(date,#{type}) VALUES(?,1)" ,[@date])
     else
       new_value = @db.get_first_value("SELECT #{type} FROM daily_stats WHERE date = ?",[@date]).to_i + 1
-      info = @db.table_info('daily_stats')
-      puts info
       @db.execute("UPDATE daily_stats SET #{type} = ? WHERE date = ?",[new_value,@date])
     end
   end
