@@ -19,7 +19,6 @@ get '/admin_edit_menu' do
     query = %{SELECT id, itemName, description, unitPrice
                  FROM menu
                  WHERE category = ? }
-
     @starterResults = @db.execute query, 'starter'
     @mildResults = @db.execute query, 'mild'
     @hotResults = @db.execute query, 'hot'
@@ -28,6 +27,14 @@ get '/admin_edit_menu' do
     #todo create means of easily identifying (V) or (GF) asside from item name
     erb :dashboard_edit_menu
 end
+
+post '/delete_menu' do
+    @menuID = params[:menuID]
+    deleteQuery = %{DELETE FROM menu WHERE id = ? }
+    @executeDeleteQuery = @db.execute deleteQuery, '@menuID'
+    puts 'hello'
+end
+
 get '/testing' do
 	erb :narrow
 end

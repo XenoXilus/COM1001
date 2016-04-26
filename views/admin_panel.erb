@@ -27,4 +27,7 @@
 
 <h2 class="sub-header">Section title</h2>
 
+<% unless @executeDeleteQuery.nil? %>
+    <% @executeDeleteQuery %>
+<% end %>
 <%= erb :dashboard_footer %>
