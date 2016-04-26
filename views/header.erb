@@ -31,7 +31,7 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
+        <li class=<%= "active" if active_page?("home") %>><a href="/">Home</a></li>
         <li class=<%= "active" if active_page?("menu") %>><a href="/menu">Menu</a></li>
         <li class=<%= "active" if active_page?("instructions") %>><a href="/instructions">How to Order</a></li>
         <li class=<%= "active" if active_page?("about") %>><a href="/about">About</a></li>
@@ -41,10 +41,10 @@
         <%else%>
             <li><a href="/account">My Account</a></li>
             <%if session[:admin]%>
-                <li class=<%= "active" if active_page?("orders") %> ><a href="/orders">Orders</a></li>
+                <li class=<%= "active" if active_page?("orders") %>><a href="/orders">Orders</a></li>
                 <li><a href="/admin">Admin Panel</a></li>
             <%else%>
-                <li><a href="/customer_orders">My Orders</a></li>
+                <li class=<%= "active" if active_page?("customer_orders") %>><a href="/customer_orders">My Orders</a></li>
             <%end%>
             <li><a href="/logout">Log out</a></li>
         <%end%>

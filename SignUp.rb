@@ -75,6 +75,7 @@ post '/form_handler' do
 
 
   if @submitted && @all_ok
+    Stats.increment 'registrations'
     @db.execute('INSERT INTO customer(firstname, surname, email,twitterAcc, password, city,address) VALUES(?, ?, ?, ?,?,?,?)', [@firstname, @surname, @email,@twitter, @password,@city, @address ])
   end
 

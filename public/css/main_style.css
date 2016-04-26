@@ -18,13 +18,43 @@ ul {
 form {
     text-align: left;
 }
-.menu_table {
-    border-collapse: collapse;
-    border: none;
-    width: 95%;
-    margin: 10px auto;
-    table-layout: fixed;
-    min-width: 500px;
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+footer {
+    padding: 30px 40px 10px;
+}
+#twitter_icon {
+    width: 30px;
+    height: 30px;
+    float: right;
+}
+.left {
+    float: left;
+    #margin-left: 50px;
+}
+.right {
+    float: right;
+    #margin-right: 50px;
+}
+.cf:before {
+    content: " ";
+    display: table;
+}
+.cf:after {
+    content: " ";
+    display: table;
+    clear: both;
+} /* clearfix hack ref: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.centred {
+    margin: 0 auto;
+}
+.boxed {
+    border: 3px solid orange;
+    width: 35%;
+    padding: 30px 50px;
+    #margin: 42px 10%;
+
 }
 th, td {
     padding: 10px;
@@ -34,6 +64,17 @@ th {
     font-size: 1.2em;
     height: 2.3em;
 }
+.menu_table {
+    border-collapse: collapse;
+    border: none;
+    width: 95%;
+    margin: 10px auto;
+    table-layout: fixed;
+    min-width: 500px;
+}
+.col_num {
+    width: 7%;
+}
 .col_n {
     width: 20%;
 }
@@ -42,18 +83,6 @@ th {
 }
 .col_p {
     width: 10%;
-}
-tr:nth-child(even) {background-color: #f2f2f2}
-footer {
-    padding: 30px 40px 10px;
-}
-#twitter_icon {
-    width: 30px;
-    height: 30px;
-    float: right;
-}
-.centred {
-    margin: 0 auto;
 }
 .GF {
     color: darkgoldenrod;

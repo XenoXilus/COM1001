@@ -11,6 +11,7 @@ Feature: Sign up validation
     When I fill in "confirm_password" with "123456"
     When I press "Submit" within "form"
     Then I should see "Your data have been saved."
+    Then delete the account with "email@email.com" email
 
   Scenario:Empty Firstname
     Given I am on the sign_up page

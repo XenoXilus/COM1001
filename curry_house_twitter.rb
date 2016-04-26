@@ -38,7 +38,7 @@ end
 #Saves the order information to the database and tweets back to the customer.
 def process_order tweet
   twitter_username = tweet.attrs[:user][:screen_name]
-  account_registered = @db.get_first_value('SELECT COUNT(*) FROM customer WHERE twitterAcc=?',twitter_username)[0]==1 ? true : false
+  account_registered = !@db.get_first_value('SELECT address FROM customer WHERE twitterAcc=?',twitter_username)[0].nil? ? true : false
   order_text = tweet.text.partition('order')[2]
 
   if account_registered
@@ -67,28 +67,35 @@ def process_order tweet
       $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
     end
 
+    Stats.increment 'orders'
     @db.execute('INSERT INTO tweets(id,sender,text,status,order_id,sum) VALUES (?,?,?,?,?,?)',tweet_arr)
     @caught_tweets.push(tweet_arr)
 
   else
-    $client.update("Hi @#{twitter_username}! You must be registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
+    $client.update("Hi @#{twitter_username}! You must have an address registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
   end
 end
 
 def process_cancellation tweet
-  #todo prevent completed orders from canceling
-  #todo add refunds
-
   order_id = tweet.text.partition('cancel')[2].to_i
+  min_order_id = @db.get_first_value('SELECT min(order_id) FROM tweets')
   max_order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')
-  if order_id!=0 && (order_id<=max_order_id) #if valid cancel message
+  if (order_id!=0) && (order_id<=max_order_id) && (order_id>=min_order_id) #if valid cancel message
     tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
     order_status = tweet_info[3]
 
-    if !((order_status=='Canceled') || (order_status=='Delivering'))
+    if !((order_status=='Canceled') || (order_status=='Delivering') || (order_status=='Completed'))
+      Stats.increment 'cancellations'
       @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
       @caught_tweets[order_id-1][3] = 'Canceled'
       tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
+
+      twitter_acc = @caught_tweets[order_id-1][1]
+      balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',twitter_acc)
+      new_balance = balance + @caught_tweets[order_id-1][5]
+
+      puts "new balance = #{new_balance}"
+      @db.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?',[new_balance,twitter_acc])
       tweet_status_change(tweet_info)
     elsif (order_status=='Delivering')
       sender = @db.execute('SELECT sender FROM tweets WHERE order_id=?',[order_id])[0][0]

@@ -1,6 +1,8 @@
 require 'sqlite3'
 require 'sinatra'
 require 'erb'
+require_relative 'Stats'
+
 
 before do
   @db = SQLite3::Database.new './curry_house.sqlite'
@@ -33,6 +35,17 @@ post '/delete_menu' do
     deleteQuery = %{DELETE FROM menu WHERE id = ? }
     @executeDeleteQuery = @db.execute deleteQuery, '@menuID'
     puts 'hello'
+end
+
+get '/stats' do
+  if !session[:admin]
+    redirect '/'
+  end
+
+  @nreg_users = @db.get_first_value('SELECT COUNT(*) FROM customer')
+  @total_norders = @db.get_first_value('SELECT COUNT(*) FROM tweets')
+
+  erb :stats
 end
 
 get '/testing' do

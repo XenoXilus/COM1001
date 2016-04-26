@@ -1,4 +1,4 @@
-<%= erb :header %>
+<%= erb :dashboard_header %>
 
 <% unless @caught_tweets.nil? %>
 
@@ -6,6 +6,12 @@
         <br/>
         <p style="color:red">Too Many Requests. Try again in <%= @limit %> seconds.</p>
     <% end %>
+
+    <ul id="city_selection">
+      <li><a <%if @sheff_orders&&@birm_orders%>id="current"<%end%> href="/orders">All</a></li>
+      <li><a <%if @sheff_orders&&!@birm_orders%>id="current"<%end%>href="/sheffield">Sheffield</a></li>
+      <li><a <%if !@sheff_orders&&@birm_orders%>id="current"<%end%>href="/birmingham">Birmingham</a></li>
+    </ul>
 
     <h1>Orders</h1>
     <br />
@@ -21,15 +27,17 @@
         <th>Select to change</th>
       </tr>
       <% @caught_tweets.each_with_index do |tweet,i| %>
-          <tr>
-            <td><%= h tweet[4]%></td>
-            <td><%=h tweet[0]%></td>
-            <td><a target="_blank" href="https://twitter.com/<%=h tweet[1]%>"><%=h tweet[1]%></a></td>
-            <td><%=h tweet[2]%></td>
-            <td><%=h tweet[5] %></td>
-            <td><%=h tweet[3]%></td>
-            <td><input type="checkbox" name="status<%=i+1%>"></td>
-          </tr>
+          <% if @valid_city[i] %>
+              <tr>
+                <td><%= h tweet[4]%></td>
+                <td><%=h tweet[0]%></td>
+                <td><a target="_blank" href="https://twitter.com/<%=h tweet[1]%>"><%=h tweet[1]%></a></td>
+                <td><%=h tweet[2]%></td>
+                <td><%=h tweet[5] %></td>
+                <td><%=h tweet[3]%></td>
+                <td><input type="checkbox" name="status<%=i+1%>"></td>
+              </tr>
+          <% end %>
       <% end %>
     </table>
 
@@ -49,4 +57,4 @@
 
 <!--<button type="button" onclick="location.reload()">Add new orders!</button>-->
 
-<%= erb :footer %>
+<%= erb :dashboard_footer %>

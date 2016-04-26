@@ -103,3 +103,28 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+/*Order tabs*/
+ul#city_selection {
+  list-style: none;
+  margin: 0;
+  padding: 7px 0;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap
+}
+ul#city_selection li {
+  display: inline;
+  margin: 0 3px;
+}
+ul#city_selection a {
+  text-decoration: none;
+  padding: 0 0 3px;
+}
+ul#city_selection a#current {
+  border-bottom: 2px solid;
+}
+ul#city_selection a:hover {
+  border-color: #F60;
+  color: #666
+}

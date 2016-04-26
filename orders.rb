@@ -2,12 +2,16 @@ before do
   #@caught_tweets = Array.new
   @db = SQLite3::Database.new './curry_house.sqlite'
   @caught_tweets = @db.execute('SELECT * FROM tweets')
+  @valid_city = Array.new(@caught_tweets.size,true)
 end
 
 get '/orders' do
   if !session[:admin]
     redirect '/'
   end
+
+  @sheff_orders = true
+  @birm_orders = true
 
   @too_many_requests = false
   begin
@@ -35,6 +39,42 @@ post '/change_status' do
       @db.execute('UPDATE tweets SET status = ? WHERE id = ?',[params[:change_to],@caught_tweets[i-1][0]])
       @caught_tweets[i-1][3] = params[:change_to]
       tweet_status_change(@caught_tweets[i-1])
+    end
+  end
+
+  erb :orders
+end
+
+get '/sheffield' do
+  if !session[:admin]
+    redirect '/'
+  end
+  @sheff_orders = true
+  @birm_orders = false
+
+  @caught_tweets.each_with_index do |tweet,i|
+    if @db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',tweet[1])=='sheffield'
+      @valid_city[i]=true
+    else
+      @valid_city[i]=false
+    end
+  end
+
+  erb :orders
+end
+
+get '/birmingham' do
+  if !session[:admin]
+    redirect '/'
+  end
+  @sheff_orders = false
+  @birm_orders = true
+
+  @caught_tweets.each_with_index do |tweet,i|
+    if @db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',tweet[1])=='birmingham'
+      @valid_city[i]=true
+    else
+      @valid_city[i]=false
     end
   end
 

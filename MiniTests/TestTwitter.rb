@@ -27,6 +27,7 @@ class TestTwitter < Minitest::Test
   end
 
   #todo delete test tweets from database
+  #todo add refund tests
   def test_search_timeline
     set_up
 
@@ -57,6 +58,7 @@ class TestTwitter < Minitest::Test
   def test_process_order
     set_up
 
+    $db.execute('UPDATE customer SET address = "adr" WHERE twitterAcc =?',$customer_username)
     valid_orders = ["@#{$ch_username} order 1","@#{$ch_username} order 1 2 3"]
     items = [[1],[1,2,3]]
 
@@ -120,7 +122,19 @@ class TestTwitter < Minitest::Test
     process_order tweet
     assert_equal 0,$db.get_first_value('SELECT COUNT(*) FROM tweets WHERE id = ?',tweet.id)
 
-    expected_reply = 'Hi @UnRegisteredUser! You must be registered in our website to process you order.'
+    expected_reply = 'Hi @UnRegisteredUser! You must have an address registered in our website to process you order.'
+    actual_reply = $customer.user_timeline("#{$ch_username}").take(1)[0]
+    assert_equal expected_reply,actual_reply.text
+
+    $customer.destroy_status(tweet.id)
+    $client.destroy_status(actual_reply.id)
+
+    #no address
+    $db.execute('UPDATE customer SET address = "" WHERE twitterAcc =?',$customer_username)
+    tweet = new_tweet("@#{$ch_username} order 123")
+    process_order tweet
+    assert_equal 0,$db.get_first_value('SELECT COUNT(*) FROM tweets WHERE id = ?',tweet.id)
+    expected_reply = "Hi @#{$customer_username}! You must have an address registered in our website to process you order."
     actual_reply = $customer.user_timeline("#{$ch_username}").take(1)[0]
     assert_equal expected_reply,actual_reply.text
 
@@ -134,7 +148,7 @@ class TestTwitter < Minitest::Test
     set_up
 
     #Sucessful cancellations
-    ['Ordered','Preparing','Unpaid','Canceled'].each do |os|
+    ['Ordered','Preparing','Unpaid','Canceled','Completed'].each do |os|
       puts "status is #{os}"
       order_id = $db.get_first_value('SELECT max(order_id) FROM tweets WHERE sender = ?',[$customer_username])
       $db.execute('UPDATE tweets SET status = ? WHERE order_id = ?',[os,order_id])
@@ -142,38 +156,25 @@ class TestTwitter < Minitest::Test
       process_cancellation tweet
 
       status = $db.get_first_value('SELECT status FROM tweets WHERE order_id = ?', [order_id])
-      assert_equal 'Canceled', status
-
       expected_reply = "@#{$customer_username}: Your order has been successfully canceled! Order ID:#{order_id}."
       actual_reply = $customer.user_timeline("#{$ch_username}").take(1)[0]
-      if os.eql? 'Canceled'
-        refute_equal expected_reply,actual_reply.text #Doesn't receive a message when already canceled
-      else
-        assert_equal expected_reply,actual_reply.text
+      case os
+        when 'Completed','Canceled' #status doesn't change and a reply is not received.
+          assert_equal os, status
+          refute_equal expected_reply,actual_reply.text
+        when 'Delivering'
+          assert_equal 'Delivering', status
+          expected_reply = "@#{$customer_username}: Unfortunately we cannot process your cancellation request as you order is already staged for delivery. Order ID:#{order_id}."
+          assert_equal expected_reply,actual_reply.text
+        else
+          assert_equal 'Canceled', status
+          assert_equal expected_reply,actual_reply.text
       end
 
       $customer.destroy_status(tweet.id)
       $client.destroy_status(actual_reply.id)
     end
 
-
-    #order status is 'Delivering'
-    puts "status is Delivering"
-    order_id = $db.get_first_value('SELECT max(order_id) FROM tweets WHERE sender = ?',[$customer_username])
-    $db.execute('UPDATE tweets SET status = "Delivering" WHERE order_id = ?',order_id)
-    tweet = new_tweet("@#{$ch_username} cancel #{order_id}")
-    process_cancellation tweet
-
-    #status doesn't change
-    status = $db.get_first_value('SELECT status FROM tweets WHERE order_id = ?', [order_id])
-    assert_equal 'Delivering', status
-
-    expected_reply = "@#{$customer_username}: Unfortunately we cannot process your cancellation request as you order is already staged for delivery. Order ID:#{order_id}."
-    actual_reply = $customer.mentions_timeline().take(1)[0]
-    assert_equal expected_reply,actual_reply.text
-
-    $customer.destroy_status(tweet.id)
-    $client.destroy_status(actual_reply.id)
   end
 
   def test_tweet_status_change
