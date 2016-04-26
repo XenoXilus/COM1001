@@ -1,7 +1,9 @@
 require 'uri'
 require 'cgi'
+require 'sqlite3'
 require_relative '../support/paths'
 require_relative '../../app'
+
 
 def findValue value
   @customer_info = SQLite3::Database.new './curry_house.sqlite'
@@ -264,6 +266,12 @@ Then /^show me the page$/ do
   save_and_open_page
 end
 
+
+def sqlite_db_set_up
+  @db = SQLite3::Database.new './curry_house.sqlite'
+end
+
+
 #twitter step definitions
 def twitter_db_set_up
   config = {
@@ -273,7 +281,12 @@ def twitter_db_set_up
       :access_token_secret => 'sI7Wgj0yF7bLQGdiPxaPGYUrt928hmCuCiQulrbsXls5v'
   }
   @customer = Twitter::REST::Client.new(config)
-  @db = SQLite3::Database.new './curry_house.sqlite'
+  sqlite_db_set_up
+end
+
+Then /delete the account with "([^\"]*)" email/ do |email|
+  sqlite_db_set_up
+  @db.execute('DELETE FROM customer WHERE email = ?',[email])
 end
 
 When /a customer orders "([^\"]*)"/ do |order_text|
