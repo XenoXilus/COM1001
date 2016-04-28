@@ -37,6 +37,7 @@ post '/delete_menu' do
         redirect '/admin'
     else
         executeDeleteQuery = @db.execute('DELETE FROM menu WHERE id = ?',[menuID])
+        redirect '/admin_edit_menu'
     end
 
 end
@@ -45,14 +46,53 @@ post '/add_menu' do
     @dishType = params[:dishType].strip
     @dishName = params[:dishName].strip
     @dishCost = params[:dishCost].strip
+    @dishDesc = params[:dishDesc].strip
+    @dishExtra = params[:dishExtraInfo].strip
+    @dishAvailability = params[:dishAvailability].strip
     @confirmation = params[:dishConfirmation]
-    'hello'
-    '#{@dishType} #{@dishName} #{@dishCost} #{@confirmation}'
 
     dishType_ok = !@dishType.nil?
     dishName_ok = !@dishName.nil? && @dishName != ""
     dishCost_ok = !@dishCost.nil? && @dishCost != ""
-    #confirmation_ok
+    dishDesc_ok = !@dishDesc.nil? && @dishDesc != ""
+    dishExtra_ok = !@dishExtra.nil? && @dishExtra != ""
+    dishAvail_ok  = !@dishAvailability.nil? && @dishAvailability != ""
+    confirmation_ok = !@confirmation.nil?
+
+    all_ok = dishType_ok && dishName_ok && dishCost_ok && dishDesc_ok && confirmation_ok && dishExtra_ok && dishAvail_ok
+
+    if all_ok
+        case @dishExtra
+        when "v"
+            vegetarian = 1
+            glutenFree = 0
+        when "gf"
+            vegetarian = 0
+            glutenFree = 1
+        else
+            vegetarian = 1
+            glutenFree = 1
+        end
+
+        case @dishAvailability
+        when "sh"
+            atSheff = 1
+            atBirm = 0
+        when "bi"
+            atSheff = 0
+            atBirm = 1
+        else
+            atSheff = 1
+            atBirm = 1
+        end
+        executeDeleteQuery = @db.execute('INSERT INTO menu (itemName, unitPrice, description, category, vegetarian, glutenFree, atBirm, atSheff)
+            VALUES (?,?,?,?,?,?,?,?)',[@dishName,@dishCost,@dishDesc,@dishType,vegetarian,glutenFree,atSheff,atBirm])
+        redirect '/admin_edit_menu'
+    end
+
+end
+
+post '/update_menu' do
 
 end
 
