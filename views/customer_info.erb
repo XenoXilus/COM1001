@@ -5,11 +5,11 @@
 <form method="post" action="search_customer">
 
   <% if !@customer_found && @submitted %>
-     <p style="color:red; font-size:85%"> There is no customer with the twitter '<%=@customer_twitter%>'  </p>
+     <p style="color:red; font-size:85%"> There is no such a customer  </p>
   <%end%>
 
-  <p>Find customer with the Twitter:
-    <input type="text" name="twitter_acc" value="<%= h session[:current_customer]%>"/>
+  <p>Find customer with the Twitter or Email address:
+    <input type="text" name="input" />
     <input type="submit" value="Search" />
   </p>
 
@@ -32,8 +32,8 @@
         <td style="border: 2px solid black; border-collapse:collapse;"><%=@surname%></td>
         <td style="border: 2px solid black; border-collapse:collapse;"><%=@address%></td>
         <td style="border: 2px solid black; border-collapse:collapse;"><%=@city%></td>
-        <td style="border: 2px solid black; border-collapse:collapse;"><%=@email%></>
-        <td style="border: 2px solid black; border-collapse:collapse;"><%=@customer_twitter%></td>
+        <td style="border: 2px solid black; border-collapse:collapse;"><%=@email%></td>
+        <td style="border: 2px solid black; border-collapse:collapse;"><%=@twitter%></td>
       </tr>
 
 </table>

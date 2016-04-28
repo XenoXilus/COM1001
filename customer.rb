@@ -12,23 +12,39 @@ end
 
 post '/search_customer' do
   @submitted=true
-  @customer_twitter = params[:twitter_acc].strip
-  session[:current_customer] = @customer_twitter
+  @input = params[:input].strip
+
+  # session[:current_customer] = @customer_twitter
 
 
 
-  @name = @db.get_first_value('SELECT firstname FROM customer WHERE twitterAcc = ?',@customer_twitter)
-  @customer_found =!@name.nil?
+  @name = @db.get_first_value('SELECT firstname FROM customer WHERE twitterAcc = ?',@input)
+  @customer_found_twitter =!@name.nil?
+  @surname=@db.get_first_value('SELECT surname FROM customer WHERE email = ?',@input)
+  @customer_found_email =!@surname.nil?
+
+  @customer_found=@customer_found_twitter|| @customer_found_email
+  puts(@customer_found)
+
   if @customer_found
 
-    @surname=@db.get_first_value('SELECT surname FROM customer WHERE twitterAcc = ?',@customer_twitter)
-    @address=@db.get_first_value('SELECT address FROM customer WHERE twitterAcc = ?',@customer_twitter)
-    @email=@db.get_first_value('SELECT email FROM customer WHERE twitterAcc = ?',@customer_twitter)
-    @city=@db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',@customer_twitter)
+    if @customer_found_twitter
+      @twitter=@input
+      @email=@db.get_first_value('SELECT email FROM customer WHERE twitterAcc = ?',@input)
+      @surname=@db.get_first_value('SELECT surname FROM customer WHERE twitterAcc = ?',@input)
+      @address=@db.get_first_value('SELECT address FROM customer WHERE twitterAcc = ?',@input)
+      @city=@db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',@input)
+    else
 
+      @twitter=@db.get_first_value('SELECT twitterAcc FROM customer WHERE email = ?',@input)
+      @email=@input
+      @name=@db.get_first_value('SELECT firstname FROM customer WHERE email = ?',@input)
+      @address=@db.get_first_value('SELECT address FROM customer WHERE email = ?',@input)
+      @city=@db.get_first_value('SELECT city FROM customer WHERE email = ?',@input)
+
+    end
 
   end
-
 
   erb :customer_info
 
