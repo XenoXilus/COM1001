@@ -33,15 +33,14 @@
                                 <td class="col_p"><%=h "£ #{item[3]}0" %></td>
                             <% end %>
                             <td>
-                                <form method="get"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
-                                <input type="submit" name="submit" value="Edit" /></form>
+                                <input type="submit" onclick="toggle_visibility('<%=h "hiddenRow#{item[0]}" %>')" name="submit" value="Edit" />
                             </td>
                             <td>
                                 <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
                         </tr>
-                        <tr class="hiddenRow">
+                        <tr id="<%=h "hiddenRow#{item[0]}" %>" style="display: none;">
                             <form method="post" action="/update_menu">
                                 <td class="col_n"><input type="hidden" name="menuID" value="<%=h item[0]%>"/></td>
                                 <td class="col_n"><input type="text" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
@@ -251,5 +250,17 @@
 
   </div>
 </div>
+
+<script type="text/javascript">
+<!--
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'table-row')
+          e.style.display = 'none';
+       else
+          e.style.display = 'table-row';
+    }
+//-->
+</script>
 
 <%= erb :dashboard_footer %>
