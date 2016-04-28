@@ -27,7 +27,7 @@ get '/admin_edit_menu' do
     @hotResults = @db.execute query, 'hot'
     @riceResults = @db.execute query, 'rice'
     @sidesResults = @db.execute query, 'side'
-    #todo create means of easily identifying (V) or (GF) asside from item name
+
     erb :dashboard_edit_menu
 end
 
