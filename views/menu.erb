@@ -31,10 +31,8 @@
     <br>
 <% end %>
 
+<% @m.each { |m| create_menu_table(m[0], m[1]) } %>
+
 <% create_menu_table("Starters", @starterResults) %>
-<% create_menu_table("Mild Dishes", @mildResults) %>
-<% create_menu_table("Hot Dishes", @hotResults) %>
-<% create_menu_table("Rice Dishes", @riceResults) %>
-<% create_menu_table("Sides", @sidesResults) %>
 
 <%= erb :footer %>
