@@ -32,10 +32,28 @@ get '/admin_edit_menu' do
 end
 
 post '/delete_menu' do
-    @menuID = params[:menuID]
-    deleteQuery = %{DELETE FROM menu WHERE id = ? }
-    @executeDeleteQuery = @db.execute deleteQuery, '@menuID'
-    puts 'hello'
+    menuID = params[:menuID]
+    if !menuID
+        redirect '/admin'
+    else
+        executeDeleteQuery = @db.execute('DELETE FROM menu WHERE id = ?',[menuID])
+    end
+
+end
+
+post '/add_menu' do
+    @dishType = params[:dishType].strip
+    @dishName = params[:dishName].strip
+    @dishCost = params[:dishCost].strip
+    @confirmation = params[:dishConfirmation]
+    'hello'
+    '#{@dishType} #{@dishName} #{@dishCost} #{@confirmation}'
+
+    dishType_ok = !@dishType.nil?
+    dishName_ok = !@dishName.nil? && @dishName != ""
+    dishCost_ok = !@dishCost.nil? && @dishCost != ""
+    #confirmation_ok
+
 end
 
 get '/stats' do

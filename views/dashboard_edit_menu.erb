@@ -137,7 +137,7 @@
                                 <input type="submit" name="submit" value="Edit" /></form>
                             </td>
                             <td>
-                                <form method="post"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
+                                <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
                         </tr>
@@ -170,7 +170,7 @@
                                 <input type="submit" name="submit" value="Edit" /></form>
                             </td>
                             <td>
-                                <form method="get"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
+                                <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
                         </tr>
@@ -180,30 +180,30 @@
         </div>
 
         <div role="tabpanel" class="tab-pane" id="addItem" style="padding: 10px 0;">
-            <form class="form-inline">
+            <form method="post" class="form-inline" action="/add_menu">
                 <div class="form-group">
-                    <select class="form-control">
+                    <select class="form-control" name="dishType">
                         <option>Select a type of dish</option>
-                        <option>Starter</option>
-                        <option>Hot</option>
-                        <option>Mild</option>
-                        <option>Rice</option>
-                        <option>Side</option>
+                        <option value="starter">Starter</option>
+                        <option value="hot">Hot</option>
+                        <option value="mild">Mild</option>
+                        <option value="rice">Rice</option>
+                        <option value="side">Side</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="sr-only" for="dishName">Dish Name</label>
-                    <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Dish Name">
+                    <input type="text" class="form-control" name="dishName" placeholder="Dish Name">
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">c£</div>
-                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                        <input type="text" class="form-control" name="dishCost" placeholder="Amount">
                     </div>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox"> Confirm Submission
+                        <input type="checkbox" name="dishConfirmation"> Confirm Submission
                     </label>
                 </div>
                 <button type="submit" class="btn btn-default">Submit Dish</button>
