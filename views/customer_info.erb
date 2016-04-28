@@ -2,16 +2,16 @@
 
 <h1>Customer Info</h1>
 
-<form method="post" action="search_customer">
-
-  <% if !@customer_found && @submitted %>
-     <p style="color:red; font-size:85%"> There is no such a customer  </p>
-  <%end%>
+<form method="get" action="search_customer">
 
   <p>Find customer with the Twitter or Email address:
     <input type="text" name="input" />
     <input type="submit" value="Search" />
   </p>
+</form>
+  <% if !@customer_found && @submitted %>
+      <p style="color:red; font-size:85%"> There is no such a customer  </p>
+  <%end%>
 
   <br>
 
@@ -47,10 +47,12 @@
 
 
   <% if @customer_found %>
-        <input formaction="blacklist_customer" formmethod="post" type="submit" value="Blacklist" />
+    <!--<button form_action="blacklist_customer" formmethod="post" type="submit" value="Blacklist"/>-->
+    <button onclick="window.location.href='/blacklist_customer'"><%= @button_text%></button>
   <% end %>
 
 
-</form>
+
+
 
 <%= erb :dashboard_footer %>

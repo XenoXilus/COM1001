@@ -10,14 +10,11 @@ get '/customer_info' do
   erb :customer_info
 end
 
-post '/search_customer' do
+get '/search_customer' do
   @submitted=true
   @input = params[:input].strip
 
-  # session[:current_customer] = @customer_twitter
-
-
-
+  session[:current_customer] = @input
   @name = @db.get_first_value('SELECT firstname FROM customer WHERE twitterAcc = ?',@input)
   @customer_found_twitter =!@name.nil?
   @surname=@db.get_first_value('SELECT surname FROM customer WHERE email = ?',@input)
@@ -35,14 +32,17 @@ post '/search_customer' do
       @address=@db.get_first_value('SELECT address FROM customer WHERE twitterAcc = ?',@input)
       @city=@db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',@input)
     else
-
       @twitter=@db.get_first_value('SELECT twitterAcc FROM customer WHERE email = ?',@input)
       @email=@input
       @name=@db.get_first_value('SELECT firstname FROM customer WHERE email = ?',@input)
       @address=@db.get_first_value('SELECT address FROM customer WHERE email = ?',@input)
       @city=@db.get_first_value('SELECT city FROM customer WHERE email = ?',@input)
-
     end
+
+    session[:current_customer]=@twitter
+    blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc = ?',session[:current_customer]) == 1
+    puts "blacklisted = #{blacklisted}"
+    @button_text = blacklisted ? 'Unblacklist' : 'Blacklist'
 
   end
 
@@ -50,12 +50,15 @@ post '/search_customer' do
 
 end
 
-
-
-post '/blacklist_customer' do
-  #@twitter_acc = params[:twitteracc].strip
-  puts "ta = #{session[:current_customer]}"
-  @db.execute('UPDATE customer SET blacklisted = 1 WHERE twitterAcc = ?', session[:current_customer])
-
-  erb :customer_info
+get '/blacklist_customer' do
+  twitter_acc = session[:current_customer]
+  blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc = ?',twitter_acc) == 1
+  if blacklisted
+    @db.execute('UPDATE customer SET blacklisted = 0 WHERE twitterAcc = ?', twitter_acc)
+    ch_twitter.create_direct_message(twitter_acc,'You have been unbanned from our website! Sorry for any inconvenience caused.')
+  else
+    @db.execute('UPDATE customer SET blacklisted = 1 WHERE twitterAcc = ?', twitter_acc)
+    ch_twitter.create_direct_message(twitter_acc,'We are sorry to inform you that your account has been banned from our website.')
+  end
+  redirect "/search_customer?input=#{twitter_acc}"
 end

@@ -6,20 +6,22 @@
 <% end %>
 
 
-
-
 <p>Please log in by entering your Email and your Password.</p>
 
 <form action="/login" method="post">
 
-<% if @submitted && !@email_address_ok %>
+  <% if @submitted && @blacklisted %>
+    <p style="color:red; font-size:85%">We are sorry to inform you that your account has been banned from our website.</p>
+  <% end %>
+
+  <% if @submitted && !@blacklisted && !@email_address_ok %>
     <p style="color:red; font-size:85%">This email address does not exist or it is not correct. Please enter a correct email address.</p>
-<% end %>
+  <% end %>
   <p>Email address:     <input type="text" name="email_address" id="email_address" />    </p>
 
 
-  <% if @submitted && !@password_ok %>
-      <p style="color:red; font-size:85%">The password is not correct.<br> Please try again.</p>
+  <% if @submitted && !@blacklisted && !@password_ok %>
+    <p style="color:red; font-size:85%">The password is not correct.<br> Please try again.</p>
   <% end %>
   <p>Password:     <input type="password" name="password"/></p>
 
