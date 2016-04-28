@@ -4,7 +4,8 @@ require 'erb'
 
 before do
   @db = SQLite3::Database.new './curry_house.sqlite'
-	#todo get session location!
+
+	#todo get session location elsewhere
 	session[:sheffield] = TRUE
 	session[:birmingham] = FALSE
 end
