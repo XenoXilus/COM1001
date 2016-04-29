@@ -61,6 +61,9 @@ th {
     table-layout: fixed;
     min-width: 500px;
 }
+.col_id {
+    width: 25px;
+}
 .col_num {
     width: 7%;
 }

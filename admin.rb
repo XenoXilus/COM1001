@@ -19,7 +19,7 @@ get '/admin' do
 end
 
 get '/admin_edit_menu' do
-    query = %{SELECT id, itemName, description, unitPrice
+    query = %{SELECT id, itemName, description, unitPrice, vegetarian, glutenFree, atSheff, atBirm
                  FROM menu
                  WHERE category = ? }
     @starterResults = @db.execute query, 'starter'
@@ -85,14 +85,50 @@ post '/add_menu' do
             atSheff = 1
             atBirm = 1
         end
-        executeDeleteQuery = @db.execute('INSERT INTO menu (itemName, unitPrice, description, category, vegetarian, glutenFree, atBirm, atSheff)
+        executeAddQuery = @db.execute('INSERT INTO menu (itemName, unitPrice, description, category, vegetarian, glutenFree, atBirm, atSheff)
             VALUES (?,?,?,?,?,?,?,?)',[@dishName,@dishCost,@dishDesc,@dishType,vegetarian,glutenFree,atSheff,atBirm])
         redirect '/admin_edit_menu'
     end
-
 end
 
 post '/update_menu' do
+    @dishID = params[:dishID]
+    @dishName = params[:dishName].strip
+    @dishCost = params[:dishCost].strip
+    @dishDesc = params[:dishDesc].strip
+    @gFree = params[:gFree]
+    @dishVeggie = params[:dishVeggie]
+    @atSheff = params[:atSheff]
+    @atBirm = params[:atBirm]
+
+    dishName_ok = !@dishName.nil? && @dishName != ""
+    dishCost_ok = !@dishCost.nil? && @dishCost != ""
+    dishDesc_ok = !@dishDesc.nil? && @dishDesc != ""
+    gFree_ok = @gFree_ok == "1"|| @gFree_ok.nil?
+    dishVeggie_ok = @dishVeggie == "1" || @dishVeggie.nil?
+    atSheff_ok = @atSheff == "1" || @atSheff.nil?
+    atBirm_ok = @atBirm == "1" || @atBirm.nil?
+
+    if @gFree.nil?
+        @gFree == "0"
+    end
+    if @dishVeggie.nil?
+        @dishVeggie == "0"
+    end
+    if @atSheff.nil?
+        @atSheff == "0"
+    end
+    if @atBirm.nil?
+        @atBirm == "0"
+    end
+
+    all_ok = dishName_ok && dishCost_ok && dishDesc_ok && gFree_ok && dishVeggie_ok && atSheff_ok && atBirm_ok
+
+    if all_ok
+        exe = @db.execute('UPDATE menu SET itemName = ?, unitPrice = ?, description= ?, vegetarian = ?, glutenFree = ?, atBirm = ?, atSheff = ?
+            WHERE id = ?',[@dishName,@dishCost,@dishDesc,@dishVeggie,@gFree,@atBirm,@atSheff,@dishID])
+        redirect '/admin_edit_menu'
+    end
 
 end
 

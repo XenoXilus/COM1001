@@ -1,0 +1,172 @@
+<%= erb :dashboard_header %>
+
+<div class="row">
+    <div>
+
+    <!-- Nav tabs -->
+    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#viewMenu" aria-controls="viewMenu" role="tab" data-toggle="tab">View Menu</a></li>
+        <li role="presentation"><a href="#addItem" aria-controls="addItem" role="tab" data-toggle="tab">Add Item</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="viewMenu">
+
+            <% @arry.map |x| %>
+
+            <% unless x.nil? || x.length == 0 %>
+                <h2>Starters</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th class="col_id">id</th>
+                        <th class="col_n">Name</th>
+                        <th class="col_d">Description</th>
+                        <th class="col_p">Price</th>
+                        <th class="col_ch">GlutenFree</th>
+                        <th class="col_ch">Veggie</th>
+                        <th class="col_ch">Sheff</th>
+                        <th class="col_ch">Birm</th>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                    <% x.each do |item| %>
+                        <tr>
+                            <td class="col_id"><%=h item[0] %></td>
+                            <td class="col_n"><%=h item[1] %></td>
+                            <td class="col_d"><%=h item[2] %></td>
+                            <% if (item[3]/0.1)%1 != 0 %>
+                                <td class="col_p"><%=h "£ #{item[3]}" %></td>
+                            <% else %>
+                                <td class="col_p"><%=h "£ #{item[3]}0" %></td>
+                            <% end %>
+                            <td class="col_ch">
+                                <% if item[4] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[5] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[6] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[7] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td>
+                                <input type="submit" onclick="toggle_visibility('<%=h "hiddenRow#{item[0]}" %>')" name="submit" value="Edit" />
+                            </td>
+                            <td>
+                                <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
+                                <input type="submit" name="submit" value="Delete" /></form>
+                            </td>
+                        </tr>
+                        <tr id="<%=h "hiddenRow#{item[0]}" %>" style="display: none;">
+                            <form method="post" action="/update_menu">
+                                <td class="col_id"><input type="hidden" name="dishID" value="<%=h item[0]%>"/></td>
+                                <td class="col_n"><input type="text" name="dishName" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
+                                <td class="col_d"><input type="text" name="dishDesc" class="form-control" placeholder="Dish Description" value="<%=h item[2] %>"></td>
+                                <% if (item[3]/0.1)%1 != 0 %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% else %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% end %>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="gFree" value="1" <% if item[4] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="dishVeggie" value="1" <% if item[5] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atSheff" value="1" <% if item[6] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atBirm" value="1" <% if item[7] == 1 %>checked<%end%>>
+                                </td>
+
+                                <td class="col_ch" colspan="2"><input type="submit" name="submit" value="Update" /></td>
+                            </form>
+                        </tr>
+                    <% end %>
+                </table>
+            <% end %>
+
+            <% end %>
+
+
+
+
+        </div>
+
+
+        <div role="tabpanel" class="tab-pane" id="addItem" style="padding: 10px 0;">
+            <form method="post" class="form-inline" action="/add_menu">
+                <div class="form-group">
+                    <select class="form-control" name="dishType">
+                        <option>Select a type of dish</option>
+                        <option value="starter">Starter</option>
+                        <option value="hot">Hot</option>
+                        <option value="mild">Mild</option>
+                        <option value="rice">Rice</option>
+                        <option value="side">Side</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="dishExtraInfo">
+                        <option>Vegetarian or Gluten-free?</option>
+                        <option value="v">Vegetarian</option>
+                        <option value="gf">Gluten Free</option>
+                        <option value="vgf">Both</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="dishAvailability">
+                        <option>Sheffield/Birmingham</option>
+                        <option value="sh">Sheffield</option>
+                        <option value="bi">Birmingham</option>
+                        <option value="shbi">Both</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="dishName">Dish Name</label>
+                    <input type="text" class="form-control" name="dishName" placeholder="Dish Name">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="dishName">Dish Description</label>
+                    <input type="text" class="form-control" name="dishDesc" placeholder="Dish Desription">
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">c£</div>
+                        <input type="text" class="form-control" name="dishCost" placeholder="Amount">
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="dishConfirmation" value="confirmed"> Confirm Submission
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default">Submit Dish</button>
+            </form>
+        </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+<!--
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'table-row')
+          e.style.display = 'none';
+       else
+          e.style.display = 'table-row';
+    }
+//-->
+</script>
+
+<%= erb :dashboard_footer %>

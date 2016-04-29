@@ -12,19 +12,24 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="viewMenu">
+
             <% unless @starterResults.nil? || @starterResults.length == 0 %>
                 <h2>Starters</h2>
                 <table class="table table-striped">
                     <tr>
-                        <th class="col_n">id</th>
+                        <th class="col_id">id</th>
                         <th class="col_n">Name</th>
                         <th class="col_d">Description</th>
                         <th class="col_p">Price</th>
+                        <th class="col_ch">GlutenFree</th>
+                        <th class="col_ch">Veggie</th>
+                        <th class="col_ch">Sheff</th>
+                        <th class="col_ch">Birm</th>
                         <th colspan="2">Actions</th>
                     </tr>
                     <% @starterResults.each do |item| %>
                         <tr>
-                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_id"><%=h item[0] %></td>
                             <td class="col_n"><%=h item[1] %></td>
                             <td class="col_d"><%=h item[2] %></td>
                             <% if (item[3]/0.1)%1 != 0 %>
@@ -32,6 +37,18 @@
                             <% else %>
                                 <td class="col_p"><%=h "£ #{item[3]}0" %></td>
                             <% end %>
+                            <td class="col_ch">
+                                <% if item[4] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[5] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[6] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[7] == 1 %>Yes<% else %>No <%end%>
+                            </td>
                             <td>
                                 <input type="submit" onclick="toggle_visibility('<%=h "hiddenRow#{item[0]}" %>')" name="submit" value="Edit" />
                             </td>
@@ -42,19 +59,32 @@
                         </tr>
                         <tr id="<%=h "hiddenRow#{item[0]}" %>" style="display: none;">
                             <form method="post" action="/update_menu">
-                                <td class="col_n"><input type="hidden" name="menuID" value="<%=h item[0]%>"/></td>
-                                <td class="col_n"><input type="text" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
-                                <td class="col_d"><input type="text" class="form-control" placeholder="Dish Description" value="<%=h item[2] %>"></td>
+                                <td class="col_id"><input type="hidden" name="dishID" value="<%=h item[0]%>"/></td>
+                                <td class="col_n"><input type="text" name="dishName" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
+                                <td class="col_d"><input type="text" name="dishDesc" class="form-control" placeholder="Dish Description" value="<%=h item[2] %>"></td>
                                 <% if (item[3]/0.1)%1 != 0 %>
                                     <td class="col_p">
-                                        <input type="text" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
                                     </td>
                                 <% else %>
                                     <td class="col_p">
-                                        <input type="text" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
                                     </td>
                                 <% end %>
-                                <td class="col_d" colspan="2"><input type="submit" name="submit" value="Update" /></td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="gFree" value="1" <% if item[4] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="dishVeggie" value="1" <% if item[5] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atSheff" value="1" <% if item[6] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atBirm" value="1" <% if item[7] == 1 %>checked<%end%>>
+                                </td>
+
+                                <td class="col_ch" colspan="2"><input type="submit" name="submit" value="Update" /></td>
                             </form>
                         </tr>
                     <% end %>
@@ -65,15 +95,19 @@
                 <h2>Mild Plates</h2>
                 <table class="table table-striped">
                     <tr>
-                        <th class="col_n">id</th>
+                        <th class="col_id">id</th>
                         <th class="col_n">Name</th>
                         <th class="col_d">Description</th>
                         <th class="col_p">Price</th>
+                        <th class="col_ch">GlutenFree</th>
+                        <th class="col_ch">Veggie</th>
+                        <th class="col_ch">Sheff</th>
+                        <th class="col_ch">Birm</th>
                         <th colspan="2">Actions</th>
                     </tr>
                     <% @mildResults.each do |item| %>
                         <tr>
-                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_id"><%=h item[0] %></td>
                             <td class="col_n"><%=h item[1] %></td>
                             <td class="col_d"><%=h item[2] %></td>
                             <% if (item[3]/0.1)%1 != 0 %>
@@ -81,14 +115,55 @@
                             <% else %>
                                 <td class="col_p"><%=h "£ #{item[3]}0" %></td>
                             <% end %>
+                            <td class="col_ch">
+                                <% if item[4] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[5] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[6] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[7] == 1 %>Yes<% else %>No <%end%>
+                            </td>
                             <td>
-                                <form method="get"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
-                                <input type="submit" name="submit" value="Edit" /></form>
+                                <input type="submit" onclick="toggle_visibility('<%=h "hiddenRow#{item[0]}" %>')" name="submit" value="Edit" />
                             </td>
                             <td>
                                 <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
+                        </tr>
+                        <tr id="<%=h "hiddenRow#{item[0]}" %>" style="display: none;">
+                            <form method="post" action="/update_menu">
+                                <td class="col_id"><input type="hidden" name="dishID" value="<%=h item[0]%>"/></td>
+                                <td class="col_n"><input type="text" name="dishName" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
+                                <td class="col_d"><input type="text" name="dishDesc" class="form-control" placeholder="Dish Description" value="<%=h item[2] %>"></td>
+                                <% if (item[3]/0.1)%1 != 0 %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% else %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% end %>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="gFree" value="1" <% if item[4] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="dishVeggie" value="1" <% if item[5] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atSheff" value="1" <% if item[6] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atBirm" value="1" <% if item[7] == 1 %>checked<%end%>>
+                                </td>
+
+                                <td class="col_ch" colspan="2"><input type="submit" name="submit" value="Update" /></td>
+                            </form>
                         </tr>
                     <% end %>
                 </table>
@@ -98,15 +173,19 @@
                 <h2>Hot Plates</h2>
                 <table class="table table-striped">
                     <tr>
-                        <th class="col_n">id</th>
+                        <th class="col_id">id</th>
                         <th class="col_n">Name</th>
                         <th class="col_d">Description</th>
                         <th class="col_p">Price</th>
+                        <th class="col_ch">GlutenFree</th>
+                        <th class="col_ch">Veggie</th>
+                        <th class="col_ch">Sheff</th>
+                        <th class="col_ch">Birm</th>
                         <th colspan="2">Actions</th>
                     </tr>
                     <% @hotResults.each do |item| %>
                         <tr>
-                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_id"><%=h item[0] %></td>
                             <td class="col_n"><%=h item[1] %></td>
                             <td class="col_d"><%=h item[2] %></td>
                             <% if (item[3]/0.1)%1 != 0 %>
@@ -114,14 +193,55 @@
                             <% else %>
                                 <td class="col_p"><%=h "£ #{item[3]}0" %></td>
                             <% end %>
+                            <td class="col_ch">
+                                <% if item[4] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[5] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[6] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[7] == 1 %>Yes<% else %>No <%end%>
+                            </td>
                             <td>
-                                <form method="get"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
-                                <input type="submit" name="submit" value="Edit" /></form>
+                                <input type="submit" onclick="toggle_visibility('<%=h "hiddenRow#{item[0]}" %>')" name="submit" value="Edit" />
                             </td>
                             <td>
                                 <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
+                        </tr>
+                        <tr id="<%=h "hiddenRow#{item[0]}" %>" style="display: none;">
+                            <form method="post" action="/update_menu">
+                                <td class="col_id"><input type="hidden" name="dishID" value="<%=h item[0]%>"/></td>
+                                <td class="col_n"><input type="text" name="dishName" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
+                                <td class="col_d"><input type="text" name="dishDesc" class="form-control" placeholder="Dish Description" value="<%=h item[2] %>"></td>
+                                <% if (item[3]/0.1)%1 != 0 %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% else %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% end %>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="gFree" value="1" <% if item[4] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="dishVeggie" value="1" <% if item[5] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atSheff" value="1" <% if item[6] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atBirm" value="1" <% if item[7] == 1 %>checked<%end%>>
+                                </td>
+
+                                <td class="col_ch" colspan="2"><input type="submit" name="submit" value="Update" /></td>
+                            </form>
                         </tr>
                     <% end %>
                 </table>
@@ -131,15 +251,19 @@
                 <h2>Rice Dishes</h2>
                 <table class="table table-striped">
                     <tr>
-                        <th class="col_n">id</th>
+                        <th class="col_id">id</th>
                         <th class="col_n">Name</th>
                         <th class="col_d">Description</th>
                         <th class="col_p">Price</th>
+                        <th class="col_ch">GlutenFree</th>
+                        <th class="col_ch">Veggie</th>
+                        <th class="col_ch">Sheff</th>
+                        <th class="col_ch">Birm</th>
                         <th colspan="2">Actions</th>
                     </tr>
                     <% @riceResults.each do |item| %>
                         <tr>
-                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_id"><%=h item[0] %></td>
                             <td class="col_n"><%=h item[1] %></td>
                             <td class="col_d"><%=h item[2] %></td>
                             <% if (item[3]/0.1)%1 != 0 %>
@@ -147,14 +271,55 @@
                             <% else %>
                                 <td class="col_p"><%=h "£ #{item[3]}0" %></td>
                             <% end %>
+                            <td class="col_ch">
+                                <% if item[4] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[5] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[6] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[7] == 1 %>Yes<% else %>No <%end%>
+                            </td>
                             <td>
-                                <form method="get"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
-                                <input type="submit" name="submit" value="Edit" /></form>
+                                <input type="submit" onclick="toggle_visibility('<%=h "hiddenRow#{item[0]}" %>')" name="submit" value="Edit" />
                             </td>
                             <td>
                                 <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
+                        </tr>
+                        <tr id="<%=h "hiddenRow#{item[0]}" %>" style="display: none;">
+                            <form method="post" action="/update_menu">
+                                <td class="col_id"><input type="hidden" name="dishID" value="<%=h item[0]%>"/></td>
+                                <td class="col_n"><input type="text" name="dishName" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
+                                <td class="col_d"><input type="text" name="dishDesc" class="form-control" placeholder="Dish Description" value="<%=h item[2] %>"></td>
+                                <% if (item[3]/0.1)%1 != 0 %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% else %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% end %>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="gFree" value="1" <% if item[4] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="dishVeggie" value="1" <% if item[5] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atSheff" value="1" <% if item[6] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atBirm" value="1" <% if item[7] == 1 %>checked<%end%>>
+                                </td>
+
+                                <td class="col_ch" colspan="2"><input type="submit" name="submit" value="Update" /></td>
+                            </form>
                         </tr>
                     <% end %>
                 </table>
@@ -164,15 +329,19 @@
                 <h2>Side Dishes</h2>
                 <table class="table table-striped">
                     <tr>
-                        <th class="col_n">id</th>
+                        <th class="col_id">id</th>
                         <th class="col_n">Name</th>
                         <th class="col_d">Description</th>
                         <th class="col_p">Price</th>
+                        <th class="col_ch">GlutenFree</th>
+                        <th class="col_ch">Veggie</th>
+                        <th class="col_ch">Sheff</th>
+                        <th class="col_ch">Birm</th>
                         <th colspan="2">Actions</th>
                     </tr>
                     <% @sidesResults.each do |item| %>
                         <tr>
-                            <td class="col_n"><%=h item[0] %></td>
+                            <td class="col_id"><%=h item[0] %></td>
                             <td class="col_n"><%=h item[1] %></td>
                             <td class="col_d"><%=h item[2] %></td>
                             <% if (item[3]/0.1)%1 != 0 %>
@@ -180,14 +349,55 @@
                             <% else %>
                                 <td class="col_p"><%=h "£ #{item[3]}0" %></td>
                             <% end %>
+                            <td class="col_ch">
+                                <% if item[4] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[5] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[6] == 1 %>Yes<% else %>No <%end%>
+                            </td>
+                            <td class="col_ch">
+                                <% if item[7] == 1 %>Yes<% else %>No <%end%>
+                            </td>
                             <td>
-                                <form method="get"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
-                                <input type="submit" name="submit" value="Edit" /></form>
+                                <input type="submit" onclick="toggle_visibility('<%=h "hiddenRow#{item[0]}" %>')" name="submit" value="Edit" />
                             </td>
                             <td>
                                 <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
+                        </tr>
+                        <tr id="<%=h "hiddenRow#{item[0]}" %>" style="display: none;">
+                            <form method="post" action="/update_menu">
+                                <td class="col_id"><input type="hidden" name="dishID" value="<%=h item[0]%>"/></td>
+                                <td class="col_n"><input type="text" name="dishName" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
+                                <td class="col_d"><input type="text" name="dishDesc" class="form-control" placeholder="Dish Description" value="<%=h item[2] %>"></td>
+                                <% if (item[3]/0.1)%1 != 0 %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% else %>
+                                    <td class="col_p">
+                                        <input type="text" name="dishCost" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% end %>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="gFree" value="1" <% if item[4] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="dishVeggie" value="1" <% if item[5] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atSheff" value="1" <% if item[6] == 1 %>checked<%end%>>
+                                </td>
+                                <td class="col_ch">
+                                    <input type="checkbox" name="atBirm" value="1" <% if item[7] == 1 %>checked<%end%>>
+                                </td>
+
+                                <td class="col_ch" colspan="2"><input type="submit" name="submit" value="Update" /></td>
+                            </form>
                         </tr>
                     <% end %>
                 </table>
