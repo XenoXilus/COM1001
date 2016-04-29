@@ -63,6 +63,7 @@ def process_order tweet
       tweet_arr[3] = 'Unpaid'
       tweet_status_change(tweet_arr)
     else
+      check_for_offers twitter_username
       @db.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?', [new_balance,twitter_username])
       $client.favorite(tweet.id)
       $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
@@ -74,6 +75,20 @@ def process_order tweet
 
   else
     $client.update("Hi @#{twitter_username}! You must have an address registered in our website to process you order.", :in_reply_to_status_id => tweet.id)
+  end
+end
+
+def check_for_offers twitter_username
+  norders = @db.get_first_value('SELECT orders_made FROM customer WHERE twitterAcc = ?',twitter_username)+1
+  @db.execute('UPDATE customer SET orders_made = ? WHERE twitterAcc = ?', [norders,twitter_username])
+  req_orders = @db.get_first_value('SELECT norders FROM loyalty_offer')
+
+  if (req_orders!=0) && (norders % req_orders ==0)
+    reward = @db.get_first_value('SELECT cp FROM loyalty_offer')
+    new_balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',twitter_username)+reward
+    @db.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?', [new_balance,twitter_username])
+    msg="We thank you for being a loyal customer. To reward you for your loyalty we have added #{reward} CurryPounds to your balance."
+    $client.create_direct_message(twitter_username,msg)
   end
 end
 
