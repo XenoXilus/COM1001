@@ -35,5 +35,8 @@ get '/menu' do
 	    ["Sides", @sidesResults]
 	]
 
+  @req_orders = @db.get_first_value('SELECT norders FROM loyalty_offer')
+  @cp = @db.get_first_value('SELECT cp FROM loyalty_offer')
+
   erb :menu
 end
