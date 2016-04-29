@@ -11,6 +11,9 @@ get '/customer_info' do
 end
 
 get '/search_customer' do
+  if !session[:admin]
+    redirect '/'
+  end
   @submitted=true
   @input = params[:input].strip
 
@@ -61,4 +64,8 @@ get '/blacklist_customer' do
     ch_twitter.create_direct_message(twitter_acc,'We are sorry to inform you that your account has been banned from our website.')
   end
   redirect "/search_customer?input=#{twitter_acc}"
+end
+
+get 'tweet_to' do
+  #todo low priority
 end

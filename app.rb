@@ -10,6 +10,7 @@ require_relative 'menu'
 require_relative 'curry_house_twitter'
 require_relative 'orders'
 require_relative 'admin'
+require_relative 'offers'
 
 include ERB::Util
 

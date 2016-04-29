@@ -43,16 +43,10 @@
   <%end%>
 
 
-
-
-
   <% if @customer_found %>
     <!--<button form_action="blacklist_customer" formmethod="post" type="submit" value="Blacklist"/>-->
+    <button onclick="window.location.href='/tweet_to?customer=<%= @twitter %>'"><%= @button_text%></button>
     <button onclick="window.location.href='/blacklist_customer'"><%= @button_text%></button>
   <% end %>
-
-
-
-
 
 <%= erb :dashboard_footer %>

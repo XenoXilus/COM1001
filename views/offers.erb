@@ -1,0 +1,17 @@
+<%= erb :dashboard_header %>
+
+<h1>Offers</h1>
+
+<h3>Loyalty offers:</h3>
+<p>Set the number of orders and the reward:</p>
+<form action="/set_offer" method="post">
+  <p>No. of repeated orders:
+    <input type="number" name="norders" min="0" value="<%= @norders %>"/>
+  </p>
+  <p>CurryPound reward:
+    <input type="number" name="cp" min="0" value="<%= @cp %>"/>
+  </p>
+  <input type="submit" value="Update" />
+</form>
+
+<%= erb :dashboard_footer %>
