@@ -7,7 +7,6 @@
     <ul id="myTabs" class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#viewMenu" aria-controls="viewMenu" role="tab" data-toggle="tab">View Menu</a></li>
         <li role="presentation"><a href="#addItem" aria-controls="addItem" role="tab" data-toggle="tab">Add Item</a></li>
-        <li role="presentation"><a href="#removeItem" aria-controls="removeItem" role="tab" data-toggle="tab">Remove Item</a></li>
     </ul>
 
     <!-- Tab panes -->
@@ -34,13 +33,29 @@
                                 <td class="col_p"><%=h "£ #{item[3]}0" %></td>
                             <% end %>
                             <td>
-                                <form method="get"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
-                                <input type="submit" name="submit" value="Edit" /></form>
+                                <input type="submit" onclick="toggle_visibility('<%=h "hiddenRow#{item[0]}" %>')" name="submit" value="Edit" />
                             </td>
                             <td>
                                 <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
+                        </tr>
+                        <tr id="<%=h "hiddenRow#{item[0]}" %>" style="display: none;">
+                            <form method="post" action="/update_menu">
+                                <td class="col_n"><input type="hidden" name="menuID" value="<%=h item[0]%>"/></td>
+                                <td class="col_n"><input type="text" class="form-control" placeholder="Dish Name" value="<%=h item[1] %>"></td>
+                                <td class="col_d"><input type="text" class="form-control" placeholder="Dish Description" value="<%=h item[2] %>"></td>
+                                <% if (item[3]/0.1)%1 != 0 %>
+                                    <td class="col_p">
+                                        <input type="text" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% else %>
+                                    <td class="col_p">
+                                        <input type="text" class="form-control" placeholder="Dish Price" value="<%=h item[3] %>">
+                                    </td>
+                                <% end %>
+                                <td class="col_d" colspan="2"><input type="submit" name="submit" value="Update" /></td>
+                            </form>
                         </tr>
                     <% end %>
                 </table>
@@ -137,7 +152,7 @@
                                 <input type="submit" name="submit" value="Edit" /></form>
                             </td>
                             <td>
-                                <form method="post"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
+                                <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
                         </tr>
@@ -170,7 +185,7 @@
                                 <input type="submit" name="submit" value="Edit" /></form>
                             </td>
                             <td>
-                                <form method="get"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
+                                <form method="post" action="/delete_menu"><input type="hidden" name="menuID" value="<%=h item[0]%>"/>
                                 <input type="submit" name="submit" value="Delete" /></form>
                             </td>
                         </tr>
@@ -179,127 +194,73 @@
             <% end %>
         </div>
 
+
         <div role="tabpanel" class="tab-pane" id="addItem" style="padding: 10px 0;">
-            <form class="form-inline">
+            <form method="post" class="form-inline" action="/add_menu">
                 <div class="form-group">
-                    <select class="form-control">
+                    <select class="form-control" name="dishType">
                         <option>Select a type of dish</option>
-                        <option>Starter</option>
-                        <option>Hot</option>
-                        <option>Mild</option>
-                        <option>Rice</option>
-                        <option>Side</option>
+                        <option value="starter">Starter</option>
+                        <option value="hot">Hot</option>
+                        <option value="mild">Mild</option>
+                        <option value="rice">Rice</option>
+                        <option value="side">Side</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="dishExtraInfo">
+                        <option>Vegetarian or Gluten-free?</option>
+                        <option value="v">Vegetarian</option>
+                        <option value="gf">Gluten Free</option>
+                        <option value="vgf">Both</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="dishAvailability">
+                        <option>Sheffield/Birmingham</option>
+                        <option value="sh">Sheffield</option>
+                        <option value="bi">Birmingham</option>
+                        <option value="shbi">Both</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="sr-only" for="dishName">Dish Name</label>
-                    <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Dish Name">
+                    <input type="text" class="form-control" name="dishName" placeholder="Dish Name">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="dishName">Dish Description</label>
+                    <input type="text" class="form-control" name="dishDesc" placeholder="Dish Desription">
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">c£</div>
-                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                        <input type="text" class="form-control" name="dishCost" placeholder="Amount">
                     </div>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox"> Confirm Submission
+                        <input type="checkbox" name="dishConfirmation" value="confirmed"> Confirm Submission
                     </label>
                 </div>
                 <button type="submit" class="btn btn-default">Submit Dish</button>
             </form>
         </div>
-        <div role="tabpanel" class="tab-pane" id="removeItem">
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="viewMenu">
-                    <% unless @starterResults.nil? || @starterResults.length == 0 %>
-                        <table class="table table-striped">
-                            <tr>
-                                <th class="col_n">id</th>
-                                <th class="col_n">Name</th>
-                                <th class="col_p">Price</th>
-                                <th class="col_">Delete</th>
-                            </tr>
-                            <% @starterResults.each do |item| %>
-                                <tr>
-                                    <td class="col_n"><%=h item[0] %></td>
-                                    <td class="col_n"><%=h item[1] %></td>
-                                    <% if (item[3]/0.1)%1 != 0 %>
-                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
-                                    <% else %>
-                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
-                                    <% end %>
-                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
-                                </tr>
-                            <% end %>
-                    <% end %>
 
-                    <% unless @mildResults.nil? || @mildResults.length == 0 %>
-                            <% @mildResults.each do |item| %>
-                                <tr>
-                                    <td class="col_n"><%=h item[0] %></td>
-                                    <td class="col_n"><%=h item[1] %></td>
-                                    <% if (item[3]/0.1)%1 != 0 %>
-                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
-                                    <% else %>
-                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
-                                    <% end %>
-                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
-                                </tr>
-                            <% end %>
-                    <% end %>
-
-                    <% unless @hotResults.nil? || @hotResults.length == 0 %>
-                            <% @hotResults.each do |item| %>
-                                <tr>
-                                    <td class="col_n"><%=h item[0] %></td>
-                                    <td class="col_n"><%=h item[1] %></td>
-                                    <% if (item[3]/0.1)%1 != 0 %>
-                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
-                                    <% else %>
-                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
-                                    <% end %>
-                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
-                                </tr>
-                            <% end %>
-                    <% end %>
-
-                    <% unless @riceResults.nil? || @riceResults.length == 0 %>
-                            <% @riceResults.each do |item| %>
-                                <tr>
-                                    <td class="col_n"><%=h item[0] %></td>
-                                    <td class="col_n"><%=h item[1] %></td>
-                                    <% if (item[3]/0.1)%1 != 0 %>
-                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
-                                    <% else %>
-                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
-                                    <% end %>
-                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
-                                </tr>
-                            <% end %>
-                    <% end %>
-
-                    <% unless @sidesResults.nil? || @sidesResults.length == 0 %>
-                            <% @sidesResults.each do |item| %>
-                                <tr>
-                                    <td class="col_n"><%=h item[0] %></td>
-                                    <td class="col_n"><%=h item[1] %></td>
-                                    <% if (item[3]/0.1)%1 != 0 %>
-                                        <td class="col_p"><%=h "£ #{item[3]}" %></td>
-                                    <% else %>
-                                        <td class="col_p"><%=h "£ #{item[3]}0" %></td>
-                                    <% end %>
-                                    <td class="col_d"><a href="/admin_delete_menuid<%=h item[0] %>">delete</a></td>
-                                </tr>
-                            <% end %>
-                        </table>
-                    <% end %>
-
-
-        </div>
     </div>
 
   </div>
 </div>
+
+<script type="text/javascript">
+<!--
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'table-row')
+          e.style.display = 'none';
+       else
+          e.style.display = 'table-row';
+    }
+//-->
+</script>
 
 <%= erb :dashboard_footer %>

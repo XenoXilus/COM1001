@@ -39,9 +39,10 @@ end
 def process_order tweet
   twitter_username = tweet.attrs[:user][:screen_name]
   account_registered = !@db.get_first_value('SELECT address FROM customer WHERE twitterAcc=?',twitter_username)[0].nil? ? true : false
+  account_blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc=?',twitter_username)==1;
   order_text = tweet.text.partition('order')[2]
 
-  if account_registered
+  if account_registered && !account_blacklisted
     items = order_text.gsub(/^\s+|\s+$/,'').split(/\s+/) #strip leading & trailing spaces and split into items
     sum = 0
     items.each do |item|
@@ -121,6 +122,10 @@ def tweet_status_change(tweet_entry)
             return
         end
   $client.update("@#{tweet_entry[1]}: #{msg} Order ID:#{tweet_entry[4]}.")#, :in_reply_to_status_id => tweet_entry[0])
+end
+
+def ch_twitter
+  return $client
 end
 
 def tweet_is_caught(id)

@@ -29,6 +29,9 @@ get '/orders' do
     puts "TooManyRequests, try again in #{err.rate_limit.reset_in} seconds"
   end
 
+  @caught_tweets = @db.execute('SELECT * FROM tweets')
+  @valid_city = Array.new(@caught_tweets.size,true)
+
   erb :orders
 end
 

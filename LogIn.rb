@@ -15,9 +15,9 @@ set :session_secret, 'super secret'
 get '/login' do
   if session[:logged_in]
     redirect '/'
+  else
+    erb :login
   end
-
-  erb :login
 end
 
 
@@ -26,28 +26,20 @@ post '/login' do
 
   @submitted = true
 
-  email_address=params[:email_address].strip
-  pswrd=params[:password].strip
+  email_address = params[:email_address].strip
+  pswrd = params[:password].strip
 
-  @password_ok=true
-
-  name=@db.execute('SELECT firstName FROM customer WHERE email = ? ',[email_address])
-  # puts 1
-  # puts name[0]
-  # puts 2
-
-  @email_address_ok=!name[0].nil?
+  name = @db.execute('SELECT firstName FROM customer WHERE email = ? ', email_address)
+  @email_address_ok = !name[0].nil?
 
   if @email_address_ok
-    surname = @db.execute('SELECT surname FROM customer WHERE email = ? AND password=?',[email_address,pswrd])
+    surname = @db.execute('SELECT surname FROM customer WHERE email = ? AND password = ?', email_address, pswrd)
     @password_ok = !surname[0].nil?
+    @blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE email = ?',email_address) == 1
   end
-  # puts @email_address_ok
-  # puts @password_ok
 
 
-
-  @everything_ok = @password_ok && @email_address_ok
+  @everything_ok = @password_ok && @email_address_ok && !@blacklisted
 
 
   if @everything_ok
@@ -55,9 +47,9 @@ post '/login' do
     Stats.increment 'logins'
     session[:login_time] = Time.now
     session[:email] = email_address
-    session[:twitter_acc] = @db.get_first_value('SELECT twitterAcc FROM customer WHERE email = ?',email_address)
+    session[:twitter_acc] = @db.get_first_value('SELECT twitterAcc FROM customer WHERE email = ?', email_address)
 
-    admin_ok=email_address=='admin@ch.com'
+    admin_ok = email_address == 'admin@ch.com'
 
     if admin_ok then
       session[:admin] = true
@@ -76,7 +68,7 @@ get '/logout' do
   if !session[:logged_in]
     redirect '/'
   end
+
   session.clear
   erb :logout
 end
-

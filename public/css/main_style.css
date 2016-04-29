@@ -10,7 +10,7 @@ body {
 h3 {
     text-align: left;
     text-decoration: underline;
-    font-weight: 300;
+    font-weight: 400;
 }
 ul {
     text-decoration: none;
@@ -31,29 +31,18 @@ footer {
 }
 .left {
     float: left;
-    #margin-left: 50px;
 }
 .right {
     float: right;
-    #margin-right: 50px;
 }
-.cf:before {
-    content: " ";
-    display: table;
-}
-.cf:after {
-    content: " ";
-    display: table;
-    clear: both;
-} /* clearfix hack ref: http://nicolasgallagher.com/micro-clearfix-hack/ */
 .centred {
     margin: 0 auto;
 }
 .boxed {
     border: 3px solid orange;
-    width: 35%;
+    width: 40%;
     padding: 30px 50px;
-    #margin: 42px 10%;
+    margin: 42px 5%;
 
 }
 th, td {
