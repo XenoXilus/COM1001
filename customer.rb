@@ -24,7 +24,7 @@ get '/search_customer' do
   @customer_found_email =!@surname.nil?
 
   @customer_found=@customer_found_twitter|| @customer_found_email
-  puts(@customer_found)
+
 
   if @customer_found
 
@@ -34,18 +34,27 @@ get '/search_customer' do
       @surname=@db.get_first_value('SELECT surname FROM customer WHERE twitterAcc = ?',@input)
       @address=@db.get_first_value('SELECT address FROM customer WHERE twitterAcc = ?',@input)
       @city=@db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',@input)
+      @balance=@db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',@input)
+      cc=@db.get_first_value('SELECT cc FROM customer WHERE twitterAcc = ?',@input)
     else
       @twitter=@db.get_first_value('SELECT twitterAcc FROM customer WHERE email = ?',@input)
       @email=@input
       @name=@db.get_first_value('SELECT firstname FROM customer WHERE email = ?',@input)
       @address=@db.get_first_value('SELECT address FROM customer WHERE email = ?',@input)
       @city=@db.get_first_value('SELECT city FROM customer WHERE email = ?',@input)
+      @balance=@db.get_first_value('SELECT balance FROM customer WHERE email = ?',@input)
+      cc=@db.get_first_value('SELECT cc FROM customer WHERE email = ?',@input)
+    end
+
+    if cc.nil? then
+      @cCard="YES"
+    else
+      @cCard="NO"
     end
 
     session[:current_customer]=@twitter
     blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc = ?',session[:current_customer]) == 1
-    puts "blacklisted = #{blacklisted}"
-    @button_text = blacklisted ? 'Unblacklist' : 'Blacklist'
+      @button_text = blacklisted ? 'Unblacklist' : 'Blacklist'
 
   end
 

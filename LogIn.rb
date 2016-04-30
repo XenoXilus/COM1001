@@ -44,6 +44,7 @@ post '/login' do
 
   if @everything_ok
     session[:logged_in] = true
+    session[:city]= @db.get_first_value('SELECT city FROM customer WHERE email = ?',email_address)
     Stats.increment 'logins'
     session[:login_time] = Time.now
     session[:email] = email_address

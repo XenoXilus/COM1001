@@ -38,12 +38,12 @@ get '/' do
 end
 
 get '/setSheff' do
-    session[:city] = "Sheffield"
+    session[:city] = "sheffield"
     redirect '/'
 end
 
 get '/setBirm' do
-    session[:city] = "Birmingham"
+    session[:city] = "birmingham"
     redirect '/'
 end
 
