@@ -1,26 +1,32 @@
 <%= erb :dashboard_header %>
 
+<ul id="city_selection">
+  <li><a <%if @sheff_stats&&@birm_stats%>id="current"<%end%> href="/stats">All</a></li>
+  <li><a <%if @sheff_stats&&!@birm_stats%>id="current"<%end%>href="/sheffield_stats">Sheffield</a></li>
+  <li><a <%if !@sheff_stats&&@birm_stats%>id="current"<%end%>href="/birmingham_stats">Birmingham</a></li>
+</ul>
+
 <h1>Statistics</h1>
 
 <h2>General</h2>
 <p>Total number of registered customers: <%= @nreg_users%></p>
 <p>Total number of orders: <%= @total_norders %></p>
-<p>Average order cost: <%= Stats.get_avg_cost.round(2) %></p>
-<p>Most popular item id: <%=Stats.get_popular_item %></p>
+<p>Average order cost: <%= Stats.get_avg_cost(@city).round(2) %></p>
+<p>Most popular item id: <%=Stats.get_popular_item(@city) %></p>
 
 <h2>Today in Curry House:</h2>
-<p>Orders made: <%= Stats.get 'orders' %></p>
-<p>Order cancellations: <%= Stats.get 'cancellations' %></p>
-<p>Visits: <%= Stats.get 'total_visits' %></p>
-<p>Logins: <%= Stats.get 'logins' %></p>
-<p>Registrations: <%= Stats.get 'registrations' %></p>
+<p>Orders made: <%= Stats.get 'orders',@city %></p>
+<p>Order cancellations: <%= Stats.get 'cancellations',@city %></p>
+<p>Visits: <%= Stats.get 'total_visits',@city %></p>
+<p>Logins: <%= Stats.get 'logins',@city %></p>
+<p>Registrations: <%= Stats.get 'registrations',@city %></p>
 
 <h2>Daily averages:</h2>
-<p>Orders made: <%= Stats.get_avg 'orders' %></p>
-<p>Order cancellations: <%= Stats.get_avg 'cancellations' %></p>
-<p>Visits: <%= Stats.get_avg 'total_visits' %></p>
-<p>Logins: <%= Stats.get_avg 'logins' %></p>
-<p>Registrations: <%= Stats.get_avg 'registrations' %></p>
+<p>Orders made: <%= Stats.get_avg 'orders',@city %></p>
+<p>Order cancellations: <%= Stats.get_avg 'cancellations',@city %></p>
+<p>Visits: <%= Stats.get_avg 'total_visits',@city %></p>
+<p>Logins: <%= Stats.get_avg 'logins',@city %></p>
+<p>Registrations: <%= Stats.get_avg 'registrations',@city %></p>
 
 <!-- todo add more -->
 

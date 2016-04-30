@@ -3,10 +3,18 @@
 <h1>Contact Information</h1>
 
 <p>Twitter: <a target="_blank" href="https://twitter.com/curryhouse02">@curryhouse02</a></p>
-<p>
-  Address: 67 Botley Road <br/>
-  MIDDLESTONE MOOR <br/>
-  DL16 9WW
-</p>
+
+<h3>Address: </h3>
+<% if session[:city].eql? 'sheffield' %>
+  <p>67 Botley Road</p>
+  <p>MIDDLESTONE MOOR </p>
+  <p>Sheffield</p>
+  <p>S2 9WW</p>
+<% elsif session[:city].eql? 'birmingham' %>
+  <p>33 Stamford Road</p>
+  <p>APPLEBY MAGNA</p>
+  <p>Birmingham</p>
+  <p>B17 5RO</p>
+<% end %>
 
 <%= erb :footer %>

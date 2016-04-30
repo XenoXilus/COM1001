@@ -1,9 +1,7 @@
 require 'sqlite3'
 require 'sinatra'
 require 'erb'
-require_relative 'Stats'
 require_relative 'customer'
-
 
 before do
   @db = SQLite3::Database.new './curry_house.sqlite'
@@ -139,17 +137,6 @@ post '/update_menu' do
         redirect '/admin_edit_menu'
     end
 
-end
-
-get '/stats' do
-  if !session[:admin]
-    redirect '/'
-  end
-
-  @nreg_users = @db.get_first_value('SELECT COUNT(*) FROM customer')
-  @total_norders = @db.get_first_value('SELECT COUNT(*) FROM tweets')
-
-  erb :stats
 end
 
 get '/testing' do

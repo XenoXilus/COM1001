@@ -47,8 +47,8 @@
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         <li class=<%= "active" if active_page?("admin") %>><a href="/admin">Dashboard</a></li>
-        <li class=<%= "active" if active_page?("orders") %>><a href="/orders">Current Orders</a></li>
-        <li class=<%= "active" if active_page?("stats") %>><a href="/stats">Statistics</a></li>
+        <li class=<%= "active" if active_page?("orders") || active_page?("sheffield_orders") || active_page?("birmingham_orders") || active_page?("change_status")%>><a href="/orders">Current Orders</a></li>
+        <li class=<%= "active" if active_page?("stats") || active_page?("sheffield_stats") || active_page?("birmingham_stats")%>><a href="/stats">Statistics</a></li>
         <li class=<%= "active" if active_page?("customer_info") %>><a href="/customer_info">Customer Info</a></li>
         <li class=<%= "active" if active_page?("offers") || active_page?("trigger_competition") %>><a href="/offers">Offers</a></li>
         <li><a href="#">Twitter</a></li>

@@ -9,8 +9,8 @@
 
     <ul id="city_selection">
       <li><a <%if @sheff_orders&&@birm_orders%>id="current"<%end%> href="/orders">All</a></li>
-      <li><a <%if @sheff_orders&&!@birm_orders%>id="current"<%end%>href="/sheffield">Sheffield</a></li>
-      <li><a <%if !@sheff_orders&&@birm_orders%>id="current"<%end%>href="/birmingham">Birmingham</a></li>
+      <li><a <%if @sheff_orders&&!@birm_orders%>id="current"<%end%>href="/sheffield_orders">Sheffield</a></li>
+      <li><a <%if !@sheff_orders&&@birm_orders%>id="current"<%end%>href="/birmingham_orders">Birmingham</a></li>
     </ul>
 
     <h1>Orders</h1>
@@ -27,17 +27,15 @@
         <th>Select to change</th>
       </tr>
       <% @caught_tweets.each_with_index do |tweet,i| %>
-          <% if @valid_city[i] %>
-              <tr>
-                <td><%= h tweet[4]%></td>
-                <td><%=h tweet[0]%></td>
-                <td><a target="_blank" href="search_customer?input=<%=h tweet[1]%>"><%=h tweet[1]%></a></td>
-                <td><%=h tweet[2]%></td>
-                <td><%=h tweet[5] %></td>
-                <td><%=h tweet[3]%></td>
-                <td><input type="checkbox" name="status<%=i+1%>"></td>
-              </tr>
-          <% end %>
+          <tr>
+            <td><%= h tweet[4]%></td>
+            <td><%=h tweet[0]%></td>
+            <td><a target="_blank" href="search_customer?input=<%=h tweet[1]%>"><%=h tweet[1]%></a></td>
+            <td><%=h tweet[2]%></td>
+            <td><%=h tweet[5] %></td>
+            <td><%=h tweet[3]%></td>
+            <td><input type="checkbox" name="status<%=i+1%>"></td>
+          </tr>
       <% end %>
     </table>
 

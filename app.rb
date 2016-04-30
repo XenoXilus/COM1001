@@ -11,6 +11,7 @@ require_relative 'curry_house_twitter'
 require_relative 'orders'
 require_relative 'admin'
 require_relative 'offers'
+require_relative 'statistics'
 
 include ERB::Util
 
@@ -26,10 +27,6 @@ enable :sessions
 # end
 
 get '/' do
-    if !session[:logged_in]
-        Stats.increment 'total_visits' #todo to-be-changed
-    end
-
     if !session[:city].nil?
         @city = session[:city]
     end
@@ -39,11 +36,13 @@ end
 
 get '/setSheff' do
     session[:city] = "sheffield"
+    Stats.increment 'total_visits','sheffield'
     redirect '/'
 end
 
 get '/setBirm' do
     session[:city] = "birmingham"
+    Stats.increment 'total_visits','birmingham'
     redirect '/'
 end
 

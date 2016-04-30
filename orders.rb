@@ -36,6 +36,9 @@ get '/orders' do
 end
 
 post '/change_status' do
+  @sheff_orders = true
+  @birm_orders = true
+
   for i in 1..@caught_tweets.size do
     if params["status#{i}"]=="on"
       #update both db and array
@@ -48,38 +51,26 @@ post '/change_status' do
   erb :orders
 end
 
-get '/sheffield' do
+get '/sheffield_orders' do
   if !session[:admin]
     redirect '/'
   end
   @sheff_orders = true
   @birm_orders = false
 
-  @caught_tweets.each_with_index do |tweet,i|
-    if @db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',tweet[1])=='sheffield'
-      @valid_city[i]=true
-    else
-      @valid_city[i]=false
-    end
-  end
+  @caught_tweets = @db.execute('SELECT * FROM tweets WHERE city = "sheffield"')
 
   erb :orders
 end
 
-get '/birmingham' do
+get '/birmingham_orders' do
   if !session[:admin]
     redirect '/'
   end
   @sheff_orders = false
   @birm_orders = true
 
-  @caught_tweets.each_with_index do |tweet,i|
-    if @db.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?',tweet[1])=='birmingham'
-      @valid_city[i]=true
-    else
-      @valid_city[i]=false
-    end
-  end
+  @caught_tweets = @db.execute('SELECT * FROM tweets WHERE city = "birmingham"')
 
   erb :orders
 end

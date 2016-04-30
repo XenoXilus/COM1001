@@ -57,7 +57,9 @@ def process_order tweet
 
     order_id = @db.execute 'SELECT max(order_id) FROM tweets'
     order_id = order_id[0][0] + 1
-    tweet_arr = [tweet.id,twitter_username,order_text,'Ordered',order_id,sum]
+
+    city = @db.get_first_value('SELECT city FROM tweets WHERE sender = ?',twitter_username)
+    tweet_arr = [tweet.id,twitter_username,order_text,'Ordered',order_id,sum,city]
 
     if new_balance<0
       tweet_arr[3] = 'Unpaid'
@@ -69,8 +71,8 @@ def process_order tweet
       $client.update("Hi @#{twitter_username}! Your order with ID:#{order_id} has been accepted. To cancel go to our website!", :in_reply_to_status_id => tweet.id)
     end
 
-    Stats.increment 'orders'
-    @db.execute('INSERT INTO tweets(id,sender,text,status,order_id,sum) VALUES (?,?,?,?,?,?)',tweet_arr)
+    Stats.increment 'orders',city
+    @db.execute('INSERT INTO tweets(id,sender,text,status,order_id,sum,city) VALUES (?,?,?,?,?,?,?)',tweet_arr)
     @caught_tweets.push(tweet_arr)
 
   else
@@ -101,7 +103,7 @@ def process_cancellation tweet
     order_status = tweet_info[3]
 
     if !((order_status=='Canceled') || (order_status=='Delivering') || (order_status=='Completed'))
-      Stats.increment 'cancellations'
+      Stats.increment 'cancellations',@db.get_first_value('SELECT city FROM tweets WHERE order_id = ?',order_id)
       @db.execute('UPDATE tweets SET status = "Canceled" WHERE order_id = ?',[order_id])
       @caught_tweets[order_id-1][3] = 'Canceled'
       tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
