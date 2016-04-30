@@ -26,18 +26,33 @@ enable :sessions
 # end
 
 get '/' do
-  if !session[:logged_in]
-    Stats.increment 'total_visits' #todo to-be-changed
-  end
-  erb :index
+    if !session[:logged_in]
+        Stats.increment 'total_visits' #todo to-be-changed
+    end
+
+    if !session[:city].nil?
+        @city = session[:city]
+    end
+
+    erb :index
+end
+
+get '/setSheff' do
+    session[:city] = 'Sheffield'
+    redirect '/'
+end
+
+get '/setBirm' do
+    session[:city] = 'Birmingham'
+    redirect '/'
 end
 
 get '/about' do
-  erb :about
+    erb :about
 end
 
 get '/instructions' do
-  erb :instructions
+    erb :instructions
 end
 
 post '/user_signup' do
@@ -58,9 +73,9 @@ get '/birmMenu' do
 end
 
 not_found do
-  erb :error404
+    erb :error404
 end
 
 def active_page?(path='')
-  request.path_info == '/' + path
+    request.path_info == '/' + path
 end
