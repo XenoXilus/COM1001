@@ -16,7 +16,7 @@
     <h1>Orders</h1>
     <br />
     <form method="post" action="change_status">
-    <table class="menu_table" border="1">
+    <table class="table table-striped">
       <tr>
         <th>Order Id</th>
         <th>Tweet Id</th>
@@ -31,7 +31,7 @@
               <tr>
                 <td><%= h tweet[4]%></td>
                 <td><%=h tweet[0]%></td>
-                <td><a target="_blank" href="https://twitter.com/<%=h tweet[1]%>"><%=h tweet[1]%></a></td>
+                <td><a target="_blank" href="search_customer?input=<%=h tweet[1]%>"><%=h tweet[1]%></a></td>
                 <td><%=h tweet[2]%></td>
                 <td><%=h tweet[5] %></td>
                 <td><%=h tweet[3]%></td>

@@ -2,7 +2,7 @@
 
 <% def create_menu_table(title, resArr) %>
     <% unless resArr.nil? || resArr.length == 0 %>
-        <h3><%= title %></h3>
+        <h2><%= title %></h2>
         <br />
         <table class="menu_table" border="1">
           <tr>
@@ -32,5 +32,8 @@
 <% end %>
 
 <% @m.each { |m| create_menu_table(m[0], m[1]) } %>
+
+<h2>Offers</h2>
+<p>After every <%=@req_orders%> orders you will receive <%=@cp%> CurryPounds as a reward for your loyalty.</p>
 
 <%= erb :footer %>

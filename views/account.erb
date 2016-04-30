@@ -3,7 +3,7 @@
 <% if @updating && @all_ok %>
     <p style="color:green;font-weight: bold;">The update was succesful.</p>
     <a href="/account">Go Back.</a>
-<%elsif @updating_balance && @has_cc%>
+<%elsif (@redeeming && @succ_red) || (@updating_balance && @has_cc)%>
     <p style="color:green;font-weight: bold;">Successfully added <%= @added_funds%> CurryPounds.</p>
     <a href="/account">Go Back.</a>
 <%else%>
@@ -26,7 +26,7 @@
       </p>
 
       <p>Twitter Account:
-        <input type="text" name="twitter_acc" value="<%= @results[0] %>" disabled="disabled"/>
+        <input type="text" name="twitter_acc" value="<%= session[:twitter_acc] %>" disabled="disabled"/>
       </p>
 
       <% if !@cc_no_ok && @updating %>
@@ -68,6 +68,22 @@
       </select>
       <input type="submit" value="Add to Balance" />
     </form>
+
+    <% if !session[:admin]%>
+      <h3>Redeem a voucher code:</h3>
+      <form action="redeem_voucher" method="post">
+        <% if @redeeming && !@exists %>
+          <p style="color:red">The voucher code does not exist.</p>
+        <%elsif @redeeming && @redeemed%>
+          <p style="color:red">The voucher code is already redeemed.</p>
+        <%end%>
+        <p>
+          Voucher code:<input type="text" name="code"/>
+          <input type="submit" value="Redeem"/>
+        </p>
+
+      </form>
+    <% end %>
 <%end%>
 
 <%= erb :footer %>

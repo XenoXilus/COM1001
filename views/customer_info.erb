@@ -17,23 +17,23 @@
 
   <% if @customer_found && @submitted %>
 
-     <table>
+     <table class="table table-striped">
 
       <tr>
-        <th style="border: 2px solid black; border-collapse:collapse;">Name</th>
-        <th style="border: 2px solid black; border-collapse:collapse;">Surname</th>
-        <th style="border: 2px solid black; border-collapse:collapse;">Address</th>
-        <th style="border: 2px solid black; border-collapse:collapse;">City</th>
-        <th style="border: 2px solid black; border-collapse:collapse;">Email</th>
-        <th style="border: 2px solid black; border-collapse:collapse;">Twitter</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>Email</th>
+        <th>Twitter</th>
       </tr>
       <tr>
-        <td style="border: 2px solid black; border-collapse:collapse;"> <%=@name%></td>
-        <td style="border: 2px solid black; border-collapse:collapse;"><%=@surname%></td>
-        <td style="border: 2px solid black; border-collapse:collapse;"><%=@address%></td>
-        <td style="border: 2px solid black; border-collapse:collapse;"><%=@city%></td>
-        <td style="border: 2px solid black; border-collapse:collapse;"><%=@email%></td>
-        <td style="border: 2px solid black; border-collapse:collapse;"><%=@twitter%></td>
+        <td> <%=@name%></td>
+        <td><%=@surname%></td>
+        <td><%=@address%></td>
+        <td><%=@city%></td>
+        <td><%=@email%></td>
+        <td><a target="_blank" href="https://twitter.com/<%=@twitter%>"><%=@twitter%></a></td>
       </tr>
 
 </table>
@@ -43,16 +43,9 @@
   <%end%>
 
 
-
-
-
   <% if @customer_found %>
-    <!--<button form_action="blacklist_customer" formmethod="post" type="submit" value="Blacklist"/>-->
+    <!--<button onclick="window.location.href='/tweet_to?customer=<%= @twitter %>'"><%= @button_text%></button>-->
     <button onclick="window.location.href='/blacklist_customer'"><%= @button_text%></button>
   <% end %>
-
-
-
-
 
 <%= erb :dashboard_footer %>

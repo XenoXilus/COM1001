@@ -3,14 +3,24 @@
   <!--You logged into the member's area at-->
   <!--&lt;!&ndash;%= session[:login_time].strftime("%d/%m/%Y at %I:%M%p") %>&ndash;&gt;-->
 <!--</p>-->
-<h1>Welcome to Curry House!</h1>
+
+<% if session[:city].nil? %>
+<br>
+<div class="panel panel-info">
+    <div class="panel-heading">Help Us Deliver To You</div>
+    <div class="panel-body">
+        Before you make any order we need you to select one of our delicious Curry House branches.
+        <a href="/setSheff" class="btn btn-default btn-lg btn-block">Sheffield Branch</a>
+        <a href="/setBirm" class="btn btn-default btn-lg btn-block">Birmingham Branch</a>
+    </div>
+</div>
+<% end %>
+
+<h1>Welcome to Curry House <%=h "#{@city}" %>!</h1>
 
 <p class="lead">Your first stop for all your curry takeaway needs.<p>
 <p>Whether you're new, coming home to us after your holidays, or a 'seasoned' veteran (get it?);<br> we're sure you'd agree that we are your #1 stop in Sheffield to fulfill all your Curry needs.</p>
 <br>
 <p>If you need, feel free to visit our <a href="instructions">customer instructions</a> page for a no nonsense guide.</p>
-
-<p class="left boxed">Sheffield Branch</p>
-<p class="right boxed">Birmingham Branch</p>
 
 <%= erb :footer %>

@@ -1,11 +1,12 @@
 body {
     padding-top: 50px;
+    background: url(../img/bg.png);
 }
 .page_wrap {
     width: 70%;
     margin: 0 auto;
-    text-align: center;
     min-width: 360px;
+    max-width: 1140px;
 }
 h3 {
     text-align: left;
@@ -22,7 +23,10 @@ tr:nth-child(even) {
     background-color: #f2f2f2
 }
 footer {
-    padding: 30px 40px 10px;
+    width: 70%;
+    margin: 30px auto 15px;
+    min-width: 360px;
+    max-width: 1140px;
 }
 #twitter_icon {
     width: 30px;
@@ -60,6 +64,9 @@ th {
     margin: 10px auto;
     table-layout: fixed;
     min-width: 500px;
+}
+.col_id {
+    width: 25px;
 }
 .col_num {
     width: 7%;

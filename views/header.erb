@@ -39,7 +39,7 @@
             <li class=<%= "active" if active_page?("login") %>><a href="/login">Sign in</a> </li>
             <li class=<%= "active" if active_page?("sign_up") %>><a href="/sign_up">Sign up</a> </li>
         <%else%>
-            <li class=<%= "active" if active_page?("account") %>><a href="/account">My Account</a></li>
+            <li class=<%= "active" if active_page?("account") || active_page?("update_balance") %>><a href="/account">My Account</a></li>
             <%if session[:admin]%>
                 <li><a href="/admin">Admin Panel</a></li>
             <%else%>

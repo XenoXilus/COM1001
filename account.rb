@@ -1,14 +1,9 @@
 before do
   @customer_info = SQLite3::Database.new './curry_house.sqlite'
-
-
+  @redeeming = false
 end
 
-get '/account' do
-  if !session[:logged_in]
-    redirect '/'
-  end
-
+def get_info
   @results = @customer_info.get_first_row('SELECT * FROM customer WHERE twitterAcc = ?',session[:twitter_acc])
   if !@results.nil?
     @twitter_acc = @results[0]
@@ -18,6 +13,14 @@ get '/account' do
     @surname = @results[6]
     @atSheffield = @customer_info.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?', @twitter_acc).downcase.eql? 'sheffield'
   end
+end
+
+get '/account' do
+  if !session[:logged_in]
+    redirect '/'
+  end
+
+  get_info
 
   @updating = false
   @updating_balance = false
@@ -49,6 +52,7 @@ end
 
 post '/update_balance' do
   @updating_balance = true
+  get_info
   @has_cc = @cc_no!='' && !@cc_no.nil?
 
   if @has_cc
@@ -58,5 +62,27 @@ post '/update_balance' do
     @customer_info.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?',[new_balance,session[:twitter_acc]])
   end
 
+  erb :account
+end
+
+post '/redeem_voucher' do
+  @redeeming = true
+
+  code = params[:code].strip
+  @exists = @customer_info.get_first_value('SELECT COUNT(*) FROM competition_winners WHERE coupon_code = ?',code) !=0
+  @redeemed = (@customer_info.get_first_value('SELECT redeemed FROM competition_winners WHERE coupon_code = ?',code) ==1) if @exists
+  if @exists && !@redeemed
+    reward = @customer_info.get_first_value('SELECT cp FROM competition_winners WHERE coupon_code = ?',code)
+    @added_funds = reward
+    new_balance = @customer_info.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?', session[:twitter_acc]) + reward
+
+    @customer_info.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?',[new_balance,session[:twitter_acc]])
+    @customer_info.execute('UPDATE competition_winners SET redeemed = 1 WHERE coupon_code = ?',code)
+    @succ_red = true
+  else
+    @succ_red = false
+  end
+
+  get_info
   erb :account
 end

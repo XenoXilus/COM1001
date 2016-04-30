@@ -1,0 +1,81 @@
+<%= erb :dashboard_header %>
+
+<h1>Offers</h1>
+
+<h3>Loyalty offers:</h3>
+<p>Set the number of orders and the reward:</p>
+<form action="/set_offer" method="post">
+  <p>No. of repeated orders:
+    <input type="number" name="norders" min="0" value="<%= @norders %>"/>
+  </p>
+  <p>CurryPound reward:
+    <input type="number" name="cp" min="0" value="<%= @cp %>"/>
+  </p>
+  <input type="submit" value="Update" />
+</form>
+
+<h3>Trigger twitter RT giveaway:</h3>
+<form action="trigger_competition" method="post">
+
+  <% if !@valid_msg %>
+      <p style="color:red">Message field cannot be empty.</p>
+  <%end%>
+  <p>Message:
+    <input type="text" name="msg" value="<%=h @msg%>"/>
+  </p>
+
+  <% if !@valid_date %>
+      <p style="color:red">Invalid deadline.</p>
+  <%end%>
+  <p>Deadline:
+    <input type="date" name="date" value="<%=@date%>" />
+    <input type="time" name="time" value="<%=@time%>"/>
+  </p>
+
+  <p>Number of winners:
+    <input type="number" name="nwinners" min="1" value="<%=@nwinners%>"/>
+  </p>
+  <p>CurryPound reward:
+    <input type="number" name="cp_reward" min="1" value="<%=@cp_reward%>"/>
+  </p>
+  <input type="submit" value="Start"/>
+</form>
+
+<h3>Current competitions:</h3>
+
+<% unless @competitions.nil? %>
+  <table class="menu_table" border="1">
+    <tr>
+      <th>Id</th>
+      <th>Message</th>
+      <th>Deadline</th>
+      <th>No. of Winners</th>
+      <th>Reward</th>
+      <th>Winners</th>
+    </tr>
+    <% @competitions.each_with_index do |comp,i| %>
+      <tr>
+        <td><%=h comp[0]%></td>
+        <td><%=h comp[1]%></td>
+        <td><%=h comp[2]%> <%=h comp[3]%></td>
+        <td><%=h comp[4]%></td>
+        <td><%=h comp[5]%></td>
+        <td>
+          <% if !@winners[i].nil? %>
+            <ul>
+              <% @winners[i].each do |winner| %>
+                <li style=<%= (winner[4]==1) ? ('text-decoration:line-through;') : ('')%>> <%= h winner[1] %> </li>
+              <% end%>
+            </ul>
+          <% else %>
+            No winners
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <button onclick="window.location.href='/get_winners'">Get Winners</button>
+<% end %>
+
+<%= erb :dashboard_footer %>
