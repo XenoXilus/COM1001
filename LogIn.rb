@@ -48,7 +48,7 @@ post '/login' do
     Stats.increment 'logins',session[:city]
     session[:login_time] = Time.now
     session[:email] = email_address
-    session[:twitter_acc]  = @db.get_first_value('SELECT blacklisted FROM customer WHERE email = ?',email_address)
+    session[:twitter_acc]  = @db.get_first_value('SELECT twitterAcc FROM customer WHERE email = ?',email_address)
 
     admin_ok =  !(@db.get_first_value('SELECT email FROM administrators WHERE email = ?',email_address)).nil?
 
