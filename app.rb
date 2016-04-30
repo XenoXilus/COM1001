@@ -30,7 +30,7 @@ get '/' do
         Stats.increment 'total_visits' #todo to-be-changed
     end
 
-    if !session[:city].nil?
+    if !(session[:sheffield].nil? || session[:birmingham].nil?)
         @city = session[:city]
     end
 
@@ -38,12 +38,12 @@ get '/' do
 end
 
 get '/setSheff' do
-    session[:city] = 'Sheffield'
+    session[:sheffield]
     redirect '/'
 end
 
 get '/setBirm' do
-    session[:city] = 'Birmingham'
+    session[:birmingham]
     redirect '/'
 end
 

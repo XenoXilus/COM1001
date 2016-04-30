@@ -22,11 +22,20 @@ get '/admin_edit_menu' do
     query = %{SELECT id, itemName, description, unitPrice, vegetarian, glutenFree, atSheff, atBirm
                  FROM menu
                  WHERE category = ? }
+                 
     @starterResults = @db.execute query, 'starter'
     @mildResults = @db.execute query, 'mild'
     @hotResults = @db.execute query, 'hot'
     @riceResults = @db.execute query, 'rice'
     @sidesResults = @db.execute query, 'side'
+
+    Array @m = [
+            ["Starters", @starterResults],
+        ["Mild Dishes", @mildResults],
+        ["Hot Dishes", @hotResults],
+        ["Rice Dishes", @riceResults],
+        ["Sides", @sidesResults]
+    ]
 
     erb :dashboard_edit_menu
 end
