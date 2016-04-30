@@ -51,17 +51,31 @@
       <th>Deadline</th>
       <th>No. of Winners</th>
       <th>Reward</th>
+      <th>Winners</th>
     </tr>
-    <% @competitions.each do |comp| %>
+    <% @competitions.each_with_index do |comp,i| %>
       <tr>
-        <td><%= h comp[0]%></td>
+        <td><%=h comp[0]%></td>
         <td><%=h comp[1]%></td>
         <td><%=h comp[2]%> <%=h comp[3]%></td>
         <td><%=h comp[4]%></td>
         <td><%=h comp[5]%></td>
+        <td>
+          <% if !@winners[i].nil? %>
+            <ul>
+              <% @winners[i].each do |winner| %>
+                <li style=<%= (winner[4]==1) ? ('text-decoration:line-through;') : ('')%>> <%= h winner[1] %> </li>
+              <% end%>
+            </ul>
+          <% else %>
+            No winners
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </table>
+
+  <button onclick="window.location.href='/get_winners'">Get Winners</button>
 <% end %>
 
 <%= erb :dashboard_footer %>
