@@ -4,7 +4,7 @@
   <!--&lt;!&ndash;%= session[:login_time].strftime("%d/%m/%Y at %I:%M%p") %>&ndash;&gt;-->
 <!--</p>-->
 
-<% if !(session[:sheffield] || session[:birmingham]) %>
+<% if session[:city].nil? %>
 <br>
 <div class="panel panel-info">
     <div class="panel-heading">Help Us Deliver To You</div>
