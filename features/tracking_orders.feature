@@ -17,13 +17,9 @@ Feature: Tracking orders as an admin
     When a customer orders "1 3 5"
     When I go to orders
     Then I should see "1 3 5"
-    Then delete reply
     When a customer cancels "1 3 5"
     When I go to orders
     Then I should see "Canceled" within "order 1 3 5"
-    Then delete reply
-    Then delete customer tweet
-    Then delete customer tweet
 
   Scenario: Changing an order status
     Given I am logged in as "admin"
@@ -32,7 +28,6 @@ Feature: Tracking orders as an admin
     When I select "Preparing" from "change_to"
     And I press "Change Status!"
     Then I should see "Preparing" in row "1"
-    Then delete reply
 
   Scenario: Changing multiple order statuses
     Given I am logged in as "admin"

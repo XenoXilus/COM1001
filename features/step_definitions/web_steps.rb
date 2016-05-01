@@ -304,14 +304,11 @@ When /a customer orders "([^\"]*)"/ do |order_text|
   twitter_db_set_up
   $order_text = order_text
   @customer.update("@curryhouse02 order #{order_text}")
-end
 
-When /a customer makes an order/ do
-  twitter_db_set_up
-
-  max_id = @db.get_first_value('SELECT max(id) FROM menu')
-  $order_text = "#{Random.rand(max_id)} #{Random.rand(max_id)} #{Random.rand(max_id)}"
-  @customer.update("@curryhouse02 order #{$order_text}")
+  sqlite_db_set_up
+  order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')+1
+  tweet_id = @db.get_first_value('SELECT max(id) FROM tweets')+1
+  @db.execute('INSERT INTO tweets(id,sender,text,order_id) VALUES (?,"Customer",?,?)',[tweet_id,order_text,order_id])
 end
 
 When /^a "([^\"]*)" customer orders "([^\"]*)"$/ do |city,order_text|
@@ -320,8 +317,20 @@ When /^a "([^\"]*)" customer orders "([^\"]*)"$/ do |city,order_text|
   tweet_id = @db.get_first_value('SELECT max(id) FROM tweets')+1
   sender = "#{city}-customer"
   @db.execute('INSERT INTO tweets(id,sender,text,order_id,city) VALUES (?,?,?,?,?)',[tweet_id,sender,order_text,order_id,city])
-
 end
+
+When /a customer cancels "([^\"]*)"/ do |text|
+  sqlite_db_set_up
+  @db.execute('UPDATE tweets SET status = "Canceled" WHERE text LIKE ?', ('%'+text+'%'))
+end
+
+# When /a customer makes an order/ do
+#   twitter_db_set_up
+#
+#   max_id = @db.get_first_value('SELECT max(id) FROM menu')
+#   $order_text = "#{Random.rand(max_id)} #{Random.rand(max_id)} #{Random.rand(max_id)}"
+#   @customer.update("@curryhouse02 order #{$order_text}")
+# end
 
 # When /an unregistered customer orders "([^\"]*)"/ do |order_text|
 #   $unrg_order_text = "item #{Random.rand(10000)}" #try to have unique item numbers to avoid duplicate tweets
@@ -335,14 +344,7 @@ end
 #   unrg_customer.update("@curryhouse02 order #{$order_text}")
 # end
 
-When /a customer cancels "([^\"]*)"/ do |text|
-  if !$order_text.nil?
-    text = $order_text
-  end
-  twitter_db_set_up
-  order_id = @db.get_first_value('SELECT order_id FROM tweets WHERE text LIKE ?', ('%'+text+'%'))
-  @customer.update("@curryhouse02 cancel #{order_id}")
-end
+
 
 Then /^delete customer tweet$/ do
   twitter_db_set_up
