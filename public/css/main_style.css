@@ -47,7 +47,6 @@ footer {
     width: 40%;
     padding: 30px 50px;
     margin: 42px 5%;
-
 }
 th, td {
     padding: 10px;
@@ -56,33 +55,4 @@ th, td {
 th {
     font-size: 1.2em;
     height: 2.3em;
-}
-.menu_table {
-    border-collapse: collapse;
-    border: none;
-    width: 95%;
-    margin: 10px auto;
-    table-layout: fixed;
-    min-width: 500px;
-}
-.col_id {
-    width: 25px;
-}
-.col_num {
-    width: 7%;
-}
-.col_n {
-    width: 20%;
-}
-.col_d {
-    width: 50%;
-}
-.col_p {
-    width: 10%;
-}
-.GF {
-    color: darkgoldenrod;
-}
-.V {
-    color: #3e8f3e;
 }
