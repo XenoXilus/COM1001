@@ -90,7 +90,7 @@ def check_for_offers twitter_username
     new_balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',twitter_username)+reward
     @db.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?', [new_balance,twitter_username])
     msg="We thank you for being a loyal customer. To reward you for your loyalty we have added #{reward} CurryPounds to your balance."
-    $client.create_direct_message(twitter_username,msg)
+    $client.update("@#{twitter_username}: #{msg}")
   end
 end
 

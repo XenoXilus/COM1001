@@ -67,10 +67,10 @@ get '/blacklist_customer' do
   blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc = ?',twitter_acc) == 1
   if blacklisted
     @db.execute('UPDATE customer SET blacklisted = 0 WHERE twitterAcc = ?', twitter_acc)
-    ch_twitter.create_direct_message(twitter_acc,'You have been unbanned from our website! Sorry for any inconvenience caused.')
+    ch_twitter.update(twitter_acc,'You have been unbanned from our website! Sorry for any inconvenience caused.')
   else
     @db.execute('UPDATE customer SET blacklisted = 1 WHERE twitterAcc = ?', twitter_acc)
-    ch_twitter.create_direct_message(twitter_acc,'We are sorry to inform you that your account has been banned from our website.')
+    ch_twitter.update(twitter_acc,'We are sorry to inform you that your account has been banned from our website.')
   end
   redirect "/search_customer?input=#{twitter_acc}"
 end
