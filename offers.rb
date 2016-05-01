@@ -1,5 +1,3 @@
-require 'net/smtp'
-
 before do
   @db = SQLite3::Database.new './curry_house.sqlite'
   @competitions = @db.execute('SELECT * FROM competitions')
@@ -34,27 +32,6 @@ post '/set_offer' do
   @cp = params[:cp]
   @db.execute("UPDATE loyalty_offer SET norders = #{@norders}")
   @db.execute("UPDATE loyalty_offer SET cp = #{@cp}")
-
-  redirect '/offers'
-end
-
-post '/send_message' do
-  query = "Select email FROM customer"
-  @emails = @db.execute(query)
-
-  message = <<MESSAGE_END
-    From: Private Person <afparker1@sheffield.ac.uk>
-    To: A Test User <noseyparker6996@hotmail.co.uk>
-    Subject: SMTP e-mail test
-
-    This is a test e-mail message.
-MESSAGE_END
-
-
-  Net::SMTP.start('localhost') do |smtp|
-    smtp.send_message message, 'afparker1@sheffield.ac.uk',
-                      'noseyparker6996@hotmail.co.uk'
-  end
 
   redirect '/offers'
 end
@@ -120,7 +97,7 @@ post '/trigger_competition' do
     @db.execute('INSERT INTO competitions(msg,date,time,nwinners,cp_reward,tweet_id) VALUES(?,?,?,?,?,?)', [@msg,@date,@time,@nwinners,@cp_reward,tweet_id])
     @competitions.push(@db.get_first_row('SELECT * FROM competitions WHERE msg = ?',@msg))
   end
-  
+
   erb :offers
 end
 
@@ -137,8 +114,11 @@ get '/get_winners' do
       tweet_id = comp[6]
       @db.execute('UPDATE competitions SET expired = 1 WHERE tweet_id = ?',tweet_id)
       participants = ch_twitter.retweeters_of(tweet_id)
-      
-      # participants.each { |p| p = p.screen_name}
+      followers = ch_twitter.followers()
+
+      participants.each do |p|
+        participants.delete(p) if !(followers.include? p)
+      end
 
       nwinners = comp[4]
       if nwinners<participants.size

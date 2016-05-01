@@ -7,7 +7,7 @@ before do
 end
 
 get '/menu' do
-	if session[:birmingham]
+	if session[:city].eql? 'birmingham'
     query = %{SELECT itemName, description, unitPrice, vegetarian, glutenFree, id
               FROM menu
               WHERE category = ? AND atBirm = 1 }

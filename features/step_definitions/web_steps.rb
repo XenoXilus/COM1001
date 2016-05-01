@@ -40,14 +40,17 @@ end
 
 Given /^(?:|I )am logged in as (.+)$/ do |access|
   visit '/login'
-  if access.include?'admin'
-    fill_in('email_address', :with => 'admin@ch.com')
-    fill_in('password', :with => '123456')
-  elsif access.include?'customer'
-    fill_in('email_address', :with => 'alex@gmail.com')
-    fill_in('password', :with => '123456')
+  with_scope('#login-form') do
+    if access.include?'admin'
+      fill_in('email_address', :with => 'admin@ch.com')
+      fill_in('password', :with => '123456')
+    elsif access.include?'customer'
+      fill_in('email_address', :with => 'alex@gmail.com')
+      fill_in('password', :with => '123456')
+    end
+    click_button('Log in')
   end
-  click_button('submit')
+
 end
 
 Given /^(?:|I )am not logged in$/ do
@@ -142,6 +145,13 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   if text.include? '?my'
     text = findValue(text)
   end
+  if !selector.nil? && (selector.include? 'order')
+    order_text = selector.partition('order ')[2]
+    sqlite_db_set_up
+    order_id = @db.get_first_value('SELECT order_id FROM tweets WHERE text LIKE ?', ('%'+order_text+'%'))
+    selector = "tr#order#{order_id}"
+  end
+  puts "selector =#{selector}"
   if text.eql?('the order') && !$order_text.nil?
     text = $order_text
   end
@@ -281,6 +291,7 @@ def twitter_db_set_up
       :access_token_secret => 'sI7Wgj0yF7bLQGdiPxaPGYUrt928hmCuCiQulrbsXls5v'
   }
   @customer = Twitter::REST::Client.new(config)
+  @ch = ch_twitter
   sqlite_db_set_up
 end
 
@@ -301,6 +312,15 @@ When /a customer makes an order/ do
   max_id = @db.get_first_value('SELECT max(id) FROM menu')
   $order_text = "#{Random.rand(max_id)} #{Random.rand(max_id)} #{Random.rand(max_id)}"
   @customer.update("@curryhouse02 order #{$order_text}")
+end
+
+When /^a "([^\"]*)" customer orders "([^\"]*)"$/ do |city,order_text|
+  sqlite_db_set_up
+  order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')+1
+  tweet_id = @db.get_first_value('SELECT max(id) FROM tweets')+1
+  sender = "#{city}-customer"
+  @db.execute('INSERT INTO tweets(id,sender,text,order_id,city) VALUES (?,?,?,?,?)',[tweet_id,sender,order_text,order_id,city])
+
 end
 
 # When /an unregistered customer orders "([^\"]*)"/ do |order_text|
@@ -324,19 +344,32 @@ When /a customer cancels "([^\"]*)"/ do |text|
   @customer.update("@curryhouse02 cancel #{order_id}")
 end
 
-Then /^(?:|I )I should see "([^\"]*)" in the "([^\"]*)" column$/ do |text,row|
-  if !(row =~ /\D/).nil?
-    if !$order_text.nil?
-      row = $order_text
-    end
-    order_id = @db.get_first_value('SELECT order_id FROM tweets WHERE text LIKE ?', ('%'+row+'%'))
-  else
-    order_id = row.to_i
-  end
+Then /^delete customer tweet$/ do
+  twitter_db_set_up
+  tweet = @customer.user_timeline().take(1)[0]
+  @customer.destroy_status(tweet.id)
 
-  puts "order_id = #{order_id}"
+end
 
-  with_scope("tr:nth-child(#{order_id+1})") do
+Then /^delete reply$/ do
+  twitter_db_set_up
+  tweet = @ch.user_timeline().take(1)[0]
+  @ch.destroy_status(tweet.id)
+end
+
+Then /^(?:|I )I should see "([^\"]*)" in row "([^\"]*)"$/ do |text,row|
+  # if !(row =~ /\s/).nil?
+  #   # if !$order_text.nil?
+  #   #   row = $order_text
+  #   # end
+  #   order_id = @db.get_first_value('SELECT order_id FROM tweets WHERE text LIKE ?', ('%'+row+'%'))
+  # else
+  #   order_id = row.to_i
+  # end
+  #
+  # puts "order_id = #{order_id}"
+
+  with_scope("tr:nth-child(#{row.to_i+1})") do
     if page.respond_to? :should
       page.should have_content(text)
     else

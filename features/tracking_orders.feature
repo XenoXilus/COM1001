@@ -3,26 +3,27 @@ Feature: Tracking orders as an admin
   Scenario: Accessing the page as admin and viewing the table
     Given I am logged in as "admin"
     When I go to orders
-    Then I should see "Order Id" within ".menu_table"
-    Then I should see "Tweet Id" within ".menu_table"
-    Then I should see "From" within ".menu_table"
-    Then I should see "Text" within ".menu_table"
-    Then I should see "Sum" within ".menu_table"
-    Then I should see "Status" within ".menu_table"
-    Then I should see "Select to change" within ".menu_table"
+    Then I should see "Order Id"
+    Then I should see "Tweet Id"
+    Then I should see "From"
+    Then I should see "Text"
+    Then I should see "Sum"
+    Then I should see "Status"
+    Then I should see "Select to change"
 
-  Scenario: Displaying new orders
+  Scenario: Displaying new orders and canceling
     Given I am logged in as "admin"
     When I go to orders
-    When a customer makes an order
+    When a customer orders "1 3 5"
     When I go to orders
-    Then I should see "the order"
-
-  Scenario: Displaying canceled orders from customers
-    Given I am logged in as "admin"
-    When a customer cancels "the order"
+    Then I should see "1 3 5"
+    Then delete reply
+    When a customer cancels "1 3 5"
     When I go to orders
-    Then I should see "Canceled" in the "order" column
+    Then I should see "Canceled" within "order 1 3 5"
+    Then delete reply
+    Then delete customer tweet
+    Then delete customer tweet
 
   Scenario: Changing an order status
     Given I am logged in as "admin"
@@ -30,7 +31,8 @@ Feature: Tracking orders as an admin
     When I check "status1"
     When I select "Preparing" from "change_to"
     And I press "Change Status!"
-    Then I should see "Preparing" in the "1" column
+    Then I should see "Preparing" in row "1"
+    Then delete reply
 
   Scenario: Changing multiple order statuses
     Given I am logged in as "admin"
@@ -40,6 +42,28 @@ Feature: Tracking orders as an admin
     When I check "status3"
     When I select "Delivering" from "change_to"
     And I press "Change Status!"
-    Then I should see "Delivering" in the "1" column
-    Then I should see "Delivering" in the "2" column
-    Then I should see "Delivering" in the "3" column
+    Then I should see "Delivering" in row "1"
+    Then I should see "Delivering" in row "2"
+    Then I should see "Delivering" in row "3"
+
+  Scenario: Viewing Sheffield-only orders
+    Given I am logged in as "admin"
+    When I go to orders
+    When a "sheffield" customer orders "5 6 7"
+    When I follow "Sheffield"
+    Then I should see "5 6 7"
+    When I follow "Birmingham"
+    Then I should not see "5 6 7"
+    When I follow "All"
+    Then I should see "5 6 7"
+
+  Scenario: Viewing Birmingham-only orders
+    Given I am logged in as "admin"
+    When I go to orders
+    When a "birmingham" customer orders "7 8 2 5"
+    When I follow "Birmingham"
+    Then I should see "7 8 2 5"
+    When I follow "Sheffield"
+    Then I should not see "7 8 2 5"
+    When I follow "All"
+    Then I should see "7 8 2 5"
