@@ -41,9 +41,9 @@ post '/change_status' do
 
   for i in 1..@caught_tweets.size do
     if params["status#{i}"]=="on"
-      #update both db and array
       @db.execute('UPDATE tweets SET status = ? WHERE id = ?',[params[:change_to],@caught_tweets[i-1][0]])
       @caught_tweets[i-1][3] = params[:change_to]
+      puts @caught_tweets[i-1][3]
       tweet_status_change(@caught_tweets[i-1])
     end
   end

@@ -14,8 +14,8 @@ def init
   $client = Twitter::REST::Client.new(config)
 
 
-  @db = SQLite3::Database.new './curry_house.sqlite'
-  @caught_tweets = @db.execute('SELECT * FROM tweets')
+  # @db = SQLite3::Database.new './curry_house.sqlite'
+  # @caught_tweets = @db.execute('SELECT * FROM tweets')
 end
 
 #search for tweets in the timeline that include 'order' or 'cancel' command
@@ -38,7 +38,7 @@ end
 #Saves the order information to the database and tweets back to the customer.
 def process_order tweet
   twitter_username = tweet.attrs[:user][:screen_name]
-  account_registered = !@db.get_first_value('SELECT address FROM customer WHERE twitterAcc=?',twitter_username)[0].nil? ? true : false
+  account_registered = !@db.get_first_value('SELECT address FROM customer WHERE twitterAcc=?',twitter_username).nil? ? true : false
   account_blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc=?',twitter_username)==1;
   order_text = tweet.text.partition('order')[2]
 

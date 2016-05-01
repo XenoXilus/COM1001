@@ -27,7 +27,7 @@
         <th>Select to change</th>
       </tr>
       <% @caught_tweets.each_with_index do |tweet,i| %>
-          <tr>
+          <tr id="order<%= tweet[4]%>">
             <td><%= h tweet[4]%></td>
             <td><%=h tweet[0]%></td>
             <td><a target="_blank" href="search_customer?input=<%=h tweet[1]%>"><%=h tweet[1]%></a></td>

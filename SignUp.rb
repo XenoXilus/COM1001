@@ -13,14 +13,6 @@ end
 VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
 
-config = {
-    :consumer_key => 'NNtgfDPbs3e2RfYogLwozovGn',
-    :consumer_secret => 'rZAtPRt3IlTJ0gUjMALihOYbDCqytVhse58lGPgn863gq5oLss',
-    :access_token => '705790849393758208-DkouWibaCQ6xfnjygbm78Gfh9HxA1uB',
-    :access_token_secret => 'ZJGwvPMmkwV5f6YaVZrUVgztiGcV1iXupncKGmqhXKXWb'
-}
-
-search = Twitter::REST::Client.new(config)
 
 
 get '/sign_up' do
@@ -28,7 +20,7 @@ get '/sign_up' do
     redirect '/'
   end
   @submitted = false
-  erb :signUpForm
+  erb :access
 end
 
 
@@ -57,8 +49,8 @@ post '/form_handler' do
   exists_ok=true
 
   begin
-    exists= search.user(@twitter)
-  rescue Twitter::Error::NotFound => err
+    exists= ch_twitter.user(@twitter)
+  rescue Twitter::Error=> err
    exists_ok=false
   end
 
@@ -75,11 +67,12 @@ post '/form_handler' do
 
 
   if @submitted && @all_ok
+    ch_twitter.follow(@twitter)
     Stats.increment 'registrations',@city
     @db.execute('INSERT INTO customer(firstname, surname, email,twitterAcc, password, city,address) VALUES(?, ?, ?, ?,?,?,?)', [@firstname, @surname, @email,@twitter, @password,@city, @address ])
   end
 
-  erb :signUpForm
+  erb :access
 end
 
 

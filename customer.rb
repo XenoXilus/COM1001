@@ -46,7 +46,7 @@ get '/search_customer' do
       cc=@db.get_first_value('SELECT cc FROM customer WHERE email = ?',@input)
     end
 
-    if cc.nil? then
+    if !cc.nil? then
       @cCard="YES"
     else
       @cCard="NO"
