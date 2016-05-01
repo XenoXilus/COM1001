@@ -37,8 +37,8 @@
         <li class=<%= "active" if active_page?("instructions") %>><a href="/instructions">How to Order</a></li>
         <li class=<%= "active" if active_page?("about") %>><a href="/about">About</a></li>
         <%if !session[:logged_in]%>
-            <li class=<%= "active" if active_page?("login") %>><a href="/login">Sign in</a> </li>
-            <li class=<%= "active" if active_page?("sign_up") %>><a href="/sign_up">Sign up</a> </li>
+            <li class=<%= "active" if active_page?("login") || active_page?("sign_up") %>><a href="/login"> Log In / Sign Up </a> </li>
+
         <%else%>
             <li class=<%= "active" if active_page?("account") || active_page?("update_balance") %>><a href="/account">My Account</a></li>
             <%if session[:admin]%>

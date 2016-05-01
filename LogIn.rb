@@ -13,10 +13,11 @@ enable :sessions
 set :session_secret, 'super secret'
 
 get '/login' do
+  @logSubmitted = false
   if session[:logged_in]
     redirect '/'
   else
-    erb :login
+    erb :access
   end
 end
 
@@ -24,10 +25,13 @@ end
 
 post '/login' do
 
-  @submitted = true
+  @logSubmitted = true
 
   email_address = params[:email_address].strip
   pswrd = params[:password].strip
+
+  puts email_address
+  puts pswrd
 
   name = @db.execute('SELECT firstName FROM customer WHERE email = ? ', email_address)
   @email_address_ok = !name[0].nil?
@@ -63,7 +67,7 @@ post '/login' do
 
   @error = 'The Email address or the password is not correct'
 
-  erb :login
+  erb :access
 end
 
 get '/logout' do

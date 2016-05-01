@@ -3,90 +3,186 @@
 <div class="container">
 <div class="row">
   <div class="col-md-6">
+
+
+    <% if @submitted && @all_ok %>
+        <br><br>
+      <p style=" margin-left:35%;">Thanks <%=h @firstname %> for your registration.<br>Your data have been saved.</p>
+    <% else %>
+
+    <% if (@error.nil? && !@blacklisted) %>
+        <p style="color:#ff10ba"><strong><%= @error %></strong></p>
+    <% end %>
+
     <form class="form-horizontal" action="/login" method="post">
-      <h2 class="form-signin-heading">Sign In</h2>
+
+
+      <% if @logSubmitted && @blacklisted %>
+          <br>
+          <p style="color:red; font-size:85%">We are sorry to inform you that your account has been banned from our website.</p>
+      <% end %>
+
+      <% if @logSubmitted && !@blacklisted && !@email_address_ok %>
+          <p style="color:red; font-size:85%">This email address does not exist or it is not correct. Please enter a correct email address.</p>
+      <% end %>
+
+      <h2 class="form-signin-heading" >Log In</h2>
+
+      <p>Please log in by entering your Email and your Password.</p>
+
       <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+        <label for="inputEmail3" class="col-sm-2 control-label">Email:</label>
         <div class="col-sm-10">
-          <input name="loginEmail" type="email" class="form-control" id="inputEmail3" placeholder="Email">
+          <input  name="email_address" id="email_address"  class="form-control"  placeholder="Email">
         </div>
-        <p> admin@ch.com to access pages, anything else for customers</p>
       </div>
+
+      <% if @logSubmitted && !@blacklisted && !@password_ok %>
+          <p style="color:red; font-size:85%">The password is not correct.<br> Please try again.</p>
+      <% end %>
+
       <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+        <label for="inputPassword3" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-          <input name="loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password">
+          <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
         </div>
-        <p> (123 to login for both)</p>
       </div>
+
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Remember me
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-default">Sign in</button>
+          <button type="submit" class="btn btn-default">Log in</button>
         </div>
       </div>
     </form>
 
     <br>
-
   </div>
   <div class="col-md-6">
-    <form class="form-horizontal" method="post" action="user_signup">
+
+
+    <% if !(@submitted && @all_ok) %>
+        <h1>Please Enter Your Personal Information</h1>
+    <%end%>
+
+
+
+
+        <% if @submitted && !@all_ok %>
+            <p style="color:red">There were errors in your form
+              submission, please correct them below.</p>
+        <% end %>
+
+
+        <form class="form-horizontal" method="post" action="form_handler">
       <h2 class="form-signin-heading">Sign up</h2>
       <div class="form-group">
-        <label for="inputName1" class="col-sm-2 control-label">Name</label>
+
+        <% if @submitted && !@firstname_ok %>
+            <p style="color:red">Please enter your first name</p>
+        <% end %>
+
+        <label for="inputName1" class="col-sm-2 control-label">Firstname:</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="inputName" placeholder="First Name">
+          <input type="text" name="firstname" class="form-control" id="inputName"  value="<%=h @firstname if @submitted %>" placeholder="First Name">
         </div>
       </div>
       <div class="form-group">
-        <label for="inputName2" class="col-sm-2 control-label">Surname</label>
+        <% if @submitted && !@surname_ok %>
+            <p style="color:red">Please enter your surname</p>
+        <% end %>
+        <label for="inputName2" class="col-sm-2 control-label">Surname:</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="inputName2" placeholder="Surname">
+          <input type="text" name="surname"  class="form-control" id="inputName2" value="<%=h @surname if @submitted %>" placeholder="Surname">
         </div>
       </div>
+
+
+      <% if   @submitted && !@different_twitter_ok %>
+          <p style="color:red"> This twitter already exists. <br> Please enter another twitter</p>
+      <% end %>
+
+      <% if @submitted && !@twitter_ok %>
+          <p style="color:red">Please enter your Twitter correctly. There is no twitter with the name '<%=@twitter%>'</p>
+      <% end %>
+
+
       <div class="form-group">
-        <label for="inputTwitter" class="col-sm-2 control-label">Twitter</label>
+        <label for="inputTwitter" class="col-sm-2 control-label">Twitter@:</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="inputTwitter" placeholder="Twitter Username">
+          <input type="text" name="twitter" value="<%=h @twitter if @submitted %>" class="form-control" id="inputTwitter" placeholder="Twitter Username">
         </div>
       </div>
+
       <div class="form-group">
-        <label for="inputEmail2" class="col-sm-2 control-label">Email</label>
+        <label for="inputCity" class="col-sm-2 control-label">City:</label>
         <div class="col-sm-10">
-          <input type="email" class="form-control" id="inputEmail2" placeholder="Email">
+
+          <p> <label for="sheffield" class="col-sm-2 control-label">Sheffield</label>
+              <input input="sheffield" type="radio" name="city" checked  value="sheffield" class="form-control" ></p>
+          <p> <label for="birmingham" class="col-sm-2 control-label">Birmingham</label>
+             <input input="birmingham" type="radio" name="city"   value="birmingham" class="form-control" ></p>
+
         </div>
       </div>
+
+      <% if @submitted && !@address_ok %>
+          <p style="color:red">Please enter your Address</p>
+      <% end %>
+
       <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+        <label for="inputAddress" class="col-sm-2 control-label">Address:</label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+          <input type="text"   name="address" value="<%=h @address if @submitted %>" class="form-control" id="inputAddress" placeholder="Address">
         </div>
       </div>
+
+
+      <% if @submitted && !@email_ok %>
+          <p style="color:red">Please enter your email address correctly</p>
+      <% end %>
+
+      <% if   @submitted && !@different_emails_ok %>
+          <p style="color:red"> This email already exists. <br> Please enter another Email address</p>
+      <% end %>
+
+      <div class="form-group">
+        <label for="inputEmail2" class="col-sm-2 control-label">Email:</label>
+        <div class="col-sm-10">
+          <input type="email" name="email" value="<%=h @email if @submitted %>" class="form-control" id="inputEmail2" placeholder="Email">
+        </div>
+      </div>
+
+      <% if @submitted && !@password_ok %>
+          <p style="color:red">Please enter a password(at least 6 characters)</p>
+      <% end %>
+
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Password:</label>
+        <div class="col-sm-10">
+          <input type="password"  name="password"  value="<%=h @password if @submitted %>" class="form-control" id="inputPassword3" placeholder="Password">
+        </div>
+      </div>
+
+      <% if @submitted && !@confirm_password_ok %>
+          <p style="color:red">The passwords are not the same</p>
+      <% end %>
+
+      <div class="form-group">
+        <label for="inputConfirmPassword3" class="col-sm-2 control-label">Comfirm Password:</label>
+        <div class="col-sm-10">
+          <input type="password"   name="confirm_password" value="<%=h @confirm_password if @submitted %>" class="form-control" id="inputConfirmPassword3" placeholder="Password">
+        </div>
+      </div>
+
+
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Remember me
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-default">Sign in</button>
+          <button type="submit"  id="Submit"   class="btn btn-default">Submit</button>
         </div>
       </div>
     </form>
-  </div>
+    <%end%>
+    </div>
 </div>
 </div>
 

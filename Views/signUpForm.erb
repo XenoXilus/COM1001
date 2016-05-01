@@ -48,8 +48,7 @@
       <% end %>
 
       <p>Address:
-        <input type="text" name="address"
-               value="<%=h @address if @submitted %>"/>
+        <input type="text" name="address" value="<%=h @address if @submitted %>"/>
       </p>
 
 
@@ -62,8 +61,7 @@
       <% end %>
 
       <p>Email address:
-        <input type="text" name="email"
-               value="<%=h @email if @submitted %>"/>
+        <input type="text" name="email" value="<%=h @email if @submitted %>"/>
       </p>
 
 
@@ -76,8 +74,7 @@
       <% end %>
 
       <p>Twitter: @
-        <input type="text" name="twitter"
-               value="<%=h @twitter if @submitted %>"/>
+        <input type="text" name="twitter" value="<%=h @twitter if @submitted %>"/>
       </p>
 
 
@@ -86,8 +83,7 @@
       <% end %>
 
       <p>Create Password:
-        <input type="password" name="password"
-               value="<%=h @password if @submitted %>"/>
+        <input type="password" name="password"  value="<%=h @password if @submitted %>"/>
       </p>
 
       <% if @submitted && !@confirm_password_ok %>
@@ -95,8 +91,7 @@
       <% end %>
 
       <p>Confirm Password:
-        <input type="password" name="confirm_password"
-               value="<%=h @confirm_password if @submitted %>"/>
+        <input type="password" name="confirm_password" value="<%=h @confirm_password if @submitted %>"/>
       </p>
 
       <input id="Submit" type="submit" value="Submit"  />
