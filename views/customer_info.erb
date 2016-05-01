@@ -49,7 +49,10 @@
 
   <% if @customer_found %>
     <!--<button onclick="window.location.href='/tweet_to?customer=<%= @twitter %>'"><%= @button_text%></button>-->
-    <button onclick="window.location.href='/blacklist_customer'"><%= @button_text%></button>
+    <button onclick="window.location.href='/blacklist_customer'"><%= @button_text%></button><br><br>
+
+    <button onclick="window.location.href='/make_admin'"><%= @button2%></button>
+
   <% end %>
 
 <%= erb :dashboard_footer %>

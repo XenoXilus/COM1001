@@ -53,8 +53,13 @@ get '/search_customer' do
     end
 
     session[:current_customer]=@twitter
+
     blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc = ?',session[:current_customer]) == 1
       @button_text = blacklisted ? 'Unblacklist' : 'Blacklist'
+
+    admin_ok = !@db.get_first_value('SELECT email FROM administrators WHERE email = ?',@email).nil?
+      @button2 = admin_ok ? 'Unmake administrator' : 'Make administrator'
+
 
   end
 
@@ -62,15 +67,33 @@ get '/search_customer' do
 
 end
 
+
+get '/make_admin' do
+  twitter_acc = session[:current_customer]
+
+  email=@db.get_first_value('SELECT email FROM customer WHERE twitterAcc = ?',twitter_acc)
+
+  admin_ok = !@db.get_first_value('SELECT email FROM administrators WHERE email = ?',email).nil?
+
+  if admin_ok
+
+    @db.execute('DELETE FROM administrators where email = ?',email)
+  else
+    @db.execute('INSERT INTO administrators(email) VALUES(?)',[email])
+  end
+  redirect "/search_customer?input=#{twitter_acc}"
+end
+
+
 get '/blacklist_customer' do
   twitter_acc = session[:current_customer]
   blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc = ?',twitter_acc) == 1
   if blacklisted
     @db.execute('UPDATE customer SET blacklisted = 0 WHERE twitterAcc = ?', twitter_acc)
-    ch_twitter.update(twitter_acc,'You have been unbanned from our website! Sorry for any inconvenience caused.')
+    ch_twitter.update("@#{twitter_acc} You have been unbanned from our website! Sorry for any inconvenience caused.")
   else
     @db.execute('UPDATE customer SET blacklisted = 1 WHERE twitterAcc = ?', twitter_acc)
-    ch_twitter.update(twitter_acc,'We are sorry to inform you that your account has been banned from our website.')
+    ch_twitter.update("@#{twitter_acc} We are sorry to inform you that your account has been banned from our website.")
   end
   redirect "/search_customer?input=#{twitter_acc}"
 end
