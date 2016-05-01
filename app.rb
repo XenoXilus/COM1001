@@ -2,7 +2,6 @@ require 'erb'
 require 'sinatra'
 require 'sqlite3'
 require 'twitter'
-require 'net/smtp'
 
 require_relative 'account'
 require_relative 'SignUp'

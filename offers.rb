@@ -1,5 +1,3 @@
-require 'net/smtp'
-
 before do
   @db = SQLite3::Database.new './curry_house.sqlite'
   @competitions = @db.execute('SELECT * FROM competitions')
@@ -49,12 +47,6 @@ post '/send_message' do
 
     This is a test e-mail message.
 MESSAGE_END
-
-
-  Net::SMTP.start('localhost') do |smtp|
-    smtp.send_message message, 'afparker1@sheffield.ac.uk',
-                      'noseyparker6996@hotmail.co.uk'
-  end
 
   redirect '/offers'
 end
