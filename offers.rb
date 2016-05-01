@@ -1,3 +1,5 @@
+require 'net/smtp'
+
 before do
   @db = SQLite3::Database.new './curry_house.sqlite'
   @competitions = @db.execute('SELECT * FROM competitions')
@@ -32,6 +34,27 @@ post '/set_offer' do
   @cp = params[:cp]
   @db.execute("UPDATE loyalty_offer SET norders = #{@norders}")
   @db.execute("UPDATE loyalty_offer SET cp = #{@cp}")
+
+  redirect '/offers'
+end
+
+post '/send_message' do
+  query = "Select email FROM customer"
+  @emails = @db.execute(query)
+
+  message = <<MESSAGE_END
+    From: Private Person <afparker1@sheffield.ac.uk>
+    To: A Test User <noseyparker6996@hotmail.co.uk>
+    Subject: SMTP e-mail test
+
+    This is a test e-mail message.
+MESSAGE_END
+
+
+  Net::SMTP.start('localhost') do |smtp|
+    smtp.send_message message, 'afparker1@sheffield.ac.uk',
+                      'noseyparker6996@hotmail.co.uk'
+  end
 
   redirect '/offers'
 end

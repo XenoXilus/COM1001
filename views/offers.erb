@@ -78,4 +78,11 @@
   <button onclick="window.location.href='/get_winners'">Get Winners</button>
 <% end %>
 
+<h3>Contact All Customers</h3>
+<form action="/send_message" method="post">
+  <textarea name="message" placeholder="Enter your message here..." rows="5" cols="95" required></textarea>
+  <br>
+  <input type="submit" value="Send" />
+</form>
+
 <%= erb :dashboard_footer %>
