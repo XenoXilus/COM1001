@@ -14,7 +14,11 @@
         <p style="color:#ff10ba"><strong><%= @error %></strong></p>
     <% end %>
 
+<<<<<<< HEAD
     <form id="login-form"class="form-horizontal" action="/login" method="post">
+=======
+    <form id="login-form" class="form-horizontal"  action="/login" method="post">
+>>>>>>> 9f48126b60023d79fd9e01bb1f4b52e8453fe23f
 
 
       <% if @logSubmitted && @blacklisted %>
@@ -22,29 +26,31 @@
           <p style="color:red; font-size:85%">We are sorry to inform you that your account has been banned from our website.</p>
       <% end %>
 
+
+
+      <h2 class="form-signin-heading" >Log In</h2>
+
       <% if @logSubmitted && !@blacklisted && !@email_address_ok %>
           <p style="color:red; font-size:85%">This email address does not exist or it is not correct. Please enter a correct email address.</p>
       <% end %>
-
-      <h2 class="form-signin-heading" >Log In</h2>
 
       <p>Please log in by entering your Email and your Password.</p>
 
       <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label">Email:</label>
         <div class="col-sm-10">
-          <input  name="email_address" id="email_address"  class="form-control"  placeholder="Email">
+          <input type="text" name="email_address" id="email_address"  class="form-control" value="<%=h @email_address if @logSubmitted %>" placeholder="Email">
         </div>
       </div>
 
-      <% if @logSubmitted && !@blacklisted && !@password_ok %>
+      <% if @logSubmitted && !@blacklisted && !@password_ok && @email_address_ok %>
           <p style="color:red; font-size:85%">The password is not correct.<br> Please try again.</p>
       <% end %>
 
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-          <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
+          <input type="password" name="password" class="form-control" id="myPassword" placeholder="Password">
         </div>
       </div>
 
@@ -73,7 +79,7 @@
         <% end %>
 
 
-        <form class="form-horizontal" method="post" action="form_handler">
+    <form id="register-form" class="form-horizontal" method="post" action="form_handler">
       <h2 class="form-signin-heading">Sign up</h2>
       <div class="form-group">
 
@@ -120,7 +126,7 @@
           <p> <label for="sheffield" class="col-sm-2 control-label">Sheffield</label>
               <input input="sheffield" type="radio" name="city" checked  value="sheffield" class="form-control" ></p>
           <p> <label for="birmingham" class="col-sm-2 control-label">Birmingham</label>
-             <input input="birmingham" type="radio" name="city"   value="birmingham" class="form-control" ></p>
+             <input input="birmingham" type="radio" name="city"  <%= "checked" if  @city.eql?("birmingham")%> value="birmingham" class="form-control" ></p>
 
         </div>
       </div>
@@ -159,7 +165,7 @@
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-          <input type="password"  name="password"  value="<%=h @password if @submitted %>" class="form-control" id="inputPassword3" placeholder="Password">
+          <input type="password"  name="password"  value="<%=h @password if @submitted %>" class="form-control" id="registerPassword" placeholder="Password">
         </div>
       </div>
 
