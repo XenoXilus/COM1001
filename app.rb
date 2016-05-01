@@ -30,6 +30,7 @@ enable :sessions
 get '/' do
     if !session[:city].nil?
         @city = session[:city]
+        @city=@city.capitalize!
     end
 
     erb :index

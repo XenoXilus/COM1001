@@ -7,9 +7,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "123456"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Your data have been saved."
     Then delete the account with "email@email.com" email
 
@@ -20,9 +20,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "123456"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Please enter your first name"
 
 
@@ -33,9 +33,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "123456"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Please enter your surname"
 
   Scenario:Empty Address
@@ -45,9 +45,9 @@ Feature: Sign up validation
     When I fill in "address" with ""
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "123456"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Please enter your Address"
 
 
@@ -58,9 +58,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "wrong_email"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "123456"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Please enter your email address correctly"
 
   Scenario:Already submitted Email address
@@ -70,9 +70,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "customer@gmail.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "123456"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "This email already exists."
     Then I should see "Please enter another Email address"
 
@@ -84,9 +84,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "unreal_twitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "123456"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Please enter your Twitter correctly. There is no twitter with the name 'unreal_twitter'"
 
   Scenario:Already submitted Twitter account
@@ -96,9 +96,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "atwitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "123456"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "This twitter already exists."
     Then I should see "Please enter another twitter"
 
@@ -109,9 +109,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "12345"
+    When I fill in "registerPassword" with "12345"
     When I fill in "confirm_password" with "12345"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Please enter a password(at least 6 characters)"
 
   Scenario:Different passwords
@@ -121,9 +121,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "123456"
+    When I fill in "registerPassword" with "123456"
     When I fill in "confirm_password" with "654321"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "The passwords are not the same"
 
 
@@ -134,9 +134,9 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "12345"
+    When I fill in "registerPassword" with "12345"
     When I fill in "confirm_password" with "123"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Please enter a password(at least 6 characters)"
     Then I should see "The passwords are not the same"
 
@@ -147,8 +147,8 @@ Feature: Sign up validation
     When I fill in "address" with "address"
     When I fill in "email" with "email@email.com"
     When I fill in "twitter" with "twitter"
-    When I fill in "password" with "123"
+    When I fill in "registerPassword" with "123"
     When I fill in "confirm_password" with "12345"
-    When I press "Submit" within "form"
+    When I press "Submit" within "#register-form"
     Then I should see "Please enter a password(at least 6 characters)"
     Then I should see "The passwords are not the same"

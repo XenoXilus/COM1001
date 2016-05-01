@@ -14,7 +14,7 @@
         <p style="color:#ff10ba"><strong><%= @error %></strong></p>
     <% end %>
 
-    <form class="form-horizontal" action="/login" method="post">
+    <form id="login-form" class="form-horizontal"  action="/login" method="post">
 
 
       <% if @logSubmitted && @blacklisted %>
@@ -46,7 +46,7 @@
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-          <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
+          <input type="password" name="password" class="form-control" id="myPassword" placeholder="Password">
         </div>
       </div>
 
@@ -75,7 +75,7 @@
         <% end %>
 
 
-        <form class="form-horizontal" method="post" action="form_handler">
+    <form id="register-form" class="form-horizontal" method="post" action="form_handler">
       <h2 class="form-signin-heading">Sign up</h2>
       <div class="form-group">
 
@@ -161,7 +161,7 @@
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-          <input type="password"  name="password"  value="<%=h @password if @submitted %>" class="form-control" id="inputPassword3" placeholder="Password">
+          <input type="password"  name="password"  value="<%=h @password if @submitted %>" class="form-control" id="registerPassword" placeholder="Password">
         </div>
       </div>
 
