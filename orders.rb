@@ -1,14 +1,11 @@
 before do
-  #@caught_tweets = Array.new
   @db = SQLite3::Database.new './curry_house.sqlite'
   @caught_tweets = @db.execute('SELECT * FROM tweets')
   @valid_city = Array.new(@caught_tweets.size,true)
 end
 
 get '/orders' do
-  if !session[:admin]
-    redirect '/'
-  end
+  redirect '/' if !session[:admin]
 
   @sheff_orders = true
   @birm_orders = true
@@ -52,9 +49,8 @@ post '/change_status' do
 end
 
 get '/sheffield_orders' do
-  if !session[:admin]
-    redirect '/'
-  end
+  redirect '/' if !session[:admin]
+
   @sheff_orders = true
   @birm_orders = false
 
@@ -64,9 +60,8 @@ get '/sheffield_orders' do
 end
 
 get '/birmingham_orders' do
-  if !session[:admin]
-    redirect '/'
-  end
+  redirect '/' if !session[:admin]
+
   @sheff_orders = false
   @birm_orders = true
 
@@ -76,9 +71,7 @@ get '/birmingham_orders' do
 end
 
 get '/customer_orders' do
-  if !session[:logged_in] ||session[:admin]
-    redirect '/'
-  end
+  redirect '/' if (!session[:logged_in] ||session[:admin])
 
   erb :customer_orders
 end

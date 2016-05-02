@@ -1,5 +1,8 @@
 require 'minitest/autorun'
-require_relative '../app.rb'
+# require_relative '../app.rb'
+require 'sqlite3'
+require_relative '../curry_house_twitter'
+#todo add refund tests
 
 class TestTwitter < Minitest::Test
   def set_up
@@ -26,8 +29,6 @@ class TestTwitter < Minitest::Test
     return sent_tweet
   end
 
-  #todo delete test tweets from database
-  #todo add refund tests
   def test_search_timeline
     set_up
 
@@ -65,11 +66,13 @@ class TestTwitter < Minitest::Test
     valid_orders.each_with_index do |text,i|
       puts text
       #ensure there are enough CPs in the customer's balance
-      $db.execute('UPDATE customer SET balance = 30 WHERE twitterAcc =?',$customer_username)
+      balance = 100
+      $db.execute('UPDATE customer SET balance = ? WHERE twitterAcc =?',[balance,$customer_username])
 
       #tweet is registered in the database
       tweet = new_tweet(text)
       process_order tweet
+
       assert_equal 1,$db.get_first_value('SELECT COUNT(*) FROM tweets WHERE id = ?',tweet.id)
 
       #a reply is received
@@ -84,9 +87,10 @@ class TestTwitter < Minitest::Test
       #balance is reduced correctly
       sum=0
       items[i].each do |item|
-        sum+=$db.get_first_value('SELECT SUM(unitPrice) FROM menu WHERE id=? OR id=? OR id=?',item)
+        item_price = $db.get_first_value('SELECT unitPrice FROM menu WHERE id=?',item)
+        sum+=item_price if !item_price.nil?
       end
-      exp_balance = 30-sum
+      exp_balance = balance-sum
       act_balance = $db.get_first_value('SELECT balance FROM customer WHERE twitterAcc =?',$customer_username)
       assert_equal exp_balance,act_balance
     end
@@ -113,7 +117,6 @@ class TestTwitter < Minitest::Test
     #balance is still 0
     assert_equal 0,$db.get_first_value('SELECT balance FROM customer WHERE twitterAcc =?',$customer_username)
 
-    #todo add tests for orders with 0 sum or invalid order ids
 
     #------------------
     #unregistered user
@@ -143,16 +146,16 @@ class TestTwitter < Minitest::Test
 
   end
 
-
   def test_process_cancellation
     set_up
 
     #Sucessful cancellations
-    ['Ordered','Preparing','Unpaid','Canceled','Completed'].each do |os|
+    ['Ordered','Preparing','Unpaid','Canceled','Delivering','Completed'].each do |os|
       puts "status is #{os}"
       order_id = $db.get_first_value('SELECT max(order_id) FROM tweets WHERE sender = ?',[$customer_username])
       $db.execute('UPDATE tweets SET status = ? WHERE order_id = ?',[os,order_id])
       tweet = new_tweet("@#{$ch_username} cancel #{order_id}")
+      old_balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',$customer_username)
       process_cancellation tweet
 
       status = $db.get_first_value('SELECT status FROM tweets WHERE order_id = ?', [order_id])
@@ -169,6 +172,11 @@ class TestTwitter < Minitest::Test
         else
           assert_equal 'Canceled', status
           assert_equal expected_reply,actual_reply.text
+          if os.eql('Ordered','Preparing') #Refunds
+            new_balance = @db.get_first_value('SELECT balance FROM customer WHERE twitterAcc = ?',$customer_username)
+            refund_value = @db.get_first_value('SELECT sum FROM tweets WHERE order_id = ?',order_id)
+            assert_equal old_balance+refund_value,new_balance
+          end
       end
 
       $customer.destroy_status(tweet.id)
@@ -208,15 +216,5 @@ class TestTwitter < Minitest::Test
     end
   end
 
-  def test_tweet_is_caught
-    set_up
-
-    orders = $db.get_first_row('SELECT * FROM tweets')
-    id = orders[0]
-
-    assert_equal true, tweet_is_caught(id)
-    assert_equal false, tweet_is_caught(123)
-
-  end
 
 end
