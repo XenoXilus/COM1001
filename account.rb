@@ -47,6 +47,8 @@ post '/update_info' do
     @customer_info.execute(query, [@cc_no,@address,@first_name,@surname,@city,session[:twitter_acc]])
   end
 
+  get_info
+
   erb :account
 end
 

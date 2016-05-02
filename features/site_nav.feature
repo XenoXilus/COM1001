@@ -10,10 +10,8 @@ Feature: Accessing specific pages on the website from the navigation bar or url
     Then I should be on the instructions page
     When I follow "About"
     Then I should be on about
-    When I follow "Sign in"
+    When I follow "Log In / Sign Up"
     Then I should be on the login page
-    When I follow "Sign up"
-    Then I should be on the sign_up page
 
   Scenario: Successfully accessing pages when logged in as customer
     Given I am logged in as "customer"
@@ -44,11 +42,12 @@ Feature: Accessing specific pages on the website from the navigation bar or url
     Then I should be on about
     When I follow "My Account"
     Then I should be on the account page
-    When I follow "Orders"
-    Then I should be on orders
     When I follow "Admin Panel"
     Then I should be on the admin panel
     When I follow "Curry House Admin Panel"
+    Then I should be on the admin panel
+    When I follow "Current Orders"
+    Then I should be on orders
     When I follow "Log out"
     Then I should see "Thank you visiting us"
 
