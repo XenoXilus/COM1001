@@ -149,7 +149,7 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   end
   if !selector.nil? && (selector.include? 'order')
     order_text = selector.partition('order ')[2]
-    sqlite_db_set_up
+    db_set_up
     order_id = @db.get_first_value('SELECT order_id FROM tweets WHERE text LIKE ?', ('%'+order_text+'%'))
     selector = "tr#order#{order_id}"
   end
@@ -287,7 +287,7 @@ Then /^show me the page$/ do
 end
 
 
-def sqlite_db_set_up
+def db_set_up
   @db = SQLite3::Database.new './curry_house.sqlite'
 end
 
@@ -302,31 +302,36 @@ def twitter_db_set_up
   }
   @customer = Twitter::REST::Client.new(config)
   @ch = ch_twitter
-  sqlite_db_set_up
+  db_set_up
 end
 
 Then /delete the account with "([^\"]*)" email/ do |email|
-  sqlite_db_set_up
+  db_set_up
   @db.execute('DELETE FROM customer WHERE email = ?',[email])
 end
 
 When /a customer orders "([^\"]*)"/ do |order_text|
-  sqlite_db_set_up
+  db_set_up
   order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')+1
   tweet_id = @db.get_first_value('SELECT max(id) FROM tweets')+1
   @db.execute('INSERT INTO tweets(id,sender,text,order_id) VALUES (?,"Customer",?,?)',[tweet_id,order_text,order_id])
 end
 
 When /^a "([^\"]*)" customer orders "([^\"]*)"$/ do |city,order_text|
-  sqlite_db_set_up
+  db_set_up
   order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')+1
   tweet_id = @db.get_first_value('SELECT max(id) FROM tweets')+1
   sender = "#{city}-customer"
   @db.execute('INSERT INTO tweets(id,sender,text,order_id,city) VALUES (?,?,?,?,?)',[tweet_id,sender,order_text,order_id,city])
 end
 
+When /^a customer tweets "([^\"]*)"$/ do |tweet_text|
+  twitter_db_set_up
+  @customer.update(tweet_text)
+end
+
 When /a customer cancels "([^\"]*)"$/ do |text|
-  sqlite_db_set_up
+  db_set_up
   @db.execute('UPDATE tweets SET status = "Canceled" WHERE text LIKE ?', ('%'+text+'%'))
 end
 
@@ -337,12 +342,12 @@ When /^a customer participates in the competition "([^\"]*)"$/ do |msg|
 end
 
 When /^the competition "([^\"]*)" expires$/ do |msg|
-  sqlite_db_set_up
+  db_set_up
   @db.execute('UPDATE competitions SET date = "2010-10-10" WHERE msg = ?',msg)
 end
 
 Given /^(?:|I )won "([^\"]*)" CP from code "([^\"]*)" in competition "([^\"]*)"$/ do |cp,code,msg|
-  sqlite_db_set_up
+  db_set_up
   id = @db.get_first_value('SELECT id FROM competitions WHERE msg = ?',msg)
   @db.execute('INSERT INTO competition_winners(competition_id,twitter_user,cp,coupon_code) VALUES(?,"Alexg7g7",?,?)',[id,cp,code])
 
@@ -354,4 +359,16 @@ Then /^delete competition "([^\"]*)" and code "([^\"]*)"$/ do |msg,code|
   @db.execute('DELETE FROM competition_winners WHERE coupon_code = ?',code)
   tweet = @ch.home_timeline[0]
   @ch.destroy_status(tweet.id)
+end
+
+Then /^delete customer order/ do
+  twitter_db_set_up
+  tweet = @customer.user_timeline('Alexg7g7')[0]
+  @db.execute('DELETE FROM tweets WHERE id = ?',tweet.id)
+  @customer.destroy_status(tweet.id)
+end
+
+Given /^the customer's "([^\"]*)" is "([^\"]*)"$/ do |field,cp|
+  db_set_up
+  @db.execute("UPDATE customer SET #{field} = ? WHERE twitterAcc = ?",[cp,'Alexg7g7'])
 end
