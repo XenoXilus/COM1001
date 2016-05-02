@@ -330,13 +330,13 @@ When /a customer cancels "([^\"]*)"$/ do |text|
   @db.execute('UPDATE tweets SET status = "Canceled" WHERE text LIKE ?', ('%'+text+'%'))
 end
 
-When /a customer participates in the competition "([^\"]*)"$/ do |msg|
+When /^a customer participates in the competition "([^\"]*)"$/ do |msg|
   twitter_db_set_up
   tweet_id = @db.get_first_value('SELECT tweet_id FROM competitions WHERE msg = ?',msg)
   @customer.retweet(tweet_id)
 end
 
-When /the competition "([^\"]*)" expires$/ do |msg|
+When /^the competition "([^\"]*)" expires$/ do |msg|
   sqlite_db_set_up
   @db.execute('UPDATE competitions SET date = "2010-10-10" WHERE msg = ?',msg)
 end
@@ -348,10 +348,10 @@ Given /^(?:|I )won "([^\"]*)" CP from code "([^\"]*)" in competition "([^\"]*)"$
 
 end
 
-Then /delete competition "([^\"]*)" and code "([^\"]*)"/ do |msg,code|
+Then /^delete competition "([^\"]*)" and code "([^\"]*)"$/ do |msg,code|
   twitter_db_set_up
   @db.execute('DELETE FROM competitions WHERE msg = ?',msg)
   @db.execute('DELETE FROM competition_winners WHERE coupon_code = ?',code)
-  tweet = @ch.home_timeline()[0]
+  tweet = @ch.home_timeline[0]
   @ch.destroy_status(tweet.id)
 end

@@ -32,6 +32,10 @@ module NavigationHelpers
       '/make_admin'
     when /winner selection/
       '/get_winners'
+    when /Sheffield statistics/
+      '/sheffield_stats'
+    when /Birmingham statistics/
+      '/birmingham_stats'
     when /about/
       '/about'
     when /menu/

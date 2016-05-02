@@ -83,3 +83,16 @@ Feature: Accessing specific pages on the website from the navigation bar or url
     Then I should be on the home page
     When I go to customer orders
     Then I should be on the home page
+
+  Scenario: Statistics
+    Given I am logged in as admin
+    When I go to the admin panel
+    And I follow "Statistics"
+    Then I should be on the statistics page
+    Then I should see "General"
+    Then I should see "Today in Curry House:"
+    Then I should see "Daily averages:"
+    When I follow "Sheffield"
+    Then I should be on Sheffield statistics
+    When I follow "Birmingham"
+    Then I should be on Birmingham statistics
