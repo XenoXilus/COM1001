@@ -28,15 +28,13 @@ class Stats
 
   def self.get_avg type, city
     if city.eql? 'all'
-      return (Stats.get_avg(type, 'sheffield') + Stats.get_avg(type,'birmingham'))/2
+      count = @db.get_first_value('SELECT COUNT(*) FROM daily_stats')
+      sum = @db.get_first_value("SELECT SUM(#{type}) FROM daily_stats")
+      return count!=0 ? sum/count : 0
     end
     count = @db.get_first_value('SELECT COUNT(*) FROM daily_stats WHERE city = ? ',city)
     sum = @db.get_first_value("SELECT SUM(#{type}) FROM daily_stats WHERE city = ?",city)
-    if count!=0
-      return sum/count
-    else
-      return 0
-    end
+    return count!=0 ? sum/count : 0
   end
 
   def self.get_popular_item city
@@ -59,17 +57,23 @@ class Stats
     return count.find_index(count.max)
   end
 
+  def self.get_total_cost city
+    if city.eql? 'all'
+      sum = @db.get_first_value('SELECT SUM(sum) FROM tweets WHERE status = "Completed"')
+      return !sum.nil? ? sum : 0
+    end
+    sum = @db.get_first_value('SELECT SUM(sum) FROM tweets WHERE (city = ?) AND (status = "Completed")',city)
+    return !sum.nil? ? sum : 0
+  end
+
   def self.get_avg_cost city
     if city.eql? 'all'
-      return (Stats.get_avg_cost('sheffield') + Stats.get_avg_cost('birmingham'))/2
-    end
-    count = @db.get_first_value('SELECT COUNT(*) FROM tweets WHERE (city = ?) AND (status <> "Canceled") AND (status <> "Unpaid")',city)
-    sum = @db.get_first_value('SELECT SUM(sum) FROM tweets WHERE (city = ?) AND (status <> "Canceled") AND (status <> "Unpaid")',city)
-    if count!=0
-      return sum/count
+      count = @db.get_first_value('SELECT COUNT(*) FROM tweets WHERE status = "Completed"')
     else
-      return 0
+      count = @db.get_first_value('SELECT COUNT(*) FROM tweets WHERE (city = ?) AND (status = "Completed")',city)
     end
+    sum = Stats.get_total_cost city
+    return count!=0 ? sum/count : 0
   end
 
 end

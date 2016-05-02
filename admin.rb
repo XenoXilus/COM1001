@@ -8,15 +8,14 @@ before do
 end
 
 get '/admin' do
-  if !session[:admin]
-    redirect '/'
-  end
+  redirect '/' if !session[:admin]
   @page_header = 'Dashboard'
 
   erb :admin_panel
 end
 
 get '/admin_edit_menu' do
+    redirect '/' if !session[:admin]
     query = %{SELECT id, itemName, description, unitPrice, vegetarian, glutenFree, atSheff, atBirm
                  FROM menu
                  WHERE category = ? }

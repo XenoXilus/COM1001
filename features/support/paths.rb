@@ -18,18 +18,32 @@ module NavigationHelpers
       '/account'
     when /the instructions\s?page/
       '/instructions'
+    when /the offers\s?page/
+      '/offers'
+    when /the statistics\s?page/
+      '/stats'
+    when /the customer\s?page/
+      '/customer_info'
+    when /the menu edit\s?page/
+      '/admin_edit_menu'
+    when /customer orders/
+      '/customer_orders'
+    when /blacklist customer/
+      '/blacklist_customer'
+    when /make admin/
+      '/make_admin'
     when /about/
       '/about'
     when /menu/
       '/menu'
-    when /customer orders/
-      '/customer_orders'
     when /orders/
       '/orders'
     when /the admin\s?panel/
       '/admin'
     when /logout/
       '/logout'
+    when /search customer (.*)/
+      "search_customer?input=#{$1}"
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

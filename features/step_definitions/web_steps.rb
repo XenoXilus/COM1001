@@ -151,7 +151,7 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
     order_id = @db.get_first_value('SELECT order_id FROM tweets WHERE text LIKE ?', ('%'+order_text+'%'))
     selector = "tr#order#{order_id}"
   end
-  puts "selector =#{selector}"
+
   if text.eql?('the order') && !$order_text.nil?
     text = $order_text
   end

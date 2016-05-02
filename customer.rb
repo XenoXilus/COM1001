@@ -3,17 +3,15 @@ before do
 end
 
 get '/customer_info' do
-  if !session[:admin]
-    redirect '/'
-  end
+  redirect '/' if !session[:admin]
+
   @submitted=false
   erb :customer_info
 end
 
 get '/search_customer' do
-  if !session[:admin]
-    redirect '/'
-  end
+  redirect '/' if !session[:admin]
+
   @submitted=true
   @input = params[:input].strip
 
@@ -69,6 +67,8 @@ end
 
 
 get '/make_admin' do
+  redirect '/' if !session[:admin]
+
   twitter_acc = session[:current_customer]
 
   email=@db.get_first_value('SELECT email FROM customer WHERE twitterAcc = ?',twitter_acc)
@@ -86,6 +86,8 @@ end
 
 
 get '/blacklist_customer' do
+  redirect '/' if !session[:admin]
+
   twitter_acc = session[:current_customer]
   blacklisted = @db.get_first_value('SELECT blacklisted FROM customer WHERE twitterAcc = ?',twitter_acc) == 1
   if blacklisted
@@ -96,8 +98,4 @@ get '/blacklist_customer' do
     ch_twitter.update("@#{twitter_acc} We are sorry to inform you that your account has been banned from our website.")
   end
   redirect "/search_customer?input=#{twitter_acc}"
-end
-
-get 'tweet_to' do
-  #todo low priority
 end

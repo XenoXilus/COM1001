@@ -8,10 +8,12 @@
 
 <h1>Statistics</h1>
 
+
 <h2>General</h2>
 <p>Total number of registered customers: <%= @nreg_users%></p>
 <p>Total number of orders: <%= @total_norders %></p>
-<p>Average order cost: <%= Stats.get_avg_cost(@city).round(2) %></p>
+<p>Total revenue per order(Completed orders only): <%= Stats.get_total_cost(@city).round(2) %></p>
+<p>Average revenue(Completed orders only): <%= Stats.get_avg_cost(@city).round(2) %></p>
 <p>Most popular item id: <%=Stats.get_popular_item(@city) %></p>
 
 <h2>Today in Curry House:</h2>
@@ -28,6 +30,5 @@
 <p>Logins: <%= Stats.get_avg 'logins',@city %></p>
 <p>Registrations: <%= Stats.get_avg 'registrations',@city %></p>
 
-<!-- todo add more -->
 
 <%= erb :dashboard_footer %>
