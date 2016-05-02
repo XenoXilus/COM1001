@@ -144,6 +144,8 @@ end
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   if text.include? '?my'
     text = findValue(text)
+  elsif text.eql? 'the customer account'
+    text = 'Alexg7g7'
   end
   if !selector.nil? && (selector.include? 'order')
     order_text = selector.partition('order ')[2]
@@ -152,10 +154,18 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
     selector = "tr#order#{order_id}"
   end
 
-  if text.eql?('the order') && !$order_text.nil?
-    text = $order_text
-  end
   with_scope(selector) do
+    if page.respond_to? :should
+      page.should have_content(text)
+    else
+      assert page.has_content?(text)
+    end
+  end
+end
+
+Then /^(?:|I )I should see "([^\"]*)" in row "([^\"]*)"$/ do |text,row|
+
+  with_scope("tr:nth-child(#{row.to_i+1})") do
     if page.respond_to? :should
       page.should have_content(text)
     else
@@ -301,10 +311,6 @@ Then /delete the account with "([^\"]*)" email/ do |email|
 end
 
 When /a customer orders "([^\"]*)"/ do |order_text|
-  twitter_db_set_up
-  $order_text = order_text
-  @customer.update("@curryhouse02 order #{order_text}")
-
   sqlite_db_set_up
   order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')+1
   tweet_id = @db.get_first_value('SELECT max(id) FROM tweets')+1
@@ -319,63 +325,33 @@ When /^a "([^\"]*)" customer orders "([^\"]*)"$/ do |city,order_text|
   @db.execute('INSERT INTO tweets(id,sender,text,order_id,city) VALUES (?,?,?,?,?)',[tweet_id,sender,order_text,order_id,city])
 end
 
-When /a customer cancels "([^\"]*)"/ do |text|
+When /a customer cancels "([^\"]*)"$/ do |text|
   sqlite_db_set_up
   @db.execute('UPDATE tweets SET status = "Canceled" WHERE text LIKE ?', ('%'+text+'%'))
 end
 
-# When /a customer makes an order/ do
-#   twitter_db_set_up
-#
-#   max_id = @db.get_first_value('SELECT max(id) FROM menu')
-#   $order_text = "#{Random.rand(max_id)} #{Random.rand(max_id)} #{Random.rand(max_id)}"
-#   @customer.update("@curryhouse02 order #{$order_text}")
-# end
-
-# When /an unregistered customer orders "([^\"]*)"/ do |order_text|
-#   $unrg_order_text = "item #{Random.rand(10000)}" #try to have unique item numbers to avoid duplicate tweets
-#   config = {
-#       :consumer_key => 'ES1nI4rGsK5TLzfjAgJAOrwyJ',
-#       :consumer_secret => 'X0PRqKUjaRgqPBOox0QSmeQUO2j4gmIm6iLql5GAdgjpKgm32j',
-#       :access_token => '709679775862951936-5TCWCmdABwZpWNmCOxGZ7nY0xQ9Zqlq',
-#       :access_token_secret => 'C3BdvX5EfQw6l64sTNn8kUzdsh764fUQ1Ni7LBfanOFZz'
-#   }
-#   unrg_customer = Twitter::REST::Client.new(config)
-#   unrg_customer.update("@curryhouse02 order #{$order_text}")
-# end
-
-
-
-Then /^delete customer tweet$/ do
+When /a customer participates in the competition "([^\"]*)"$/ do |msg|
   twitter_db_set_up
-  tweet = @customer.user_timeline().take(1)[0]
-  @customer.destroy_status(tweet.id)
+  tweet_id = @db.get_first_value('SELECT tweet_id FROM competitions WHERE msg = ?',msg)
+  @customer.retweet(tweet_id)
+end
+
+When /the competition "([^\"]*)" expires$/ do |msg|
+  sqlite_db_set_up
+  @db.execute('UPDATE competitions SET date = "2010-10-10" WHERE msg = ?',msg)
+end
+
+Given /^(?:|I )won "([^\"]*)" CP from code "([^\"]*)" in competition "([^\"]*)"$/ do |cp,code,msg|
+  sqlite_db_set_up
+  id = @db.get_first_value('SELECT id FROM competitions WHERE msg = ?',msg)
+  @db.execute('INSERT INTO competition_winners(competition_id,twitter_user,cp,coupon_code) VALUES(?,"Alexg7g7",?,?)',[id,cp,code])
 
 end
 
-Then /^delete reply$/ do
+Then /delete competition "([^\"]*)" and code "([^\"]*)"/ do |msg,code|
   twitter_db_set_up
-  tweet = @ch.user_timeline().take(1)[0]
+  @db.execute('DELETE FROM competitions WHERE msg = ?',msg)
+  @db.execute('DELETE FROM competition_winners WHERE coupon_code = ?',code)
+  tweet = @ch.home_timeline()[0]
   @ch.destroy_status(tweet.id)
-end
-
-Then /^(?:|I )I should see "([^\"]*)" in row "([^\"]*)"$/ do |text,row|
-  # if !(row =~ /\s/).nil?
-  #   # if !$order_text.nil?
-  #   #   row = $order_text
-  #   # end
-  #   order_id = @db.get_first_value('SELECT order_id FROM tweets WHERE text LIKE ?', ('%'+row+'%'))
-  # else
-  #   order_id = row.to_i
-  # end
-  #
-  # puts "order_id = #{order_id}"
-
-  with_scope("tr:nth-child(#{row.to_i+1})") do
-    if page.respond_to? :should
-      page.should have_content(text)
-    else
-      assert page.has_content?(text)
-    end
-  end
 end

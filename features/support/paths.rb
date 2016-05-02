@@ -18,8 +18,6 @@ module NavigationHelpers
       '/account'
     when /the instructions\s?page/
       '/instructions'
-    when /the offers\s?page/
-      '/offers'
     when /the statistics\s?page/
       '/stats'
     when /the customer\s?page/
@@ -32,12 +30,16 @@ module NavigationHelpers
       '/blacklist_customer'
     when /make admin/
       '/make_admin'
+    when /winner selection/
+      '/get_winners'
     when /about/
       '/about'
     when /menu/
       '/menu'
     when /orders/
       '/orders'
+    when /offers/
+      '/offers'
     when /the admin\s?panel/
       '/admin'
     when /logout/
