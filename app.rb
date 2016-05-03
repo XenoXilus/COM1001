@@ -64,6 +64,12 @@ get '/birmMenu' do
 	erb :birmMenuEdit
 end
 
+get '/select_branch' do
+  redirect '/' if session[:logged_in]
+  session[:city] = nil
+  redirect '/'
+end
+
 not_found do
     erb :error404
 end

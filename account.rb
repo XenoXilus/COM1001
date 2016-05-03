@@ -9,6 +9,7 @@ def get_info
     @twitter_acc = @results[0]
     @cc_no = @results[1]
     @address = @results[2]
+    @balance = @results[3]
     @first_name = @results[5]
     @surname = @results[6]
     @atSheffield = @customer_info.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?', @twitter_acc).downcase.eql? 'sheffield'
@@ -50,7 +51,7 @@ post '/update_info' do
 
   get_info
 
-  erb :account
+  erb :account_new
 end
 
 post '/update_balance' do
