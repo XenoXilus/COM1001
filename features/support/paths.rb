@@ -20,14 +20,16 @@ module NavigationHelpers
       '/instructions'
     when /the statistics\s?page/
       '/stats'
-    when /the customer\s?page/
+    when /the customer info\s?page/
       '/customer_info'
     when /the menu edit\s?page/
       '/admin_edit_menu'
     when /customer orders/
       '/customer_orders'
-    when /blacklist customer/
-      '/blacklist_customer'
+    when /adminButton/
+      '/adminButton'
+    when /blacklistButton/
+      '/blacklistButton'
     when /make admin/
       '/make_admin'
     when /winner selection/

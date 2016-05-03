@@ -63,6 +63,9 @@ Feature: Accessing specific pages on the website from the navigation bar or url
     Then I should be on the home page
     When I go to logout
     Then I should not see "Thank you visiting us"
+    When I go to the customer info page
+    Then I should be on the home page
+
 
   Scenario: Hiding pages from customer
     Given I am logged in as "customer"
@@ -73,6 +76,8 @@ Feature: Accessing specific pages on the website from the navigation bar or url
     When I go to orders
     Then I should be on the home page
     When I go to the admin panel
+    Then I should be on the home page
+    When I go to the customer info page
     Then I should be on the home page
 
   Scenario: Hiding pages from admin

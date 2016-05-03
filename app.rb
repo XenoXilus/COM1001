@@ -55,15 +55,6 @@ get '/instructions' do
     erb :instructions
 end
 
-post '/user_signup' do
-    @firstname = params[:inputName].strip
-    @surname = params[:inputSurname].strip
-    @twitterUname = params[:inputTwitter].strip
-    @email = params[:inputEmail2].strip
-    @password = params[:inputPassword].strip
-
-    erb :index
-end
 
 get '/sheffMenu' do
 	erb :sheffMenuEdit

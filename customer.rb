@@ -66,8 +66,10 @@ get '/search_customer' do
 end
 
 
-get '/make_admin' do
+get '/adminButton' do
   redirect '/' if !session[:admin]
+
+  # count = db.execute('SELECT Count(*) FROM administrators')
 
   twitter_acc = session[:current_customer]
 
@@ -85,7 +87,7 @@ get '/make_admin' do
 end
 
 
-get '/blacklist_customer' do
+get '/blacklistButton' do
   redirect '/' if !session[:admin]
 
   twitter_acc = session[:current_customer]

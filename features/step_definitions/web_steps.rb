@@ -128,6 +128,10 @@ When /^(?:|I )choose "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   end
 end
 
+When  /"([^\"]*)" button is pressed/ do |button|
+  visit path_to button
+end
+
 When /^(?:|I )attach the file "([^\"]*)" to "([^\"]*)"(?: within "([^\"]*)")?$/ do |path, field, selector|
   with_scope(selector) do
     attach_file(field, path)

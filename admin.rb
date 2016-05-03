@@ -137,7 +137,3 @@ post '/update_menu' do
     end
 
 end
-
-get '/testing' do
-	erb :narrow
-end
