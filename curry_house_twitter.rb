@@ -1,4 +1,5 @@
 require 'twitter'
+require 'rufus-scheduler'
 
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
@@ -143,6 +144,16 @@ def tweet_status_change(tweet_entry)
             return
         end
   $client.update("@#{tweet_entry[1]}: #{msg} Order ID:#{tweet_entry[4]}.")#, :in_reply_to_status_id => tweet_entry[0])
+end
+
+def cust_offers
+  scheduler = Rufus::Scheduler.new
+
+  scheduler.every '24h' do
+    code = '00'
+    discount_code = code+1
+    $client.update("Activate this code on your account and get a discount! CH00#{discount_code}")
+  end
 end
 
 def ch_twitter
