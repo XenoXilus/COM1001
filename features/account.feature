@@ -1,15 +1,5 @@
 Feature: Account information modification
-
-  Scenario: Access the account page as admin
-    Given I am logged in as "admin"
-    When I go to the account page
-    Then I should see "Fill the form to update your information."
-
-  Scenario: Access the account page as customer
-    Given I am logged in as "customer"
-    When I go to the account page
-    Then I should see "Fill the form to update your information."
-
+  
   Scenario: View the account information
     Given I am logged in as "customer"
     When I go to the account page

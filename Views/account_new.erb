@@ -30,6 +30,9 @@
     <input type="text" class="form-control" name="twitter_acc" value="<%= session[:twitter_acc] %>" disabled="disabled"/>
   </div>
 
+  <% if !@cc_no_ok && @updating %>
+      <p style="color:red">Invalid Credit Card number.</p>
+  <%end%>
   <div class="form-group">
     <label for="exampleInputEmail1">Credit Card:</label>
     <input type="text" class="form-control" name="cc" value="<%=h @cc_no %>"/>
