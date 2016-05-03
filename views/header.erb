@@ -33,9 +33,11 @@
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li class=<%= "active" if active_page?("") %>><a href="/">Home</a></li>
-        <li class=<%= "active" if active_page?("menu") %>><a href="/menu">Menu</a></li>
+        <% if !session[:city].nil? %>
+          <li class=<%= "active" if active_page?("menu") %>><a href="/menu">Menu</a></li>
+          <li class=<%= "active" if active_page?("about") %>><a href="/about">About</a></li>
+        <% end %>
         <li class=<%= "active" if active_page?("instructions") %>><a href="/instructions">How to Order</a></li>
-        <li class=<%= "active" if active_page?("about") %>><a href="/about">About</a></li>
         <%if !session[:logged_in]%>
             <li class=<%= "active" if active_page?("login") || active_page?("sign_up") %>><a href="/login">Log In / Sign Up</a> </li>
 

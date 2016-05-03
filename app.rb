@@ -17,19 +17,10 @@ include ERB::Util
 
 enable :sessions
 
-#todo force user to select a city
-# get '/' do
-#   if !(session[:sheffield] || session[:birmingham])
-#
-#   else
-#     redirect '/index'
-#   end
-# end
-
 get '/' do
     if !session[:city].nil?
-        @city = session[:city]
-        @city=@city.capitalize!
+        @city=session[:city]
+        @city[0] = @city[0].upcase
     end
 
     erb :index
@@ -48,6 +39,7 @@ get '/setBirm' do
 end
 
 get '/about' do
+    redirect '/' if session[:city].nil?
     erb :about
 end
 

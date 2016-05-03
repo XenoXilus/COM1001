@@ -50,6 +50,18 @@ task :delete_tweets do
   end
 end
 
+task :deploy do
+  db = SQLite3::Database.new './curry_house.sqlite'
+  tb_names = db.execute("SELECT name FROM sqlite_master WHERE type='table'")
+  tb_names.each do |tb|
+    db.execute("DELETE FROM #{tb[0]}")
+  end
+
+  db.execute('INSERT INTO customer(twitterAcc,email,firstName,surName,password,city) VALUES("curryhouse02","admin@ch.com","Name","Surname","123456","sheffield")')
+  db.execute('INSERT INTO administrators VALUES("admin@ch.com")')
+  db.execute('INSERT INTO loyalty_offer VALUES(0,0)')
+end
+
 # task :add_row, [:row,:table] do  |t,args|
 #   db = SQLite3::Database.new('./curry_house.sqlite')
 #   results = db.execute("SELECT * FROM #{args[:table]}")
