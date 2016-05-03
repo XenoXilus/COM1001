@@ -2,6 +2,9 @@
 <footer>
   <p>&copy; theISEteam2 co. </p>
   <a target="_blank" href="https://twitter.com/curryhouse02"><img id="twitter_icon" src="img/icon_twitter.svg"></a>
+  <% if !session[:logged_in] && !session[:city].nil? %>
+    <a href="select_branch">Select Branch</a>
+  <% end %>
 </footer>
 
 <!-- Bootstrap core JavaScript -->

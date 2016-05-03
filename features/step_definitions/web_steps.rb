@@ -40,7 +40,7 @@ end
 
 Given /^(?:|I )am logged in as (.+)$/ do |access|
   visit '/login'
-  with_scope('#login-form') do
+  with_scope('login-form') do
     if access.include?'admin'
       fill_in('email_address', :with => 'admin@ch.com')
       fill_in('password', :with => '123456')
@@ -164,6 +164,22 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
     else
       assert page.has_content?(text)
     end
+  end
+end
+
+Then /^(?:|I )should see a "([^\"]*)" item$/ do |city|
+  db_set_up
+  if city.eql? 'Sheffield'
+    field = 'Sheff'
+  elsif city.eql? 'Birmingham'
+    field = 'Birm'
+  end
+  text = @db.get_first_value("SELECT itemName FROM menu WHERE at#{field} = 1")
+
+  if page.respond_to? :should
+    page.should have_content(text)
+  else
+    assert page.has_content?(text)
   end
 end
 
