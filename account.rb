@@ -25,7 +25,7 @@ get '/account' do
   @updating = false
   @updating_balance = false
 
-  erb :account
+  erb :account_new
 end
 
 post '/update_info' do
