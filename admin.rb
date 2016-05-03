@@ -19,7 +19,7 @@ get '/admin_edit_menu' do
     query = %{SELECT id, itemName, description, unitPrice, vegetarian, glutenFree, atSheff, atBirm
                  FROM menu
                  WHERE category = ? }
-                 
+
     @starterResults = @db.execute query, 'starter'
     @mildResults = @db.execute query, 'mild'
     @hotResults = @db.execute query, 'hot'
@@ -33,6 +33,11 @@ get '/admin_edit_menu' do
         ["Rice Dishes", @riceResults],
         ["Sides", @sidesResults]
     ]
+
+    if !params[:errorAdding].nil?
+        @displayError = "Oops... There was an error procesing your request and the item couldn´t be added tho the menu."
+    end
+
 
     erb :dashboard_edit_menu
 end
@@ -93,9 +98,15 @@ post '/add_menu' do
         end
         executeAddQuery = @db.execute('INSERT INTO menu (itemName, unitPrice, description, category, vegetarian, glutenFree, atBirm, atSheff)
             VALUES (?,?,?,?,?,?,?,?)',[@dishName,@dishCost,@dishDesc,@dishType,vegetarian,glutenFree,atSheff,atBirm])
-        redirect '/admin_edit_menu'
+    else
+        redirect '/admin_edit_menu?errorAdding=1'
+
     end
+
+    redirect '/admin_edit_menu'
+
 end
+
 
 post '/update_menu' do
     @dishID = params[:dishID]
