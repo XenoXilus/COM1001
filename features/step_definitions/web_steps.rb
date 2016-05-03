@@ -40,7 +40,7 @@ end
 
 Given /^(?:|I )am logged in as (.+)$/ do |access|
   visit '/login'
-  with_scope('login-form') do
+  with_scope('#login-form') do
     if access.include?'admin'
       fill_in('email_address', :with => 'admin@ch.com')
       fill_in('password', :with => '123456')
