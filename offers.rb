@@ -51,7 +51,6 @@ MESSAGE_END
   redirect '/offers'
 end
 
-#todo unit testing
 def future_date date,time
   cday = Time.now.day
   cmonth = Time.now.month

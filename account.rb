@@ -45,6 +45,7 @@ post '/update_info' do
   if @all_ok
     query = 'UPDATE customer SET cc=?, address=?, firstName=?, surname=?, city=? WHERE twitterAcc = ?'
     @customer_info.execute(query, [@cc_no,@address,@first_name,@surname,@city,session[:twitter_acc]])
+    session[:city] = @city
   end
 
   get_info

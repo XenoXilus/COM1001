@@ -101,6 +101,9 @@ def process_cancellation tweet
   order_id = tweet.text.partition('cancel')[2].to_i
   min_order_id = @db.get_first_value('SELECT min(order_id) FROM tweets')
   max_order_id = @db.get_first_value('SELECT max(order_id) FROM tweets')
+
+  min_order_id = 0 if min_order_id.nil?
+  max_order_id = 0 if max_order_id.nil?
   if (order_id!=0) && (order_id<=max_order_id) && (order_id>=min_order_id) #if valid cancel message
     tweet_info = @db.get_first_row('SELECT * FROM tweets WHERE order_id=?',[order_id])
     order_status = tweet_info[3]

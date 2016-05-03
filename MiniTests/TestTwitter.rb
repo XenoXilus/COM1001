@@ -2,7 +2,6 @@ require 'minitest/autorun'
 # require_relative '../app.rb'
 require 'sqlite3'
 require_relative '../curry_house_twitter'
-#todo add refund tests
 
 class TestTwitter < Minitest::Test
   def set_up

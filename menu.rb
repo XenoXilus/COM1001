@@ -7,6 +7,7 @@ before do
 end
 
 get '/menu' do
+  redirect '/' if session[:city].nil?
 	if session[:city].eql? 'birmingham'
     query = %{SELECT itemName, description, unitPrice, vegetarian, glutenFree, id
               FROM menu
