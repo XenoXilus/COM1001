@@ -149,7 +149,7 @@ end
 def cust_offers
   scheduler = Rufus::Scheduler.new
 
-  scheduler.every '24h' do
+  scheduler.every '14d' do
     code = '00'
     discount_code = code+1
     $client.update("Activate this code on your account and get a discount! CH00#{discount_code}")
