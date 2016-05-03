@@ -81,5 +81,5 @@ Feature:Finding information for customers and administrators at the customer inf
     When I fill in "email_address" with "customer@gmail.com"
     When I fill in "myPassword" with "654321"
     When I press "Log in" within "form#login-form"
-#    When I go to "Admin Panel"
-#    Then I should be on the home page
+    When I go to the admin panel
+    Then I should be on the home page

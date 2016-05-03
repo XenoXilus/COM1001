@@ -62,6 +62,7 @@ post '/login' do
     redirect '/'
   end
 
+
   @error = 'The Email address or the password is not correct'
 
   erb :access
@@ -71,6 +72,7 @@ get '/logout' do
   if !session[:logged_in]
     redirect '/'
   end
+  @name = @db.get_first_value('SELECT firstName FROM customer WHERE twitterAcc = ?',session[:twitter_acc])
 
   session.clear
   erb :logout

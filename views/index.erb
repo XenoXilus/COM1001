@@ -12,7 +12,7 @@
 </div>
 <% end %>
 
-<h1>Welcome to Curry House <%=h "#{@city}" %>!</h1>
+<h1>Welcome to Curry House <%=h "#{ @city if !@city.nil?}"%>!</h1>
 
 <p class="lead">Your first stop for all your curry takeaway needs.<p>
 <p>Whether you're new, coming home to us after your holidays, or a 'seasoned' veteran (get it?);<br> we're sure you'd agree that we are your #1 stop in Sheffield to fulfill all your Curry needs.</p>

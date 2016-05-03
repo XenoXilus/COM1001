@@ -5,12 +5,13 @@
 <p>Twitter: <a target="_blank" href="https://twitter.com/curryhouse02">@curryhouse02</a></p>
 
 <h3>Address: </h3>
-<% if session[:city].eql? 'sheffield' %>
+<% puts "session[:city] : #{session[:city]}" %>
+<% if session[:city].downcase.eql? 'sheffield' %>
   <p>67 Botley Road</p>
   <p>MIDDLESTONE MOOR </p>
   <p>Sheffield</p>
   <p>S2 9WW</p>
-<% elsif session[:city].eql? 'birmingham' %>
+<% elsif session[:city].downcase.eql? 'birmingham' %>
   <p>33 Stamford Road</p>
   <p>APPLEBY MAGNA</p>
   <p>Birmingham</p>

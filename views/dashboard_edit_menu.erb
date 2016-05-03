@@ -2,6 +2,10 @@
 
     <div>
 
+        <% if !@displayError.nil?%>
+        <div class="alert alert-warning" role="alert"><%=h "#{@displayError}" %></div>
+        <% end %>
+
     <!-- Nav tabs -->
     <ul id="myTabs" class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#viewMenu" aria-controls="viewMenu" role="tab" data-toggle="tab">View Menu</a></li>
@@ -93,7 +97,7 @@
 
             <% @m.each { |m| create_menu_table(m[0], m[1]) } %>
 
-            
+
         </div>
 
 

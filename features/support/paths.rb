@@ -38,6 +38,8 @@ module NavigationHelpers
       '/sheffield_stats'
     when /Birmingham statistics/
       '/birmingham_stats'
+    when /select branch/
+      'select_branch'
     when /about/
       '/about'
     when /menu/

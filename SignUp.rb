@@ -3,7 +3,6 @@ require 'sinatra'
 require 'sqlite3'
 require 'twitter'
 
-
 include ERB::Util
 
 before do
@@ -11,9 +10,6 @@ before do
 end
 
 VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-
-
-
 
 get '/sign_up' do
   if session[:logged_in]
@@ -74,11 +70,3 @@ post '/form_handler' do
 
   erb :access
 end
-
-
-
-
-
-
-
-

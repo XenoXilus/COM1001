@@ -1,5 +1,4 @@
 class Stats
-  # todo unit test
   @db = SQLite3::Database.new './curry_house.sqlite'
   @date = Time.now.strftime("%d/%m/%Y")
 
@@ -44,6 +43,7 @@ class Stats
     orders = @db.execute('SELECT text FROM tweets WHERE city = ?',city)
 
     max_id = @db.get_first_value('SELECT max(id) FROM menu')
+    max_id = 0 if max_id.nil?
     count = Array.new(max_id+1, 0)
     orders.each do |order_text|
       items = order_text[0].gsub(/^\s+|\s+$/,'').split(/\s+/)

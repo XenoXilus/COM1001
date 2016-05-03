@@ -9,6 +9,7 @@ def get_info
     @twitter_acc = @results[0]
     @cc_no = @results[1]
     @address = @results[2]
+    @balance = @results[3]
     @first_name = @results[5]
     @surname = @results[6]
     @atSheffield = @customer_info.get_first_value('SELECT city FROM customer WHERE twitterAcc = ?', @twitter_acc).downcase.eql? 'sheffield'
@@ -25,7 +26,7 @@ get '/account' do
   @updating = false
   @updating_balance = false
 
-  erb :account
+  erb :account_new
 end
 
 post '/update_info' do
@@ -45,11 +46,12 @@ post '/update_info' do
   if @all_ok
     query = 'UPDATE customer SET cc=?, address=?, firstName=?, surname=?, city=? WHERE twitterAcc = ?'
     @customer_info.execute(query, [@cc_no,@address,@first_name,@surname,@city,session[:twitter_acc]])
+    session[:city] = @city
   end
 
   get_info
 
-  erb :account
+  erb :account_new
 end
 
 post '/update_balance' do
