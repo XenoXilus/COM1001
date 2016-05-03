@@ -66,6 +66,7 @@ post '/update_balance' do
     @customer_info.execute('UPDATE customer SET balance = ? WHERE twitterAcc = ?',[new_balance,session[:twitter_acc]])
   end
 
+  get_info
   erb :account
 end
 
