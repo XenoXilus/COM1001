@@ -128,7 +128,7 @@ get '/get_winners' do
       tweet_id = comp[6]
       @db.execute('UPDATE competitions SET expired = 1 WHERE tweet_id = ?',tweet_id)
       participants = ch_twitter.retweeters_of(tweet_id)
-      followers = ch_twitter.followers()
+      followers = ch_twitter.followers
 
       participants.each do |p|
         participants.delete(p) if !(followers.include? p)
